@@ -7,9 +7,10 @@ typedef validation = String? Function(String?)?;
 class CustomTextFormField extends StatelessWidget {
   final String hintText;
   final TextStyle? hintStyle;
-  final String? suffixIcon;
+  final IconData? suffixIcon;
   final String? prefixIcon;
   final bool? isObscure;
+  final Function()? onSuffixPressed;
   final TextEditingController controller;
   final Color? borderColor;
   final validation validator;
@@ -27,7 +28,8 @@ class CustomTextFormField extends StatelessWidget {
       this.borderColor,
       this.validator,
       this.onChanged,
-      this.keyboardType});
+      this.keyboardType,
+      this.onSuffixPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +52,9 @@ class CustomTextFormField extends StatelessWidget {
         suffixIcon: suffixIcon != null
             ? Padding(
                 padding: EdgeInsets.symmetric(horizontal: width * 0.015),
-                child: ImageIcon(
-                  AssetImage(suffixIcon!),
+                child: IconButton(
+                  onPressed: onSuffixPressed,
+                  icon: Icon(suffixIcon!),
                   color: AppColors.whiteColor,
                 ),
               )
@@ -69,6 +72,7 @@ class CustomTextFormField extends StatelessWidget {
         suffixIconColor: AppColors.whiteColor,
         hintText: hintText,
         hintStyle: AppStyles.regular16White,
+        errorStyle: AppStyles.bold12Red,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
         ),
@@ -77,14 +81,16 @@ class CustomTextFormField extends StatelessWidget {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(
+          borderSide: BorderSide(
             width: 1,
+            color: AppColors.redColor,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: const BorderSide(
             width: 1,
+            color: AppColors.redColor,
           ),
         ),
       ),

@@ -55,4 +55,6 @@ class AppStyles {
       fontWeight: FontWeight.w400, fontSize: 16, color: AppColors.yellowColor);
   static TextStyle regular14Yellow = GoogleFonts.roboto(
       fontWeight: FontWeight.w400, fontSize: 14, color: AppColors.yellowColor);
+  static TextStyle bold12Red = GoogleFonts.roboto(
+      fontWeight: FontWeight.bold, fontSize: 12, color: AppColors.redColor);
 }
