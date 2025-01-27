@@ -72,6 +72,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               controller: cubit.emailController),
                           SizedBox(height: height * 0.025),
                           CustomTextFormField(
+                              onSuffixPressed: () {
+                                cubit.changePasswordVisibility();
+                              },
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
                                   return 'Please Enter Password';
@@ -82,13 +85,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 return null;
                               },
                               keyboardType: TextInputType.visiblePassword,
-                              isObscure: cubit.isObscure,
-                              suffixIcon: Icons.visibility_off,
+                              isObscure: cubit.isPasswordObscure,
+                              suffixIcon: cubit.isPasswordObscure
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                               prefixIcon: AssetsManager.passwordIcon,
                               hintText: 'Password',
                               controller: cubit.passwordController),
                           SizedBox(height: height * 0.025),
                           CustomTextFormField(
+                              onSuffixPressed: () {
+                                cubit.changeRePasswordVisibility();
+                              },
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
                                   return 'Please Enter Password Conformation';
@@ -99,8 +107,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 return null;
                               },
                               keyboardType: TextInputType.visiblePassword,
-                              isObscure: true,
-                              suffixIcon: Icons.visibility_off,
+                              isObscure: cubit.isRePasswordObscure,
+                              suffixIcon: cubit.isRePasswordObscure
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                               prefixIcon: AssetsManager.passwordIcon,
                               hintText: 'Confirm Password',
                               controller: cubit.rePasswordController),
