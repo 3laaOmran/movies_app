@@ -12,11 +12,22 @@ class RegisterCubit extends Cubit<RegisterStates> {
   var rePasswordController = TextEditingController();
   var phoneNumberController = TextEditingController();
   var formKey = GlobalKey<FormState>();
-  bool isObscure = true;
+  bool isPasswordObscure = true;
+  bool isRePasswordObscure = true;
 
 //TODO: -----------------Logic-------------------
 
   void register() {
     if (formKey.currentState!.validate()) {}
+  }
+
+  void changePasswordVisibility() {
+    isPasswordObscure = !isPasswordObscure;
+    emit(ChangePasswordVisibilityState());
+  }
+
+  void changeRePasswordVisibility() {
+    isRePasswordObscure = !isRePasswordObscure;
+    emit(ChangePasswordVisibilityState());
   }
 }
