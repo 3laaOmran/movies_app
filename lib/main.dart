@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/ui/auth/login_screen/login_screen.dart';
 import 'package:movies_app/ui/auth/register_screen/register_screen.dart';
 import 'package:movies_app/ui/onboarding/onboarding.dart';
 import 'package:movies_app/utils/app_theme.dart';
@@ -26,6 +27,7 @@ class MoviesApp extends StatelessWidget {
       routes: {
         RegisterScreen.routeName: (context) => RegisterScreen(),
         Onboarding.routeName:(context)=> Onboarding(),
+        LoginScreen.routeName:(context)=>LoginScreen(),
       },
     );
   }
