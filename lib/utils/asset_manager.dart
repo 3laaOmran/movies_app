@@ -8,6 +8,7 @@ class AssetsManager {
   static const String avatar7 = 'assets/images/avatar7.png';
   static const String avatar8 = 'assets/images/avatar8.png';
   static const String avatar9 = 'assets/images/avatar9.png';
+  static const String appIcon='assets/images/app_icon.png';
   static const String avengersEndGame = 'assets/images/avengersEndGame.png';
   static const String avengersImage = 'assets/images/avengersImage.png';
   static const String backIcon = 'assets/images/backIcon.png';

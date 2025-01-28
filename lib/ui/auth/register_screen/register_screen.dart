@@ -12,7 +12,6 @@ import 'cubit/register_cubit.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = 'register_screen';
-  const RegisterScreen({super.key});
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
