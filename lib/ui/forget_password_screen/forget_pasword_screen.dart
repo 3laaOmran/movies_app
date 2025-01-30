@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_styles.dart';
 import '../../utils/asset_manager.dart';
+import '../widgets/custom_text_form_field.dart';
 
 class ForgetPasswordScreen extends StatelessWidget {
   static const String routeName = 'forget_password_screen';
@@ -25,12 +27,16 @@ class ForgetPasswordScreen extends StatelessWidget {
         ),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+        children: <Widget>[
           Image.asset(AssetsManager.forgetPasswordImage, fit: BoxFit.fill ),
-          SizedBox(height:height *.2),
-          TextFormField(
+          SizedBox(height:height *.02),
+          CustomTextFormField(
+            hintText: 'Email',
+            controller:TextEditingController(),
+            prefixIcon: AssetsManager.emailIcon,
+          ) ,
+
+          /*TextFormField(
             style: const TextStyle(color: AppColors.whiteColor),
             decoration: InputDecoration(
               prefixIcon:
@@ -48,9 +54,13 @@ class ForgetPasswordScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10.0),
               ),
             ),
-          ),
-          SizedBox(height: height*.2),
-          ElevatedButton(
+          ),*/
+          SizedBox(height: height*.02),
+          CustomElevatedButton(
+              buttonText: 'Verify Email',
+              onPressed: (){}
+          )
+          /*ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.yellowColor,
               padding: EdgeInsets.symmetric(vertical: height * 0.02),
@@ -63,7 +73,7 @@ class ForgetPasswordScreen extends StatelessWidget {
               "Verify Email",
               style: TextStyle(color: Colors.black),
             ),
-          ),
+          ),*/
 
         ],
       ),
