@@ -16,7 +16,6 @@ class ForgetPasswordScreen extends StatelessWidget {
         title: Text("Forget Password",
           style: AppStyles.regular16Yellow,),
         ),
-      ),
       body: Column(
         children: <Widget>[
           Image.asset(AssetsManager.forgetPasswordImage, fit: BoxFit.fill ),
