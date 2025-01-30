@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/ui/auth/forget_password_screen/forget_pasword_screen.dart';
 import 'package:movies_app/ui/auth/login_screen/cubit/login_cubit.dart';
 import 'package:movies_app/ui/auth/register_screen/register_screen.dart';
+import 'package:movies_app/ui/profile/update_profile/update_profile.dart';
 import 'package:movies_app/ui/widgets/ask_user_widget_in_login_register.dart';
 import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
 import 'package:movies_app/ui/widgets/switch_language_button.dart';
 import 'package:movies_app/utils/asset_manager.dart';
+
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_styles.dart';
 import '../../widgets/custom_text_form_field.dart';
@@ -88,7 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children:[ TextButton(
-                                onPressed: (){},
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                      context, ForgetPasswordScreen.routeName);
+                                },
                                 child: Text('Forget Password ?',style: AppStyles.regular14Yellow, //
                                 ),),
                               ]
@@ -130,8 +136,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: height*0.03,),
                           CustomElevatedButton(
-                            onPressed: (){},
-                             buttonText: '',
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, UpdateProfile.routeName);
+                          },
+                          buttonText: '',
                               buttonWidget: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
