@@ -15,15 +15,6 @@ class ForgetPasswordScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Forget Password",
           style: AppStyles.regular16Yellow,),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: AppColors.yellowColor,
-          ),
-          onPressed: () {
-
-          },
         ),
       ),
       body: Column(
