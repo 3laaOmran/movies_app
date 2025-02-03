@@ -9,10 +9,13 @@ import 'package:movies_app/utils/app_theme.dart';
 import 'package:movies_app/utils/helpers/cash_helper.dart';
 import 'package:movies_app/utils/helpers/my_bloc_observer.dart';
 
+import 'di/di.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CashHelper.init();
   Bloc.observer = MyBlocObserver();
+  configureDependencies();
   runApp(const MoviesApp());
 }
 
@@ -25,7 +28,7 @@ class MoviesApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.dark,
-      initialRoute: Onboarding.routeName,
+      initialRoute: LoginScreen.routeName,
       routes: {
         Onboarding.routeName:(context)=> Onboarding(),
         LoginScreen.routeName: (context) => LoginScreen(),
