@@ -12,6 +12,13 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../repository/movies/data_source/movies_remote_data_source.dart'
+    as _i330;
+import '../repository/movies/data_source/movies_remote_data_source_impl.dart'
+    as _i845;
+import '../repository/movies/repository/movies_repository.dart' as _i49;
+import '../repository/movies/repository/movies_repository_impl.dart' as _i59;
+import '../ui/tabs/home_tab/cubit/home_tab_cubit.dart' as _i538;
 import '../repository/user/data_source/user_remote_data_source.dart' as _i728;
 import '../repository/user/data_source/user_remote_data_source_impl.dart'
     as _i175;
@@ -30,6 +37,12 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
+    gh.factory<_i330.MoviesRemoteDataSource>(
+        () => _i845.MoviesRemoteDataSourceImpl());
+    gh.factory<_i49.MoviesRepository>(() => _i59.MoviesRepositoryImpl(
+        remoteDataSource: gh<_i330.MoviesRemoteDataSource>()));
+    gh.factory<_i538.HomeTabCubit>(() =>
+        _i538.HomeTabCubit(moviesRepository: gh<_i49.MoviesRepository>()));
     gh.factory<_i728.UserRemoteDataSource>(
         () => _i175.UserRemoteDataSourceImpl());
     gh.factory<_i123.UserRepository>(() => _i871.UserRepositoryImpl(

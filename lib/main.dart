@@ -4,7 +4,8 @@ import 'package:movies_app/ui/auth/forget_password_screen/forget_pasword_screen.
 import 'package:movies_app/ui/auth/login_screen/login_screen.dart';
 import 'package:movies_app/ui/auth/register_screen/register_screen.dart';
 import 'package:movies_app/ui/onboarding/onboarding.dart';
-import 'package:movies_app/ui/profile/update_profile/update_profile.dart';
+import 'package:movies_app/ui/tabs/home_tab/home_tab.dart';
+import 'package:movies_app/ui/tabs/profile/update_profile/update_profile.dart';
 import 'package:movies_app/utils/app_theme.dart';
 import 'package:movies_app/utils/helpers/cash_helper.dart';
 import 'package:movies_app/utils/helpers/my_bloc_observer.dart';
@@ -28,12 +29,13 @@ class MoviesApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.dark,
-      initialRoute: LoginScreen.routeName,
+      initialRoute: Onboarding.routeName,
       routes: {
         Onboarding.routeName:(context)=> Onboarding(),
         LoginScreen.routeName: (context) => LoginScreen(),
         RegisterScreen.routeName: (context) => RegisterScreen(),
         ForgetPasswordScreen.routeName: (context) => ForgetPasswordScreen(),
+        HomeTab.routeName: (context) => HomeTab(),
         UpdateProfile.routeName: (context) => UpdateProfile(),
       },
     );

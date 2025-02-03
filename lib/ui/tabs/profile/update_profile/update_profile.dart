@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/ui/tabs/profile/update_profile/show_bottom_sheet.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/repository/user/repository/user_repository.dart';
 import 'package:movies_app/ui/profile/cubit/user_cubit.dart';
@@ -28,17 +29,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> avatarList = [
-      AssetsManager.avatar1,
-      AssetsManager.avatar2,
-      AssetsManager.avatar3,
-      AssetsManager.avatar4,
-      AssetsManager.avatar5,
-      AssetsManager.avatar6,
-      AssetsManager.avatar7,
-      AssetsManager.avatar8,
-      AssetsManager.avatar9,
-    ];
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return BlocProvider(
