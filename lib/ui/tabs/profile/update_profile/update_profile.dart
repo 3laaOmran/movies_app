@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/ui/profile/update_profile/show_bottom_sheet.dart';
-import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
+import 'package:movies_app/ui/tabs/profile/update_profile/show_bottom_sheet.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/asset_manager.dart';
 

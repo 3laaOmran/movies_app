@@ -60,4 +60,6 @@ class AssetsManager {
   static const String usaFlag = 'assets/images/usaFlag.png';
   static const String watchListIcon = 'assets/images/watchListIcon.png';
   static const String wednesdayImage = 'assets/images/wednesdayImage.png';
+  static const String watchNow = 'assets/images/watch_now.png';
+  static const String availableNow = 'assets/images/available_now.png';
 }

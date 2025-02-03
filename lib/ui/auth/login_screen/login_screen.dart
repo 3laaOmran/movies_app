@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/ui/auth/forget_password_screen/forget_pasword_screen.dart';
 import 'package:movies_app/ui/auth/login_screen/cubit/login_cubit.dart';
 import 'package:movies_app/ui/auth/register_screen/register_screen.dart';
-import 'package:movies_app/ui/profile/update_profile/update_profile.dart';
 import 'package:movies_app/ui/widgets/ask_user_widget_in_login_register.dart';
 import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
 import 'package:movies_app/ui/widgets/switch_language_button.dart';
@@ -11,6 +10,7 @@ import 'package:movies_app/utils/asset_manager.dart';
 
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_styles.dart';
+import '../../tabs/profile/update_profile/update_profile.dart';
 import '../../widgets/custom_text_form_field.dart';
 import 'cubit/login_state.dart';
 
