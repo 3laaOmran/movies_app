@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/repository/user/repository/user_repository.dart';
-import 'package:movies_app/ui/profile/cubit/user_cubit.dart';
-import 'package:movies_app/ui/profile/cubit/user_state.dart';
 import 'package:movies_app/ui/tabs/profile/update_profile/show_bottom_sheet.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
@@ -10,6 +8,8 @@ import 'package:movies_app/utils/asset_manager.dart';
 
 import '../../../../di/di.dart';
 import '../../home_tab/home_tab.dart';
+import '../cubit/user_cubit.dart';
+import '../cubit/user_state.dart';
 
 class UpdateProfile extends StatefulWidget {
   static const String routeName = 'update_screen';
