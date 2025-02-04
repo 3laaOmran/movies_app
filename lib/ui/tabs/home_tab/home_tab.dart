@@ -188,7 +188,7 @@ class _HomeTabState extends State<HomeTab> {
         itemBuilder: (context, index) {
           var movie = limitedMovies[index];
           return MoviePoster(
-            networkImage: movie.largeCoverImage!,
+            networkImage: movie.largeCoverImage ?? '',
             rating: movie.rating?.toString() ?? 'N/A',
           );
         },

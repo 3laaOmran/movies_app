@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movies_app/models/movie_model.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class GenreMoviesScreen extends StatelessWidget {
   final String genre;
@@ -35,11 +36,17 @@ class GenreMoviesScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.network(
-                    movie.largeCoverImage!,
+                  CachedNetworkImage(
+                    imageUrl: movie.largeCoverImage ?? '',
                     height: height * 0.25,
                     width: double.infinity,
                     fit: BoxFit.cover,
+                    placeholder: (context, url) => Center(
+                      child: CircularProgressIndicator(color: AppColors.yellowColor),
+                    ),
+                    errorWidget: (context, url, error) => Center(
+                      child: Icon(Icons.error, color: Colors.red, size: 35),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
