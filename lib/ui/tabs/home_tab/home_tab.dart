@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'package:movies_app/ui/widgets/category_header.dart';
 import 'package:movies_app/ui/widgets/movie_poster.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/asset_manager.dart';
-
 import '../../../di/di.dart';
 import '../../../repository/movies/repository/movies_repository.dart';
 import '../../../utils/app_styles.dart';
@@ -28,11 +26,14 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   var cubit = HomeTabCubit(moviesRepository: getIt<MoviesRepository>());
+  late List<String> genres;
 
   @override
   void initState() {
-    cubit.getMovies();
     super.initState();
+    cubit.getMovies();
+    genres = ['Drama', 'Thriller', 'Action', 'Crime', 'Comedy', 'Sci-Fi', 'Family', 'Romance', 'Documentary'];
+    genres.shuffle(Random());
   }
 
   @override
@@ -46,9 +47,7 @@ class _HomeTabState extends State<HomeTab> {
           if (state is MoviesLoadingState) {
             return Scaffold(
               body: Center(
-                child: CircularProgressIndicator(
-                  color: AppColors.yellowColor,
-                ),
+                child: CircularProgressIndicator(color: AppColors.yellowColor),
               ),
             );
           } else if (state is MoviesSuccessState) {
@@ -64,15 +63,9 @@ class _HomeTabState extends State<HomeTab> {
                           height: height * 0.7,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Center(
-                            child: CircularProgressIndicator(
-                              color: AppColors.yellowColor,
-                            ),
+                            child: CircularProgressIndicator(color: AppColors.yellowColor),
                           ),
-                          errorWidget: (context, url, error) => Icon(
-                            Icons.error,
-                            color: Colors.red,
-                            size: 38,
-                          ),
+                          errorWidget: (context, url, error) => Icon(Icons.error, color: Colors.red, size: 38),
                         ),
                         Container(
                           width: double.infinity,
@@ -93,13 +86,8 @@ class _HomeTabState extends State<HomeTab> {
                         ),
                         Column(
                           children: [
-                            SizedBox(
-                              height: height * 0.04,
-                            ),
-                            Image.asset(
-                              AssetsManager.availableNow,
-                              height: height * 0.11,
-                            ),
+                            SizedBox(height: height * 0.04),
+                            Image.asset(AssetsManager.availableNow, height: height * 0.11),
                             CarouselSlider.builder(
                               options: CarouselOptions(
                                 autoPlay: false,
@@ -115,50 +103,40 @@ class _HomeTabState extends State<HomeTab> {
                                 },
                               ),
                               itemCount: state.moviesList.length,
-                              itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-                                  MoviePoster(
+                              itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) => MoviePoster(
                                 imageFit: BoxFit.fill,
                                 imageWidth: double.infinity,
                                 imageHeight: height * 0.8,
-                                networkImage: state
-                                    .moviesList[itemIndex].largeCoverImage!,
+                                networkImage: state.moviesList[itemIndex].largeCoverImage!,
                                 rating: state.moviesList[itemIndex].rating?.toString() ?? 'N/A',
-                                  ),
-                            ),
-                            Image.asset(
-                              AssetsManager.watchNow,
-                              height: height * 0.16,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: width * 0.04,
                               ),
+                            ),
+                            Image.asset(AssetsManager.watchNow, height: height * 0.16),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: width * 0.04),
                               child: Column(
-                                children: [
-                                  ...(() {
-                                    var genres = ['Drama', 'Thriller', 'Action', 'Crime', 'Comedy', 'Sci-Fi', 'Family', 'Romance', 'Documentary'];
-                                    genres.shuffle(Random());
-                                    return genres;
-                                  }()).map((genre) {
-                                    return Column(
-                                      children: [
-                                        CategoryHeader(
-                                          categoryTitle: genre,
-                                          onSeeMoreTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => GenreMoviesScreen(genre: genre, allMovies: state.moviesList),
+                                children: genres.map((genre) {
+                                  return Column(
+                                    children: [
+                                      CategoryHeader(
+                                        categoryTitle: genre,
+                                        onSeeMoreTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => GenreMoviesScreen(
+                                                genre: genre,
+                                                allMovies: state.moviesList,
                                               ),
-                                            );
-                                          },
-                                        ),
-                                        SizedBox(height: height * 0.02),
-                                        buildMovieList(height, width, genre, state.moviesList),
-                                      ],
-                                    );
-                                  }).toList(),
-                                ],
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      SizedBox(height: height * 0.02),
+                                      buildMovieList(height, width, genre, state.moviesList),
+                                    ],
+                                  );
+                                }).toList(),
                               ),
                             ),
                           ],
@@ -172,10 +150,7 @@ class _HomeTabState extends State<HomeTab> {
           } else if (state is MoviesErrorState) {
             return Scaffold(
               body: Center(
-                child: Text(
-                  state.errorMsg,
-                  style: AppStyles.bold24White,
-                ),
+                child: Text(state.errorMsg, style: AppStyles.bold24White),
               ),
             );
           }
@@ -189,24 +164,22 @@ class _HomeTabState extends State<HomeTab> {
     var filteredMovies = moviesList.where((movie) => movie.genres?.contains(genre) ?? false).toList();
     var limitedMovies = filteredMovies.take(10).toList();
     return Container(
-      height: height * 0.32,
-      child: ListView.separated(
-        separatorBuilder: (context, index) {
-          return SizedBox(width: width * 0.05);
-        },
-        scrollDirection: Axis.horizontal,
-        itemCount: limitedMovies.length,
-        itemBuilder: (context, index) {
-          var movie = limitedMovies[index];
-          return MoviePoster(
-            imageWidth: width * 0.35,
-            imageHeight: height * 0.3,
-            imageFit: BoxFit.cover,
-            networkImage: movie.largeCoverImage ?? '',
-            rating: movie.rating?.toString() ?? 'N/A',
-          );
-        },
-      ),
-    );
-  }
+        height: height * 0.32,
+        child: ListView.separated(
+            separatorBuilder: (context, index) => SizedBox(width: width * 0.05),
+            scrollDirection: Axis.horizontal,
+            itemCount: limitedMovies.length,
+            itemBuilder: (context, index) {
+              var movie = limitedMovies[index];
+              return MoviePoster(
+                imageWidth: width * 0.35,
+                imageHeight: height * 0.3,
+                imageFit: BoxFit.cover,
+                networkImage: movie.largeCoverImage ?? '',
+                rating: movie.rating?.toString() ?? 'N/A',
+              );
+            },
+            ),
+        );
+    }
 }
