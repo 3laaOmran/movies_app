@@ -128,7 +128,7 @@ class _HomeTabState extends State<HomeTab> {
                               ),
                               child: Column(
                                 children: [
-                                  ...['Drama', 'Thriller', 'Action', 'Comedy', 'Sci-Fi', 'Family', 'Romance', 'Documentary'].map((genre) {
+                                  ...['Drama', 'Thriller', 'Action', 'Crime', 'Comedy', 'Sci-Fi', 'Family', 'Romance', 'Documentary'].map((genre) {
                                     return Column(
                                       children: [
                                         CategoryHeader(
