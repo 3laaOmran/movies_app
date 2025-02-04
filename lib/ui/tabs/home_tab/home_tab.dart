@@ -102,7 +102,7 @@ class _HomeTabState extends State<HomeTab> {
                             ),
                             CarouselSlider.builder(
                               options: CarouselOptions(
-                                autoPlay: true,
+                                autoPlay: false,
                                 initialPage: cubit.currentIndex,
                                 height: height * 0.4,
                                 viewportFraction: 0.55,
