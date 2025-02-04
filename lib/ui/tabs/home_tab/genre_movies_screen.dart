@@ -12,9 +12,6 @@ class GenreMoviesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-
-    // تصفية الأفلام بناءً على النوع
     var filteredMovies = allMovies.where((movie) => movie.genres?.contains(genre) ?? false).toList();
 
     return Scaffold(
@@ -23,10 +20,10 @@ class GenreMoviesScreen extends StatelessWidget {
       ),
       body: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // عدد الأعمدة
-          childAspectRatio: 0.7, // نسبة العرض إلى الارتفاع
+          crossAxisCount: 2,
+          childAspectRatio: 0.7,
         ),
-        itemCount: filteredMovies.length, // عدد الأفلام المصفاة
+        itemCount: filteredMovies.length,
         itemBuilder: (context, index) {
           var movie = filteredMovies[index];
           return GestureDetector(
