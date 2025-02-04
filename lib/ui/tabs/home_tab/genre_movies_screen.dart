@@ -22,7 +22,7 @@ class GenreMoviesScreen extends StatelessWidget {
       body: GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: 0.7,
+          childAspectRatio: 0.65,
         ),
         itemCount: filteredMovies.length,
         itemBuilder: (context, index) {
@@ -45,7 +45,7 @@ class GenreMoviesScreen extends StatelessWidget {
                       child: CircularProgressIndicator(color: AppColors.yellowColor),
                     ),
                     errorWidget: (context, url, error) => Center(
-                      child: Icon(Icons.error, color: Colors.red, size: 35),
+                      child: Icon(Icons.error, color: Colors.red, size: 35), // أيقونة الخطأ
                     ),
                   ),
                   Padding(
