@@ -31,13 +31,14 @@ class HomeTabCubit extends Cubit<HomeTabStates> {
         return;
       }
 
-      moviesList = response.data!.movies!;
+      moviesList.addAll(response.data!.movies!);
       emit(MoviesSuccessState(moviesList: moviesList));
     } catch (e) {
       emit(MoviesErrorState(errorMsg: e.toString()));
       debugPrint('Error: ${e.toString()}');
     }
   }
+
 
   void changeCurrentIndex(int index) {
     currentIndex = index;
