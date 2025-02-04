@@ -26,7 +26,7 @@ class GenreMoviesScreen extends StatelessWidget {
         itemCount: filteredMovies.length,
         itemBuilder: (context, index) {
           var movie = filteredMovies[index];
-          return GestureDetector(
+          return InkWell(
             onTap: () {
               // TODO: Navigate to movie details screen
             },
