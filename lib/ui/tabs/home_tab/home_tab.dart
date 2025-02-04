@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/models/movie_model.dart';
 import 'package:movies_app/ui/tabs/home_tab/cubit/home_tab_cubit.dart';
 import 'package:movies_app/ui/tabs/home_tab/cubit/home_tab_state.dart';
 import 'package:movies_app/ui/widgets/category_header.dart';
@@ -12,6 +13,7 @@ import 'package:movies_app/utils/asset_manager.dart';
 import '../../../di/di.dart';
 import '../../../repository/movies/repository/movies_repository.dart';
 import '../../../utils/app_styles.dart';
+import 'genre_movies_screen.dart';
 
 class HomeTab extends StatefulWidget {
   static const String routeName = 'home_tab';
@@ -55,8 +57,7 @@ class _HomeTabState extends State<HomeTab> {
                     Stack(
                       children: [
                         CachedNetworkImage(
-                          imageUrl: state
-                              .moviesList[cubit.currentIndex].largeCoverImage!,
+                          imageUrl: state.moviesList[cubit.currentIndex].largeCoverImage!,
                           width: double.infinity,
                           height: height * 0.7,
                           fit: BoxFit.cover,
@@ -98,27 +99,25 @@ class _HomeTabState extends State<HomeTab> {
                               height: height * 0.11,
                             ),
                             CarouselSlider.builder(
-                                options: CarouselOptions(
-                                  initialPage: cubit.currentIndex,
-                                  height: height * 0.4,
-                                  viewportFraction: 0.55,
-                                  reverse: true,
-                                  enlargeCenterPage: true,
-                                  enlargeFactor: 0.3,
-                                  scrollDirection: Axis.horizontal,
-                                  onPageChanged: (index, reason) {
-                                    cubit.changeCurrentIndex(index);
-                                  },
-                                ),
-                                itemCount: state.moviesList.length,
-                                itemBuilder: (BuildContext context, int itemIndex,
-                                        int pageViewIndex) =>
-                                    MovieItem(
-                                      movieImage: state
-                                          .moviesList[itemIndex].largeCoverImage!,
-                                      rating: state.moviesList[itemIndex].rating
-                                          .toString(),
-                                    )),
+                              options: CarouselOptions(
+                                initialPage: cubit.currentIndex,
+                                height: height * 0.4,
+                                viewportFraction: 0.55,
+                                reverse: true,
+                                enlargeCenterPage: true,
+                                enlargeFactor: 0.3,
+                                scrollDirection: Axis.horizontal,
+                                onPageChanged: (index, reason) {
+                                  cubit.changeCurrentIndex(index);
+                                },
+                              ),
+                              itemCount: state.moviesList.length,
+                              itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
+                                  MovieItem(
+                                    movieImage: state.moviesList[itemIndex].largeCoverImage!,
+                                    rating: state.moviesList[itemIndex].rating?.toString() ?? 'N/A',
+                                  ),
+                            ),
                             Image.asset(
                               AssetsManager.watchNow,
                               height: height * 0.16,
@@ -129,94 +128,25 @@ class _HomeTabState extends State<HomeTab> {
                               ),
                               child: Column(
                                 children: [
-                                  CategoryHeader(
-                                    categoryTitle: 'Drama',
-                                    onSeeMoreTap: () {
-                                      // TODO: See More Movies
-                                    },
-                                  ),
-                                  SizedBox(height: height * 0.02),
-                                  buildMovieList(height,width),
-                                  CategoryHeader(
-                                    categoryTitle: 'Thriller',
-                                    onSeeMoreTap: () {
-                                      // TODO: See More Movies
-                                    },
-                                  ),
-                                  SizedBox(height: height * 0.02),
-                                  buildMovieList(height,width),
-                                  CategoryHeader(
-                                    categoryTitle: 'Action',
-                                    onSeeMoreTap: () {
-                                      // TODO: See More Movies
-                                    },
-                                  ),
-                                  SizedBox(height: height * 0.02),
-                                  buildMovieList(height,width),
-                                  CategoryHeader(
-                                    categoryTitle: 'Comedy',
-                                    onSeeMoreTap: () {
-                                      // TODO: See More Movies
-                                    },
-                                  ),
-                                  SizedBox(height: height * 0.02),
-                                  buildMovieList(height,width),
-                                  CategoryHeader(
-                                    categoryTitle: 'Sci-Fi',
-                                    onSeeMoreTap: () {
-                                      // TODO: See More Movies
-                                    },
-                                  ),
-                                  SizedBox(height: height * 0.02),
-                                  buildMovieList(height,width),
-                                  CategoryHeader(
-                                    categoryTitle: 'Family',
-                                    onSeeMoreTap: () {
-                                      // TODO: See More Movies
-                                    },
-                                  ),
-                                  SizedBox(height: height * 0.02),
-                                  buildMovieList(height,width),
-                                  CategoryHeader(
-                                    categoryTitle: 'Fantasy',
-                                    onSeeMoreTap: () {
-                                      // TODO: See More Movies
-                                    },
-                                  ),
-                                  SizedBox(height: height * 0.02),
-                                  buildMovieList(height,width),
-                                  CategoryHeader(
-                                    categoryTitle: 'Mystery',
-                                    onSeeMoreTap: () {
-                                      // TODO: See More Movies
-                                    },
-                                  ),
-                                  SizedBox(height: height * 0.02),
-                                  buildMovieList(height,width),
-                                  CategoryHeader(
-                                    categoryTitle: 'Romance',
-                                    onSeeMoreTap: () {
-                                      // TODO: See More Movies
-                                    },
-                                  ),
-                                  SizedBox(height: height * 0.02),
-                                  buildMovieList(height,width),
-                                  CategoryHeader(
-                                    categoryTitle: 'Documentary',
-                                    onSeeMoreTap: () {
-                                      // TODO: See More Movies
-                                    },
-                                  ),
-                                  SizedBox(height: height * 0.02),
-                                  buildMovieList(height,width),
-                                  CategoryHeader(
-                                    categoryTitle: 'War',
-                                    onSeeMoreTap: () {
-                                      // TODO: See More Movies
-                                    },
-                                  ),
-                                  SizedBox(height: height * 0.02),
-                                  buildMovieList(height,width),
+                                  ...['Drama', 'Thriller', 'Action', 'Comedy', 'Sci-Fi', 'Family', 'Romance', 'Documentary'].map((genre) {
+                                    return Column(
+                                      children: [
+                                        CategoryHeader(
+                                          categoryTitle: genre,
+                                          onSeeMoreTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => GenreMoviesScreen(genre: genre, allMovies: state.moviesList),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                        SizedBox(height: height * 0.02),
+                                        buildMovieList(height, width, genre, state.moviesList),
+                                      ],
+                                    );
+                                  }).toList(),
                                 ],
                               ),
                             ),
@@ -243,19 +173,23 @@ class _HomeTabState extends State<HomeTab> {
       ),
     );
   }
-  Widget buildMovieList(double height,double width) {
+
+  Widget buildMovieList(double height, double width, String genre, List<Movie> moviesList) {
+    var filteredMovies = moviesList.where((movie) => movie.genres?.contains(genre) ?? false).toList();
+    var limitedMovies = filteredMovies.take(10).toList();
     return Container(
-      height: height*0.32,
+      height: height * 0.32,
       child: ListView.separated(
         separatorBuilder: (context, index) {
           return SizedBox(width: width * 0.05);
         },
         scrollDirection: Axis.horizontal,
-        itemCount: 5,
+        itemCount: limitedMovies.length,
         itemBuilder: (context, index) {
+          var movie = limitedMovies[index];
           return MoviePoster(
-            imageAsset: AssetsManager.captainAmericaImage,
-            rating: '7.7',
+            networkImage: movie.largeCoverImage!,
+            rating: movie.rating?.toString() ?? 'N/A',
           );
         },
       ),
