@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/asset_manager.dart';
@@ -7,10 +7,16 @@ import 'package:movies_app/utils/asset_manager.dart';
 class MoviePoster extends StatelessWidget {
   final String networkImage;
   final String rating;
+  final double imageWidth;
+  final double imageHeight;
+  final BoxFit imageFit;
 
   MoviePoster({
     required this.networkImage,
     required this.rating,
+    required this.imageWidth,
+    required this.imageHeight,
+    required this.imageFit,
   });
 
   @override
@@ -23,47 +29,49 @@ class MoviePoster extends StatelessWidget {
         // TODO: Navigate to movie details screen
       },
       child: Container(
-        width: width * 0.35,
-        height: height * 0.4,
         child: Stack(
           alignment: Alignment.topLeft,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(15),
               child: CachedNetworkImage(
                 imageUrl: networkImage,
-                fit: BoxFit.cover,
-                width: width * 0.35,
-                height: height * 0.3,
+                fit: imageFit,
+                width: imageWidth,
+                //width * 0.35,
+                height: imageHeight,
+                //height * 0.3,
                 placeholder: (context, url) => Center(
                   child: CircularProgressIndicator(color: AppColors.yellowColor),
                 ),
                 errorWidget: (context, url, error) => Icon(Icons.error, color: Colors.red),
               ),
             ),
-            Padding(
+            Container(
+              margin: EdgeInsets.symmetric(
+                  horizontal: width * 0.01, vertical: height * 0.01),
               padding: EdgeInsets.symmetric(
-                vertical: height * 0.02,
-                horizontal: width * 0.02,
+                  horizontal: width * 0.012, vertical: height * 0.002),
+              decoration: BoxDecoration(
+                color: AppColors.darkGreyColor.withValues(alpha: 0.7),
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.02,
-                  vertical: height * 0.01,
-                ),
-                width: width * 0.15,
-                height: height * 0.044,
-                decoration: BoxDecoration(
-                  color: AppColors.darkGreyColor.withValues(alpha: 0.7),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(rating, style: AppStyles.regular16White),
-                    Image.asset(AssetsManager.ratingIcon, color: AppColors.yellowColor),
-                  ],
-                ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    rating,
+                    style: AppStyles.regular16White,
+                  ),
+                  SizedBox(
+                    width: width * 0.01,
+                  ),
+                  ImageIcon(
+                    AssetImage(AssetsManager.ratingIcon),
+                    size: width * 0.04,
+                    color: AppColors.yellowColor,
+                  ),
+                ],
               ),
             ),
           ],

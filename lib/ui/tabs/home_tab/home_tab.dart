@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:movies_app/ui/widgets/category_header.dart';
 import 'package:movies_app/ui/widgets/movie_poster.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/asset_manager.dart';
+
 import '../../../di/di.dart';
 import '../../../repository/movies/repository/movies_repository.dart';
 import '../../../utils/app_styles.dart';
@@ -100,6 +102,7 @@ class _HomeTabState extends State<HomeTab> {
                             ),
                             CarouselSlider.builder(
                               options: CarouselOptions(
+                                autoPlay: true,
                                 initialPage: cubit.currentIndex,
                                 height: height * 0.4,
                                 viewportFraction: 0.55,
@@ -113,9 +116,13 @@ class _HomeTabState extends State<HomeTab> {
                               ),
                               itemCount: state.moviesList.length,
                               itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-                                  MovieItem(
-                                    movieImage: state.moviesList[itemIndex].largeCoverImage!,
-                                    rating: state.moviesList[itemIndex].rating?.toString() ?? 'N/A',
+                                  MoviePoster(
+                                imageFit: BoxFit.fill,
+                                imageWidth: double.infinity,
+                                imageHeight: height * 0.8,
+                                networkImage: state
+                                    .moviesList[itemIndex].largeCoverImage!,
+                                rating: state.moviesList[itemIndex].rating?.toString() ?? 'N/A',
                                   ),
                             ),
                             Image.asset(
@@ -192,67 +199,14 @@ class _HomeTabState extends State<HomeTab> {
         itemBuilder: (context, index) {
           var movie = limitedMovies[index];
           return MoviePoster(
+            imageWidth: width * 0.35,
+            imageHeight: height * 0.3,
+            imageFit: BoxFit.cover,
             networkImage: movie.largeCoverImage ?? '',
             rating: movie.rating?.toString() ?? 'N/A',
           );
         },
       ),
-    );
-  }
-}
-
-class MovieItem extends StatelessWidget {
-  final String movieImage;
-  final String rating;
-
-  const MovieItem({super.key, required this.movieImage, required this.rating});
-
-  @override
-  Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-    return Stack(
-      alignment: Alignment.topLeft,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(15),
-          child: CachedNetworkImage(
-            imageUrl: movieImage,
-            width: double.infinity,
-            fit: BoxFit.fill,
-            placeholder: (context, url) => Center(
-                child: CircularProgressIndicator(color: AppColors.yellowColor)),
-            errorWidget: (context, url, error) =>
-                Icon(Icons.error, color: Colors.red),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.symmetric(
-              horizontal: width * 0.03, vertical: height * 0.015),
-          padding: EdgeInsets.symmetric(
-              horizontal: width * 0.012, vertical: height * 0.002),
-          decoration: BoxDecoration(
-              color: AppColors.darkGreyColor,
-              borderRadius: BorderRadius.circular(8)),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                rating,
-                style: AppStyles.regular16White,
-              ),
-              SizedBox(
-                width: width * 0.01,
-              ),
-              ImageIcon(
-                AssetImage(AssetsManager.ratingIcon),
-                size: width * 0.04,
-                color: AppColors.yellowColor,
-              ),
-            ],
-          ),
-        )
-      ],
     );
   }
 }

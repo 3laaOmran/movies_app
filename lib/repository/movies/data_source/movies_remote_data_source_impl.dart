@@ -12,7 +12,9 @@ class MoviesRemoteDataSourceImpl implements MoviesRemoteDataSource {
   @override
   Future<MovieModel?> getMovies() async {
     // https://yts.mx/api/v2/list_movies.json
-    Uri url = Uri.https(ApiConstants.baseUrl, EndPoints.moviesEndPoint);
+    Uri url = Uri.https(ApiConstants.baseUrl, EndPoints.moviesEndPoint, {
+      'limit': 50.toString(),
+    });
 
     try {
       var response = await http.get(url);
