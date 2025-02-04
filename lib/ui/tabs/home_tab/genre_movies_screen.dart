@@ -45,7 +45,7 @@ class GenreMoviesScreen extends StatelessWidget {
                       child: CircularProgressIndicator(color: AppColors.yellowColor),
                     ),
                     errorWidget: (context, url, error) => Center(
-                      child: Icon(Icons.error, color: Colors.red, size: 35), // أيقونة الخطأ
+                      child: Icon(Icons.error, color: Colors.red, size: 35),
                     ),
                   ),
                   Padding(
