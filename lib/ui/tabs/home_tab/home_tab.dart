@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:movies_app/ui/widgets/category_header.dart';
 import 'package:movies_app/ui/widgets/movie_poster.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/asset_manager.dart';
-
 import '../../../di/di.dart';
 import '../../../repository/movies/repository/movies_repository.dart';
 import '../../../utils/app_styles.dart';
@@ -128,7 +128,11 @@ class _HomeTabState extends State<HomeTab> {
                               ),
                               child: Column(
                                 children: [
-                                  ...['Drama', 'Thriller', 'Action', 'Crime', 'Comedy', 'Sci-Fi', 'Family', 'Romance', 'Documentary'].map((genre) {
+                                  ...(() {
+                                    var genres = ['Drama', 'Thriller', 'Action', 'Crime', 'Comedy', 'Sci-Fi', 'Family', 'Romance', 'Documentary'];
+                                    genres.shuffle(Random());
+                                    return genres;
+                                  }()).map((genre) {
                                     return Column(
                                       children: [
                                         CategoryHeader(
