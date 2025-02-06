@@ -3,6 +3,7 @@ import 'package:movies_app/ui/auth/login_screen/login_screen.dart';
 import 'package:movies_app/ui/onboarding/onboarding_custom_widget.dart';
 import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
 import 'package:movies_app/utils/app_styles.dart';
+import 'package:movies_app/utils/helpers/cash_helper.dart';
 
 import '../../utils/asset_manager.dart';
 
@@ -169,7 +170,8 @@ class _OnboardingState extends State<Onboarding> {
                 setState(() {});
               },
               onPressedNextButton: () {
-               Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+                CashHelper.saveData(key: "splashScreenFinished", value: true);
+                Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
               },
               button2Text: "Back",
               button2BgColor: Colors.transparent,
