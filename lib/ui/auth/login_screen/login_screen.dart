@@ -13,6 +13,7 @@ import '../../../di/di.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_styles.dart';
 import '../../tabs/profile/update_profile/update_profile.dart';
+import '../../widgets/custom_dialog.dart';
 import '../../widgets/custom_text_form_field.dart';
 import 'cubit/login_state.dart';
 
@@ -36,85 +37,24 @@ class _LoginScreenState extends State<LoginScreen> {
           bloc: cubit,
           listener: (context, state) {
             if (state is LoginLoadingState) {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return Dialog(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        children: [
-                          CircularProgressIndicator(
-                            color: AppColors.yellowColor,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "Loading...",
-                            style: TextStyle(fontSize: 20),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
+              CustomDialog.showLoading(context: context, message: 'Loading...');
             } else if (state is LoginErrorState) {
-              Navigator.pop(context);
-              showDialog(
+              CustomDialog.hideLoading(context);
+              CustomDialog.showAlert(
+                title: "Error",
                 context: context,
-                builder: (context) {
-                  return Dialog(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              state.errorMessage,
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
+                message: state.errorMessage,
+                posActionName: 'Ok',
               );
             } else if (state is LoginSuccessState) {
-              Navigator.pop(context);
-              showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (context) {
-                  return Dialog(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            state.message,
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.yellowColor),
-                              onPressed: () {
-                                Navigator.pushReplacementNamed(
-                                    context, HomeTab.routeName);
-                              },
-                              child: Text(
-                                "Ok",
-                                style: TextStyle(color: AppColors.blackColor),
-                              ))
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
+              CustomDialog.hideLoading(context);
+              CustomDialog.showAlert(
+                  context: context,
+                  message: state.message,
+                  posActionName: 'Ok',
+                  posAction: () {
+                    Navigator.pushReplacementNamed(context, HomeTab.routeName);
+                  });
             }
           },
           child: MaterialApp(
