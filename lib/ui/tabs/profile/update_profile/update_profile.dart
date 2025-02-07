@@ -7,6 +7,7 @@ import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/asset_manager.dart';
 
 import '../../../../di/di.dart';
+import '../../../auth/reset_password_screen/reset_password_screen.dart';
 import '../../home_tab/home_tab.dart';
 import '../cubit/user_cubit.dart';
 import '../cubit/user_state.dart';
@@ -140,7 +141,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, ResetPasswordScreen.routeName);
+                            },
                             child: const Text(
                               "Reset Password",
                               style: TextStyle(color: AppColors.lightGreyColor),
