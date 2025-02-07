@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movies_app/repository/user/repository/user_repository.dart';
-import 'package:movies_app/ui/tabs/profile/cubit/user_state.dart';
+import 'package:movies_app/ui/home_screen/tabs/profile/cubit/user_state.dart';
 
 @injectable
 class UserCubit extends Cubit<UserStates> {
@@ -22,6 +22,7 @@ class UserCubit extends Cubit<UserStates> {
       }
       emit(GetUserDataSuccessState(user: response.user!));
       print('User name is ${response.user!.name}');
+      print('Avatar id is ${response.user!.avaterId}');
     } catch (e) {
       rethrow;
     }

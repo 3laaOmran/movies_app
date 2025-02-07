@@ -5,20 +5,19 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/models/movie_model.dart';
-import 'package:movies_app/ui/tabs/home_tab/cubit/home_tab_cubit.dart';
-import 'package:movies_app/ui/tabs/home_tab/cubit/home_tab_state.dart';
 import 'package:movies_app/ui/widgets/category_header.dart';
 import 'package:movies_app/ui/widgets/movie_poster.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/asset_manager.dart';
 
-import '../../../di/di.dart';
-import '../../../repository/movies/repository/movies_repository.dart';
-import '../../../utils/app_styles.dart';
+import '../../../../di/di.dart';
+import '../../../../repository/movies/repository/movies_repository.dart';
+import '../../../../utils/app_styles.dart';
+import 'cubit/home_tab_cubit.dart';
+import 'cubit/home_tab_state.dart';
 import 'genre_movies_screen.dart';
 
 class HomeTab extends StatefulWidget {
-  static const String routeName = 'home_tab';
 
   const HomeTab({super.key});
 

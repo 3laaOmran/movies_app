@@ -26,7 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     var height = MediaQuery.of(context).size.height;
     return BlocProvider<RegisterCubit>(
       create: (context) => cubit,
-      child: BlocListener<RegisterCubit, RegisterStates>(
+      child: BlocConsumer<RegisterCubit, RegisterStates>(
         listener: (context,state) {
           if (state is RegisterLoadingState) {
             CustomDialog.showLoading(context: context, message: 'Loading...');
@@ -42,146 +42,143 @@ class _RegisterScreenState extends State<RegisterScreen> {
             CustomDialog.hideLoading(context);
             CustomDialog.showAlert(
                 context: context,
-                message: 'register successfully!',
+                title: 'Success',
+                message: 'Register successfully! \nLogin Now...',
                 posActionName: 'Ok',
                 posAction: () {
                   Navigator.pushReplacementNamed(
                       context, LoginScreen.routeName);
                 });
-           }
+          }
         },
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('Register'),
-          ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.025),
-              child: Column(
-                children: [
-                  AvatarSliderWidget(),
-                  Form(
-                    key: cubit.formKey,
-                    child: Column(
-                      children: [
-                        CustomTextFormField(
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Please Enter Your Name';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.name,
-                            prefixIcon: AssetsManager.nameIcon,
-                            hintText: 'Name',
-                            controller: cubit.nameController),
-                        SizedBox(height: height * 0.025),
-                        CustomTextFormField(
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Please Enter Email Address';
-                              }
-                              final bool emailValid = RegExp(
-                                  r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                  .hasMatch(value);
-                              if (!emailValid) {
-                                return 'Please Enter Valid Email';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.emailAddress,
-                            prefixIcon: AssetsManager.emailIcon,
-                            hintText: 'Email',
-                            controller: cubit.emailController),
-                        SizedBox(height: height * 0.025),
-                        CustomTextFormField(
-                            onSuffixPressed: (){
-                              cubit.changePasswordVisibility();
-                              setState(() {
-
-                              });
-                            },
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Please Enter Password';
-                              }
-                              if (value.length <= 6) {
-                                return 'Password must be at least 7 characters';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.visiblePassword,
-                            isObscure: cubit.isPasswordObscure,
-                            suffixIcon: cubit.isPasswordObscure
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            prefixIcon: AssetsManager.passwordIcon,
-                            hintText: 'Password',
-                            controller: cubit.passwordController),
-                        SizedBox(height: height * 0.025),
-                        CustomTextFormField(
-                            onSuffixPressed: () {
-                              cubit.changeRePasswordVisibility();
-                              setState(() {
-
-                              });
-                            },
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Please Enter Password Conformation';
-                              }
-                              if (value != cubit.passwordController.text) {
-                                return 'Password does not match';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.visiblePassword,
-                            isObscure: cubit.isRePasswordObscure,
-                            suffixIcon: cubit.isRePasswordObscure
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            prefixIcon: AssetsManager.passwordIcon,
-                            hintText: 'Confirm Password',
-                            controller: cubit.rePasswordController),
-                        SizedBox(height: height * 0.025),
-                        CustomTextFormField(
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return 'Please Enter Phone Number';
-                              }
-                              if (value.length < 11) {
-                                return 'Please Enter Valid Phone Number';
-                              }
-                              return null;
-                            },
-                            keyboardType: TextInputType.phone,
-                            prefixIcon: AssetsManager.phoneIcon,
-                            hintText: 'Phone Number',
-                            controller: cubit.phoneNumberController),
-                        SizedBox(height: height * 0.03),
-                        CustomElevatedButton(
-                            buttonText: 'Create Account',
-                            onPressed: () {
-                              cubit.register();
-                            }),
-                      ],
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Register'),
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: width * 0.025),
+                child: Column(
+                  children: [
+                    AvatarSliderWidget(),
+                    Form(
+                      key: cubit.formKey,
+                      child: Column(
+                        children: [
+                          CustomTextFormField(
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Please Enter Your Name';
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.name,
+                              prefixIcon: AssetsManager.nameIcon,
+                              hintText: 'Name',
+                              controller: cubit.nameController),
+                          SizedBox(height: height * 0.025),
+                          CustomTextFormField(
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Please Enter Email Address';
+                                }
+                                final bool emailValid = RegExp(
+                                        r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                    .hasMatch(value);
+                                if (!emailValid) {
+                                  return 'Please Enter Valid Email';
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.emailAddress,
+                              prefixIcon: AssetsManager.emailIcon,
+                              hintText: 'Email',
+                              controller: cubit.emailController),
+                          SizedBox(height: height * 0.025),
+                          CustomTextFormField(
+                              onSuffixPressed: () {
+                                cubit.changePasswordVisibility();
+                              },
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Please Enter Password';
+                                }
+                                if (value.length <= 6) {
+                                  return 'Password must be at least 7 characters';
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.visiblePassword,
+                              isObscure: cubit.isPasswordObscure,
+                              suffixIcon: cubit.isPasswordObscure
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              prefixIcon: AssetsManager.passwordIcon,
+                              hintText: 'Password',
+                              controller: cubit.passwordController),
+                          SizedBox(height: height * 0.025),
+                          CustomTextFormField(
+                              onSuffixPressed: () {
+                                cubit.changeRePasswordVisibility();
+                              },
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Please Enter Password Conformation';
+                                }
+                                if (value != cubit.passwordController.text) {
+                                  return 'Password does not match';
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.visiblePassword,
+                              isObscure: cubit.isRePasswordObscure,
+                              suffixIcon: cubit.isRePasswordObscure
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              prefixIcon: AssetsManager.passwordIcon,
+                              hintText: 'Confirm Password',
+                              controller: cubit.rePasswordController),
+                          SizedBox(height: height * 0.025),
+                          CustomTextFormField(
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Please Enter Phone Number';
+                                }
+                                if (value.length < 11) {
+                                  return 'Please Enter Valid Phone Number';
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.phone,
+                              prefixIcon: AssetsManager.phoneIcon,
+                              hintText: 'Phone Number',
+                              controller: cubit.phoneNumberController),
+                          SizedBox(height: height * 0.03),
+                          CustomElevatedButton(
+                              buttonText: 'Create Account',
+                              onPressed: () {
+                                cubit.register();
+                              }),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: height * 0.02),
-                  AskUserWidgetInLoginRegister(
-                      question: 'Already Have Account? ',
-                      textButtonText: 'Login',
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }),
-                  SizedBox(height: height * 0.02),
-                  SwitchLanguageButton(),
-                  SizedBox(height: height * 0.025),
-                ],
+                    SizedBox(height: height * 0.02),
+                    AskUserWidgetInLoginRegister(
+                        question: 'Already Have Account? ',
+                        textButtonText: 'Login',
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                    SizedBox(height: height * 0.02),
+                    SwitchLanguageButton(),
+                    SizedBox(height: height * 0.025),
+                  ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

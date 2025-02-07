@@ -34,11 +34,11 @@ class RegisterCubit extends Cubit<RegisterStates> {
            rePasswordController.text,
            phoneNumberController.text,
            avaterId);
-       if (response != null && response.statusCode == 200) {
-         emit(RegisterSuccessState());
+        if (response!.statusCode == 201) {
+          emit(RegisterSuccessState());
        } else {
-         emit(RegisterErrorState(errorMessage: response?.message ?? 'Error'));
-       }
+          emit(RegisterErrorState(errorMessage: response.message ?? 'Error'));
+        }
      } catch (e) {
        emit(RegisterErrorState(errorMessage: e.toString()));
      }

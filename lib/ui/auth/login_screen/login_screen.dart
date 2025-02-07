@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/ui/auth/login_screen/cubit/login_cubit.dart';
 import 'package:movies_app/ui/auth/register_screen/register_screen.dart';
-import 'package:movies_app/ui/tabs/home_tab/home_tab.dart';
+import 'package:movies_app/ui/home_screen/home_screen.dart';
 import 'package:movies_app/ui/widgets/ask_user_widget_in_login_register.dart';
 import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
 import 'package:movies_app/ui/widgets/switch_language_button.dart';
@@ -11,10 +11,8 @@ import 'package:movies_app/utils/asset_manager.dart';
 import '../../../di/di.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_styles.dart';
-import '../../tabs/profile/update_profile/update_profile.dart';
 import '../../widgets/custom_dialog.dart';
 import '../../widgets/custom_text_form_field.dart';
-import '../reset_password_screen/reset_password_screen.dart';
 import 'cubit/login_state.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -50,10 +48,12 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomDialog.hideLoading(context);
               CustomDialog.showAlert(
                   context: context,
+                  title: 'Success',
                   message: state.message,
                   posActionName: 'Ok',
                   posAction: () {
-                    Navigator.pushReplacementNamed(context, HomeTab.routeName);
+                    Navigator.pushReplacementNamed(
+                        context, HomeScreen.routeName);
                   });
             }
           },
@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context, ResetPasswordScreen.routeName);
+                                    // TODO: Navigate to forget password screen.
                                   },
                                   child: Text(
                                     'Forget Password ?',
@@ -175,8 +175,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           CustomElevatedButton(
                             onPressed: () {
-                              Navigator.pushNamed(
-                                  context, UpdateProfile.routeName);
                             },
                             buttonText: '',
                             buttonWidget: Row(

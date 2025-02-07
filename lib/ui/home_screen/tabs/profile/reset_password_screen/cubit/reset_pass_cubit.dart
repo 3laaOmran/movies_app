@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movies_app/repository/reset_pass/repository/reset_pass_repo.dart';
-import 'package:movies_app/ui/auth/reset_password_screen/cubit/reset_pass_states.dart';
+import 'package:movies_app/ui/home_screen/tabs/profile/reset_password_screen/cubit/reset_pass_states.dart';
 
-import '../../../../utils/helpers/cash_helper.dart';
+import '../../../../../../utils/helpers/cash_helper.dart';
 
 @injectable
 class ResetPassCubit extends Cubit<ResetPassStates> {

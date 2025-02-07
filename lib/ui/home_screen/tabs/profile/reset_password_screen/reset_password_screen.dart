@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/ui/auth/reset_password_screen/cubit/reset_pass_states.dart';
 import 'package:movies_app/ui/widgets/custom_dialog.dart';
 import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
 import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
 import 'package:movies_app/utils/asset_manager.dart';
 
-import '../../../di/di.dart';
-import '../../../utils/app_styles.dart';
+import '../../../../../di/di.dart';
+import '../../../../../utils/app_styles.dart';
 import 'cubit/reset_pass_cubit.dart';
+import 'cubit/reset_pass_states.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   static const String routeName = 'reset_password_screen';
