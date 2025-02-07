@@ -39,11 +39,11 @@ import '../repository/user/data_source/user_remote_data_source_impl.dart'
     as _i175;
 import '../repository/user/repository/user_repository.dart' as _i123;
 import '../repository/user/repository/user_repository_impl.dart' as _i871;
-import '../ui/auth/register_screen/cubit/register_cubit.dart' as _i599;
 import '../ui/auth/login_screen/cubit/login_cubit.dart' as _i311;
-import '../ui/auth/reset_password_screen/cubit/reset_pass_cubit.dart' as _i893;
-import '../ui/tabs/home_tab/cubit/home_tab_cubit.dart' as _i538;
-import '../ui/tabs/profile/cubit/user_cubit.dart' as _i153;
+import '../ui/auth/register_screen/cubit/register_cubit.dart' as _i599;
+import '../ui/home_screen/tabs/home_tab/cubit/home_tab_cubit.dart' as _i165;
+import '../ui/home_screen/tabs/profile/cubit/user_cubit.dart';
+import '../ui/home_screen/tabs/profile/reset_password_screen/cubit/reset_pass_cubit.dart';
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -56,9 +56,8 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i599.RegisterCubit>(() => _i599.RegisterCubit());
-
     gh.factory<_i311.LoginCubit>(() => _i311.LoginCubit());
+    gh.factory<_i599.RegisterCubit>(() => _i599.RegisterCubit());
     gh.factory<_i728.UserRemoteDataSource>(
         () => _i175.UserRemoteDataSourceImpl());
     gh.factory<_i330.MoviesRemoteDataSource>(
@@ -78,12 +77,12 @@ extension GetItInjectableX on _i174.GetIt {
         remoteDataSource: gh<_i330.MoviesRemoteDataSource>()));
     gh.factory<_i516.LoginRepo>(() => _i206.LoginRepoImpl(
         loginRemoteDataSource: gh<_i912.LoginRemoteDataSource>()));
-    gh.factory<_i153.UserCubit>(
-        () => _i153.UserCubit(userRepository: gh<_i123.UserRepository>()));
-    gh.factory<_i538.HomeTabCubit>(() =>
-        _i538.HomeTabCubit(moviesRepository: gh<_i49.MoviesRepository>()));
-    gh.factory<_i893.ResetPassCubit>(
-        () => _i893.ResetPassCubit(resetPassRepo: gh<_i211.ResetPassRepo>()));
+    gh.factory<UserCubit>(
+        () => UserCubit(userRepository: gh<_i123.UserRepository>()));
+    gh.factory<_i165.HomeTabCubit>(() =>
+        _i165.HomeTabCubit(moviesRepository: gh<_i49.MoviesRepository>()));
+    gh.factory<ResetPassCubit>(
+        () => ResetPassCubit(resetPassRepo: gh<_i211.ResetPassRepo>()));
     return this;
   }
 }

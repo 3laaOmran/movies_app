@@ -34,8 +34,8 @@ class AvatarSliderWidget extends StatelessWidget {
     enlargeFactor: 0.5,
     scrollDirection: Axis.horizontal,
     onPageChanged: (index,reason){
-      cubit.selectAvater(index+1);
-    }
+                  cubit.selectAvater(index);
+                }
     ),
     itemCount: avatarList.length,
     itemBuilder:
