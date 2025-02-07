@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/ui/auth/forget_password_screen/forget_pasword_screen.dart';
 import 'package:movies_app/ui/auth/login_screen/login_screen.dart';
 import 'package:movies_app/ui/auth/register_screen/register_screen.dart';
+import 'package:movies_app/ui/auth/reset_password_screen/reset_password_screen.dart';
 import 'package:movies_app/ui/onboarding/onboarding.dart';
 import 'package:movies_app/ui/tabs/home_tab/home_tab.dart';
 import 'package:movies_app/ui/tabs/profile/update_profile/update_profile.dart';
@@ -33,7 +33,7 @@ class MoviesApp extends StatelessWidget {
         Onboarding.routeName:(context)=> Onboarding(),
         LoginScreen.routeName: (context) => LoginScreen(),
         RegisterScreen.routeName: (context) => RegisterScreen(),
-        ForgetPasswordScreen.routeName: (context) => ForgetPasswordScreen(),
+        ResetPasswordScreen.routeName: (context) => ResetPasswordScreen(),
         HomeTab.routeName: (context) => HomeTab(),
         UpdateProfile.routeName: (context) => UpdateProfile(),
       },
