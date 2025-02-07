@@ -23,6 +23,12 @@ import '../repository/movies/data_source/movies_remote_data_source_impl.dart'
     as _i845;
 import '../repository/movies/repository/movies_repository.dart' as _i49;
 import '../repository/movies/repository/movies_repository_impl.dart' as _i59;
+import '../repository/register/data_source/register_data_source.dart' as _i263;
+import '../repository/register/data_source/register_data_source_impl.dart'
+    as _i182;
+import '../repository/register/repository/register_repository.dart' as _i401;
+import '../repository/register/repository/register_repository_impl.dart'
+    as _i351;
 import '../repository/reset_pass/repository/reset_pass_repo.dart' as _i211;
 import '../repository/reset_pass/repository/reset_pass_repo_impl.dart' as _i274;
 import '../repository/reset_pass/sources/reset_pass_data_source.dart' as _i294;
@@ -33,6 +39,7 @@ import '../repository/user/data_source/user_remote_data_source_impl.dart'
     as _i175;
 import '../repository/user/repository/user_repository.dart' as _i123;
 import '../repository/user/repository/user_repository_impl.dart' as _i871;
+import '../ui/auth/register_screen/cubit/register_cubit.dart' as _i599;
 import '../ui/auth/login_screen/cubit/login_cubit.dart' as _i311;
 import '../ui/auth/reset_password_screen/cubit/reset_pass_cubit.dart' as _i893;
 import '../ui/tabs/home_tab/cubit/home_tab_cubit.dart' as _i538;
@@ -49,11 +56,16 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
+    gh.factory<_i599.RegisterCubit>(() => _i599.RegisterCubit());
+
     gh.factory<_i311.LoginCubit>(() => _i311.LoginCubit());
     gh.factory<_i728.UserRemoteDataSource>(
         () => _i175.UserRemoteDataSourceImpl());
     gh.factory<_i330.MoviesRemoteDataSource>(
         () => _i845.MoviesRemoteDataSourceImpl());
+    gh.factory<_i263.RegisterDataSource>(() => _i182.RegisterDataSourceImpl());
+    gh.factory<_i401.RegisterRepository>(() => _i351.RegisterRepositoryImpl(
+        registerDataSource: gh<_i263.RegisterDataSource>()));
     gh.factory<_i294.ResetPassDataSource>(
         () => _i384.ResetPassDataSourceImpl());
     gh.factory<_i211.ResetPassRepo>(() =>
