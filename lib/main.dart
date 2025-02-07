@@ -22,14 +22,13 @@ void main() async {
 
 class MoviesApp extends StatelessWidget {
   const MoviesApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.dark,
-      initialRoute: Onboarding.routeName,
+      initialRoute: getInitialRoute(),
       routes: {
         Onboarding.routeName:(context)=> Onboarding(),
         LoginScreen.routeName: (context) => LoginScreen(),
@@ -39,5 +38,17 @@ class MoviesApp extends StatelessWidget {
         UpdateProfile.routeName: (context) => UpdateProfile(),
       },
     );
+  }
+
+  String getInitialRoute() {
+    var isLoggedIn = CashHelper.getData(key: "isLoggedIn");
+    var splashScreenFinished = CashHelper.getData(key: "splashScreenFinished");
+    if (splashScreenFinished != null && isLoggedIn != null) {
+      return HomeTab.routeName;
+    } else if (splashScreenFinished == null) {
+      return Onboarding.routeName;
+    } else {
+      return LoginScreen.routeName;
+    }
   }
 }

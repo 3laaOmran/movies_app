@@ -13,3 +13,4 @@ final class RegisterErrorState extends RegisterStates {
 
   RegisterErrorState({required this.errorMessage});
 }
+final class changeAvaterId extends RegisterStates{}
