@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/api/google_signin_api.dart';
 import 'package:movies_app/repository/user/repository/user_repository.dart';
 import 'package:movies_app/ui/auth/login_screen/login_screen.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/update_profile/show_bottom_sheet.dart';
@@ -25,7 +26,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   @override
   void initState() {
-    cubit.getUserData();
+    if (CashHelper.getData(key: 'googleUsername') == null) {
+      cubit.getUserData();
+    } else {
+      cubit.getGoogleUserDetails();
+      cubit.nameController.text = CashHelper.getData(key: 'googleUsername');
+      cubit.googleUserImage = CashHelper.getData(key: 'googleUserImage');
+    }
     super.initState();
   }
 
@@ -60,7 +67,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 color: AppColors.yellowColor,
               ),
             );
-          } else if (state is GetUserDataSuccessState) {
+          } else if (state is GetUserDataSuccessState ||
+              state is GetGoogleUserDataLoadingState) {
             return Scaffold(
               appBar: AppBar(
                 title: const Text("Pick Avatar"),
@@ -89,8 +97,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              image: AssetImage(
-                                  avatarList[state.user.avaterId ?? 0]),
+                              image: state is! GetGoogleUserDataLoadingState
+                                  ? AssetImage(avatarList[
+                                      state is GetUserDataSuccessState
+                                          ? state.user.avaterId!
+                                          : 0])
+                                  : NetworkImage(cubit.googleUserImage ??
+                                      'https://thumbs.dreamstime.com/z/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg?ct=jpeg'),
                               fit: BoxFit.fitHeight,
                             ),
                           ),
@@ -167,9 +180,16 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
-                        onPressed: () {
-                          CashHelper.removeData(key: "token");
-                          CashHelper.removeData(key: "isLoggedIn");
+                        onPressed: () async {
+                          if (CashHelper.getData(key: 'googleUsername') ==
+                              null) {
+                            CashHelper.removeData(key: "token");
+                            CashHelper.removeData(key: "isLoggedIn");
+                          } else {
+                            await GoogleSignInApi.logout();
+                            CashHelper.removeData(key: "googleUsername");
+                            CashHelper.removeData(key: "googleUserImage");
+                          }
                           Navigator.pushReplacementNamed(
                               context, LoginScreen.routeName);
                         },

@@ -43,7 +43,8 @@ class MoviesApp extends StatelessWidget {
   String getInitialRoute() {
     var isLoggedIn = CashHelper.getData(key: "isLoggedIn");
     var splashScreenFinished = CashHelper.getData(key: "splashScreenFinished");
-    if (splashScreenFinished != null && isLoggedIn != null) {
+    if (splashScreenFinished != null && isLoggedIn != null ||
+        CashHelper.getData(key: 'googleUsername') != null) {
       return HomeScreen.routeName;
     } else if (splashScreenFinished == null) {
       return Onboarding.routeName;

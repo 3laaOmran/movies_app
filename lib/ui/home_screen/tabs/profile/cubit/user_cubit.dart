@@ -11,7 +11,7 @@ class UserCubit extends Cubit<UserStates> {
   UserCubit({required this.userRepository}) : super(UserInitialState());
   var nameController = TextEditingController();
   var phoneController = TextEditingController();
-
+  var googleUserImage;
   void getUserData() async {
     emit(GetUserDataLoadingState());
     try {
@@ -26,5 +26,9 @@ class UserCubit extends Cubit<UserStates> {
     } catch (e) {
       rethrow;
     }
+  }
+
+  void getGoogleUserDetails() {
+    emit(GetGoogleUserDataLoadingState());
   }
 }
