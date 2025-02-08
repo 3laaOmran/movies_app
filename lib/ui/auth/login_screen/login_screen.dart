@@ -178,14 +178,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           CustomElevatedButton(
                             onPressed: () async {
                               final user = await GoogleSignInApi.Login();
-                              print(user?.photoUrl);
                               if (user != null) {
                                 CashHelper.saveData(
                                     key: 'googleUsername',
                                     value: user.displayName);
                                 CashHelper.saveData(
                                     key: 'googleUserImage',
-                                    value: user.photoUrl);
+                                    value: user.photoUrl ??
+                                        'https://img.freepik.com/premium-vector/vector-flat-illustration-grayscale-avatar-user-profile-person-icon-profile-picture-business-profile-woman-suitable-social-media-profiles-icons-screensavers-as-templatex9_719432-1351.jpg?ga=GA1.1.1564111303.1739032657&semt=ais_hybrid');
                                 Navigator.pushReplacementNamed(
                                     context, HomeScreen.routeName);
                               }
