@@ -103,7 +103,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                           ? state.user.avaterId!
                                           : 0])
                                   : NetworkImage(cubit.googleUserImage ??
-                                      'https://thumbs.dreamstime.com/z/no-image-available-icon-flat-vector-no-image-available-icon-flat-vector-illustration-132482953.jpg?ct=jpeg'),
+                                      'https://img.freepik.com/premium-vector/vector-flat-illustration-grayscale-avatar-user-profile-person-icon-profile-picture-business-profile-woman-suitable-social-media-profiles-icons-screensavers-as-templatex9_719432-1351.jpg?ga=GA1.1.1564111303.1739032657&semt=ais_hybrid'),
                               fit: BoxFit.fitHeight,
                             ),
                           ),
@@ -170,7 +170,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           ),
                         ],
                       ),
-                      SizedBox(height: height * 0.17),
+                      SizedBox(height: height * 0.14),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.redColor,
