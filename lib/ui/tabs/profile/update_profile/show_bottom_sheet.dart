@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/utils/asset_manager.dart';
 
-void showAvatarBottomSheet(BuildContext context) {
+void showAvatarBottomSheet(
+    BuildContext context, Function(int) onAvatarSelected) {
   List<String> avatarList = [
     AssetsManager.avatar1,
     AssetsManager.avatar2,
@@ -19,7 +20,6 @@ void showAvatarBottomSheet(BuildContext context) {
       borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
     ),
     builder: (BuildContext context) {
-      var height = MediaQuery.of(context).size.height;
       var width = MediaQuery.of(context).size.width;
 
       return Container(
@@ -35,6 +35,7 @@ void showAvatarBottomSheet(BuildContext context) {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
+                onAvatarSelected(index);
                 Navigator.pop(context);
               },
               child: Container(
@@ -57,3 +58,4 @@ void showAvatarBottomSheet(BuildContext context) {
     },
   );
 }
+

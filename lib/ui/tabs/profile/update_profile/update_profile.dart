@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/repository/user/repository/user_repository.dart';
+import 'package:movies_app/ui/auth/login_screen/login_screen.dart';
 import 'package:movies_app/ui/tabs/profile/update_profile/show_bottom_sheet.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/asset_manager.dart';
-
-import '../../../../di/di.dart';
-import '../../home_tab/home_tab.dart';
+import 'package:movies_app/utils/helpers/cash_helper.dart';
+import '../../../../../di/di.dart';
 import '../cubit/user_cubit.dart';
 import '../cubit/user_state.dart';
 
@@ -44,7 +44,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
     ];
     return BlocProvider(
       create: (context) => cubit,
-      child: BlocBuilder<UserCubit, UserStates>(
+      child: BlocConsumer<UserCubit, UserStates>(
+        listener: (context, state) {
+          if (state is GetUserDataSuccessState) {
+            cubit.nameController.text = state.user.name!;
+            cubit.phoneController.text = state.user.phone!;
+          }
+        },
         builder: (context, state) {
           if (state is GetUserDataLoadingState) {
             return Center(
@@ -53,8 +59,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
               ),
             );
           } else if (state is GetUserDataSuccessState) {
-            cubit.nameController.text = state.user.name!;
-            cubit.phoneController.text = state.user.phone!;
             return Scaffold(
               appBar: AppBar(
                 title: const Text("Pick Avatar"),
@@ -76,7 +80,15 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       GestureDetector(
-                        onTap: () => showAvatarBottomSheet(context),
+                        onTap: () =>
+                            showAvatarBottomSheet(context, (selectedAvatarId) {
+                          setState(() {
+                            cubit.selectedAvatarId =
+                                selectedAvatarId; // Store new avatar selection
+                          });
+                          cubit
+                              .updateAvatar(selectedAvatarId); // Persist change
+                        }),
                         child: Container(
                           width: width * 0.5,
                           height: width * 0.5,
@@ -84,7 +96,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             shape: BoxShape.circle,
                             image: DecorationImage(
                               image: AssetImage(
-                                  avatarList[state.user.avaterId ?? 0]),
+                                  avatarList[cubit.selectedAvatarId ?? 0]),
+                              // Display selected avatar
                               fit: BoxFit.fitHeight,
                             ),
                           ),
@@ -148,7 +161,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16.0),
+                      // SizedBox(height: height*0.17),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.redColor,
@@ -159,7 +172,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, HomeTab.routeName);
+                          CashHelper.removeData(key: "token");
+                          CashHelper.removeData(key: "isLoggedIn");
+                          Navigator.pushReplacementNamed(
+                              context, LoginScreen.routeName);
                         },
                         child: const Text(
                           "Delete Account",
@@ -176,7 +192,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          cubit.updateUserData(
+                              name: cubit.nameController.text,
+                              phone: cubit.phoneController.text,
+                              avatarId: cubit.selectedAvatarId.toString());
+                        },
                         child: const Text(
                           "Update Data",
                           style: TextStyle(color: Colors.black),

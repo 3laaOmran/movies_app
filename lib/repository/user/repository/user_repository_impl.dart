@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:movies_app/models/update_profile_model.dart';
 import 'package:movies_app/models/user_model.dart';
 import 'package:movies_app/repository/user/data_source/user_remote_data_source.dart';
 import 'package:movies_app/repository/user/repository/user_repository.dart';
@@ -12,5 +13,15 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<UserModel?> getUserData() {
     return remoteDataSource.getUserData();
+  }
+
+  @override
+  Future<UpdateProfileModel?> updateUserData({
+    required String name,
+    required String phone,
+    required String avatarId,
+  }) {
+    return remoteDataSource.updateUserData(
+        name: name, phone: phone, avatarId: avatarId);
   }
 }
