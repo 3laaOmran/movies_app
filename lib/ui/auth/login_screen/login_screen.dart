@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/api/google_signin_api.dart';
 import 'package:movies_app/ui/auth/login_screen/cubit/login_cubit.dart';
 import 'package:movies_app/ui/auth/register_screen/register_screen.dart';
 import 'package:movies_app/ui/home_screen/home_screen.dart';
@@ -7,6 +8,7 @@ import 'package:movies_app/ui/widgets/ask_user_widget_in_login_register.dart';
 import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
 import 'package:movies_app/ui/widgets/switch_language_button.dart';
 import 'package:movies_app/utils/asset_manager.dart';
+import 'package:movies_app/utils/helpers/cash_helper.dart';
 
 import '../../../di/di.dart';
 import '../../../utils/app_colors.dart';
@@ -174,7 +176,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: height * 0.03,
                           ),
                           CustomElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              final user = await GoogleSignInApi.Login();
+                              print(user?.photoUrl);
+                              if (user != null) {
+                                CashHelper.saveData(
+                                    key: 'googleUsername',
+                                    value: user.displayName);
+                                CashHelper.saveData(
+                                    key: 'googleUserImage',
+                                    value: user.photoUrl);
+                                Navigator.pushReplacementNamed(
+                                    context, HomeScreen.routeName);
+                              }
                             },
                             buttonText: '',
                             buttonWidget: Row(

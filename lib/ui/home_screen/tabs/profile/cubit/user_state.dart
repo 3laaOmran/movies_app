@@ -4,6 +4,8 @@ abstract class UserStates {}
 
 final class UserInitialState extends UserStates {}
 
+final class GetGoogleUserDataLoadingState extends UserStates {}
+
 final class GetUserDataLoadingState extends UserStates {}
 
 final class GetUserDataSuccessState extends UserStates {
