@@ -170,7 +170,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           ),
                         ],
                       ),
-                      SizedBox(height: height * 0.14),
+                      SizedBox(height: height * 0.13),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.redColor,

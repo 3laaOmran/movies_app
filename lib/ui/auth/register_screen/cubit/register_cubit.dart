@@ -19,7 +19,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
   var formKey = GlobalKey<FormState>();
   bool isPasswordObscure = true;
   bool isRePasswordObscure = true;
-   int avaterId=1;
+  int avaterId = 0;
 
 //TODO: -----------------Logic-------------------
 //https://route-movie-apis.vercel.app/auth/register
@@ -34,7 +34,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
            rePasswordController.text,
            phoneNumberController.text,
            avaterId);
-        if (response!.statusCode == 201) {
+        if (response!.data != null) {
           emit(RegisterSuccessState());
        } else {
           emit(RegisterErrorState(errorMessage: response.message ?? 'Error'));
