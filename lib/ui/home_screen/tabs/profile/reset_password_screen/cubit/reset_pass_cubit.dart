@@ -47,9 +47,11 @@ class ResetPassCubit extends Cubit<ResetPassStates> {
 
   changeOldPasswordVisibility() {
     isOldPasswordObscure = !isOldPasswordObscure;
+    emit(ChangePasswordVisibilityState());
   }
 
   changeNewPasswordVisibility() {
     isNewPasswordObscure = !isNewPasswordObscure;
+    emit(ChangePasswordVisibilityState());
   }
 }

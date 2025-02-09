@@ -17,14 +17,9 @@ import '../../widgets/custom_dialog.dart';
 import '../../widgets/custom_text_form_field.dart';
 import 'cubit/login_state.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   static const String routeName = 'login_screen';
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
   LoginCubit cubit = getIt<LoginCubit>();
 
   @override
@@ -33,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var height = MediaQuery.of(context).size.height;
     return BlocProvider(
         create: (context) => cubit,
-        child: BlocListener(
+        child: BlocConsumer(
           bloc: cubit,
           listener: (context, state) {
             if (state is LoginLoadingState) {
@@ -59,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   });
             }
           },
-          child: MaterialApp(
+          builder: (context, state) => MaterialApp(
             debugShowCheckedModeBanner: false,
             home: Scaffold(
               backgroundColor: AppColors.blackColor,
@@ -98,7 +93,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           CustomTextFormField(
                               onSuffixPressed: () {
                                 cubit.changePasswordVisibility();
-                                setState(() {});
                               },
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {

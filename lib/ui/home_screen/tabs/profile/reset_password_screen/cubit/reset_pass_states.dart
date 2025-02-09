@@ -15,3 +15,5 @@ class ResetPassSuccessState extends ResetPassStates {
 
   ResetPassSuccessState({required this.message});
 }
+
+class ChangePasswordVisibilityState extends ResetPassStates {}
