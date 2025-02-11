@@ -17,6 +17,12 @@ import '../repository/login/data_source/login_remote_data_source_impl.dart'
     as _i647;
 import '../repository/login/repo/login_repo.dart' as _i516;
 import '../repository/login/repo/login_repo_impl.dart' as _i206;
+import '../repository/movie_details/data_source/movie_details_remote_data_source.dart'
+    as _i715;
+import '../repository/movie_details/data_source/movie_details_remote_data_source_impl.dart'
+    as _i930;
+import '../repository/movie_details/repo/movie_details_repo.dart' as _i482;
+import '../repository/movie_details/repo/movie_details_repo_impl.dart' as _i343;
 import '../repository/movies/data_source/movies_remote_data_source.dart'
     as _i330;
 import '../repository/movies/data_source/movies_remote_data_source_impl.dart'
@@ -41,9 +47,11 @@ import '../repository/user/repository/user_repository.dart' as _i123;
 import '../repository/user/repository/user_repository_impl.dart' as _i871;
 import '../ui/auth/login_screen/cubit/login_cubit.dart' as _i311;
 import '../ui/auth/register_screen/cubit/register_cubit.dart' as _i599;
+import '../ui/details_screen/cubit/details_screen_cubit.dart' as _i459;
 import '../ui/home_screen/tabs/home_tab/cubit/home_tab_cubit.dart' as _i165;
-import '../ui/home_screen/tabs/profile/cubit/user_cubit.dart';
-import '../ui/home_screen/tabs/profile/reset_password_screen/cubit/reset_pass_cubit.dart';
+import '../ui/home_screen/tabs/profile/cubit/user_cubit.dart' as _i232;
+import '../ui/home_screen/tabs/profile/reset_password_screen/cubit/reset_pass_cubit.dart'
+    as _i154;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -69,6 +77,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i384.ResetPassDataSourceImpl());
     gh.factory<_i211.ResetPassRepo>(() =>
         _i274.ResetPassRepoImpl(dataSource: gh<_i294.ResetPassDataSource>()));
+    gh.factory<_i715.MovieDetailsRemoteDataSource>(
+        () => _i930.MovieDetailsRemoteDataSourceImpl());
     gh.factory<_i912.LoginRemoteDataSource>(
         () => _i647.LoginRemoteDataSourceImpl());
     gh.factory<_i123.UserRepository>(() => _i871.UserRepositoryImpl(
@@ -77,12 +87,17 @@ extension GetItInjectableX on _i174.GetIt {
         remoteDataSource: gh<_i330.MoviesRemoteDataSource>()));
     gh.factory<_i516.LoginRepo>(() => _i206.LoginRepoImpl(
         loginRemoteDataSource: gh<_i912.LoginRemoteDataSource>()));
-    gh.factory<UserCubit>(
-        () => UserCubit(userRepository: gh<_i123.UserRepository>()));
+    gh.factory<_i232.UserCubit>(
+        () => _i232.UserCubit(userRepository: gh<_i123.UserRepository>()));
     gh.factory<_i165.HomeTabCubit>(() =>
         _i165.HomeTabCubit(moviesRepository: gh<_i49.MoviesRepository>()));
-    gh.factory<ResetPassCubit>(
-        () => ResetPassCubit(resetPassRepo: gh<_i211.ResetPassRepo>()));
+    gh.factory<_i154.ResetPassCubit>(
+        () => _i154.ResetPassCubit(resetPassRepo: gh<_i211.ResetPassRepo>()));
+    gh.factory<_i482.MovieDetailsRepo>(() => _i343.MovieDetailsRepoImpl(
+        movieDetailsRemoteDataSource:
+            gh<_i715.MovieDetailsRemoteDataSource>()));
+    gh.factory<_i459.DetailsScreenCubit>(() => _i459.DetailsScreenCubit(
+        movieDetailsRepo: gh<_i482.MovieDetailsRepo>()));
     return this;
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/ui/auth/login_screen/login_screen.dart';
 import 'package:movies_app/ui/auth/register_screen/register_screen.dart';
+import 'package:movies_app/ui/details_screen/details_screen.dart';
 import 'package:movies_app/ui/home_screen/home_screen.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/reset_password_screen/reset_password_screen.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/update_profile/update_profile.dart';
@@ -28,8 +29,9 @@ class MoviesApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.dark,
-      initialRoute: getInitialRoute(),
+      initialRoute: HomeScreen.routeName,
       routes: {
+        DetailsScreen.routeName: (context) => DetailsScreen(),
         Onboarding.routeName:(context)=> Onboarding(),
         HomeScreen.routeName: (context) => HomeScreen(),
         LoginScreen.routeName: (context) => LoginScreen(),
