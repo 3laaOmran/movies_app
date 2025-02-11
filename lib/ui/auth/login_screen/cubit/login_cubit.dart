@@ -44,6 +44,7 @@ bool isPasswordObscure = true;
 
 void changePasswordVisibility(){
   isPasswordObscure=!isPasswordObscure;
-}
+    emit(ChangePasswordVisibilityState());
+  }
 
 }

@@ -10,14 +10,9 @@ import '../../../../../utils/app_styles.dart';
 import 'cubit/reset_pass_cubit.dart';
 import 'cubit/reset_pass_states.dart';
 
-class ResetPasswordScreen extends StatefulWidget {
+class ResetPasswordScreen extends StatelessWidget {
   static const String routeName = 'reset_password_screen';
 
-  @override
-  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
-}
-
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   ResetPassCubit cubit = getIt<ResetPassCubit>();
 
   @override
@@ -28,9 +23,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       appBar: AppBar(
         title: Text(
           "Reset Password",
-          style: AppStyles.regular16Yellow,),
+          style: AppStyles.regular16Yellow,
+        ),
       ),
-      body: BlocListener(
+      body: BlocConsumer(
         bloc: cubit,
         listener: (context, state) {
           if (state is ResetPassLoadingState) {
@@ -47,7 +43,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 context: context, message: state.errMsg, posActionName: "Ok");
           }
         },
-        child: SingleChildScrollView(
+        builder: (context, state) => SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: width * 0.025),
             child: Form(
@@ -60,7 +56,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   CustomTextFormField(
                       onSuffixPressed: () {
                         cubit.changeOldPasswordVisibility();
-                        setState(() {});
                       },
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -80,7 +75,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   CustomTextFormField(
                       onSuffixPressed: () {
                         cubit.changeNewPasswordVisibility();
-                        setState(() {});
                       },
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
@@ -108,7 +102,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           ),
         ),
       ),
-
     );
   }
 }

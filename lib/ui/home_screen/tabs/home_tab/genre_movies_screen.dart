@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movies_app/models/movie_model.dart';
+import 'package:movies_app/ui/details_screen/details_screen.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 
@@ -29,7 +30,8 @@ class GenreMoviesScreen extends StatelessWidget {
           var movie = filteredMovies[index];
           return InkWell(
             onTap: () {
-              // TODO: Navigate to movie details screen
+              Navigator.pushNamed(context, DetailsScreen.routeName,
+                  arguments: movie.id);
             },
             child: Card(
               color: AppColors.darkGreyColor,

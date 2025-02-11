@@ -10,8 +10,10 @@ class MoviePoster extends StatelessWidget {
   final double imageWidth;
   final double imageHeight;
   final BoxFit imageFit;
+  void Function()? onTap;
 
   MoviePoster({
+    required this.onTap,
     required this.networkImage,
     required this.rating,
     required this.imageWidth,
@@ -25,9 +27,7 @@ class MoviePoster extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
 
     return InkWell(
-      onTap:(){
-        // TODO: Navigate to movie details screen
-      },
+      onTap: onTap,
       child: Container(
         child: Stack(
           alignment: Alignment.topLeft,

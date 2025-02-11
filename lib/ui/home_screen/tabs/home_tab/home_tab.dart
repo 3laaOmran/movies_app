@@ -13,6 +13,7 @@ import 'package:movies_app/utils/asset_manager.dart';
 import '../../../../di/di.dart';
 import '../../../../repository/movies/repository/movies_repository.dart';
 import '../../../../utils/app_styles.dart';
+import '../../../details_screen/details_screen.dart';
 import 'cubit/home_tab_cubit.dart';
 import 'cubit/home_tab_state.dart';
 import 'genre_movies_screen.dart';
@@ -104,7 +105,15 @@ class _HomeTabState extends State<HomeTab> {
                                 },
                               ),
                               itemCount: state.moviesList.length,
-                              itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) => MoviePoster(
+                              itemBuilder: (BuildContext context, int itemIndex,
+                                      int pageViewIndex) =>
+                                  MoviePoster(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, DetailsScreen.routeName,
+                                      arguments:
+                                          state.moviesList[itemIndex].id);
+                                },
                                 imageFit: BoxFit.fill,
                                 imageWidth: double.infinity,
                                 imageHeight: height * 0.8,
@@ -173,10 +182,15 @@ class _HomeTabState extends State<HomeTab> {
             itemBuilder: (context, index) {
               var movie = limitedMovies[index];
               return MoviePoster(
-                imageWidth: width * 0.35,
+            onTap: () {
+              Navigator.pushNamed(context, DetailsScreen.routeName,
+                  arguments: movie.id);
+            },
+            imageFit: BoxFit.fill,
+            imageWidth: width * 0.35,
                 imageHeight: height * 0.3,
-                imageFit: BoxFit.cover,
-                networkImage: movie.largeCoverImage ?? '',
+            // imageFit: BoxFit.cover,
+            networkImage: movie.largeCoverImage ?? '',
                 rating: movie.rating?.toString() ?? 'N/A',
               );
             },
