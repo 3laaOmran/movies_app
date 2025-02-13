@@ -23,6 +23,14 @@ import '../repository/movie_details/data_source/movie_details_remote_data_source
     as _i930;
 import '../repository/movie_details/repo/movie_details_repo.dart' as _i482;
 import '../repository/movie_details/repo/movie_details_repo_impl.dart' as _i343;
+import '../repository/movie_suggestion/data_source/movie_suggestion_remote_data_source.dart'
+    as _i29;
+import '../repository/movie_suggestion/data_source/movie_suggestion_remote_data_source_impl.dart'
+    as _i657;
+import '../repository/movie_suggestion/repo/movie_suggestion_repository.dart'
+    as _i193;
+import '../repository/movie_suggestion/repo/movie_suggestion_repository_impl.dart'
+    as _i839;
 import '../repository/movies/data_source/movies_remote_data_source.dart'
     as _i330;
 import '../repository/movies/data_source/movies_remote_data_source_impl.dart'
@@ -71,12 +79,18 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i330.MoviesRemoteDataSource>(
         () => _i845.MoviesRemoteDataSourceImpl());
     gh.factory<_i263.RegisterDataSource>(() => _i182.RegisterDataSourceImpl());
+    gh.factory<_i29.MovieSuggestionRemoteDataSource>(
+        () => _i657.MovieSuggestionRemoteDataSourceImpl());
     gh.factory<_i401.RegisterRepository>(() => _i351.RegisterRepositoryImpl(
         registerDataSource: gh<_i263.RegisterDataSource>()));
     gh.factory<_i294.ResetPassDataSource>(
         () => _i384.ResetPassDataSourceImpl());
     gh.factory<_i211.ResetPassRepo>(() =>
         _i274.ResetPassRepoImpl(dataSource: gh<_i294.ResetPassDataSource>()));
+    gh.factory<_i193.MovieSuggestionRepository>(() =>
+        _i839.MovieSuggestionRepositoryImpl(
+            movieSuggestionRemoteDataSource:
+                gh<_i29.MovieSuggestionRemoteDataSource>()));
     gh.factory<_i715.MovieDetailsRemoteDataSource>(
         () => _i930.MovieDetailsRemoteDataSourceImpl());
     gh.factory<_i912.LoginRemoteDataSource>(
@@ -97,7 +111,9 @@ extension GetItInjectableX on _i174.GetIt {
         movieDetailsRemoteDataSource:
             gh<_i715.MovieDetailsRemoteDataSource>()));
     gh.factory<_i459.DetailsScreenCubit>(() => _i459.DetailsScreenCubit(
-        movieDetailsRepo: gh<_i482.MovieDetailsRepo>()));
+          movieDetailsRepo: gh<_i482.MovieDetailsRepo>(),
+          movieSuggestionRepository: gh<_i193.MovieSuggestionRepository>(),
+        ));
     return this;
   }
 }

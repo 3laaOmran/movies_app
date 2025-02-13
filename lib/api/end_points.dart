@@ -5,4 +5,5 @@ class EndPoints {
   static const String loginEndPoint = '/auth/login';
   static const String resetPasswordEndPoint = 'auth/reset-password';
   static const String getMovieDetailsEndPoint = '/api/v2/movie_details.json';
+  static const String getMovieSuggestion = '/api/v2/movie_suggestions.json';
 }

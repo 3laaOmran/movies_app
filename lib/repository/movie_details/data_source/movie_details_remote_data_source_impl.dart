@@ -22,7 +22,7 @@ class MovieDetailsRemoteDataSourceImpl implements MovieDetailsRemoteDataSource {
     Uri url2 = Uri.https(
         ApiConstants.baseUrl,
         EndPoints.getMovieDetailsEndPoint,
-        {"movie_id": movieId, "with_cast": "true"});
+        {"movie_id": movieId, "with_cast": "true", "with_images": "true"});
     try {
       var response = await http.get(url2);
       return MovieDetailsModel.fromJson(jsonDecode(response.body));
