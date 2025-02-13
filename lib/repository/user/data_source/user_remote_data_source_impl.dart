@@ -13,12 +13,13 @@ import '../../../utils/helpers/cash_helper.dart';
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<UserModel?> getUserData() async {
+    //String? token = await CashHelper.getData(key: "token");
     Uri url = Uri.https(ApiConstants.authBaseUrl, EndPoints.getUserData);
 
     try {
       var response = await http.get(url, headers: {
-        'Authorization':
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTYwOTUzM2EwOWRjYWMwZTdmNzAwYyIsImVtYWlsIjoib21yYW5AZ21haWwuY29tIiwiaWF0IjoxNzM4OTM0NzQzfQ.ntqGzjo1aN4x9B2nGU5cV73cNYgqSHPjKFGBtblLdPo'
+        "Authorization":
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YWUzYTcwYzY0ZjMzOWJlYjA5MWM2ZCIsImVtYWlsIjoiYW1ydGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3Mzk0NzE0OTR9.oi4gjd7nAK3JxEs46KYfzAhqec8359jfTW8E2mr5lfI"
       });
 
       if (response.statusCode != 200) {
@@ -37,7 +38,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   Future<UpdateProfileModel?> updateUserData({
     required String name,
     required String phone,
-    required String avatarId,
+    required String avatarId
   }) async {
     Uri url = Uri.parse("https://route-movie-apis.vercel.app/profile");
 
@@ -45,14 +46,13 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       var response = await http.patch(
         url,
         headers: {
-          'Authorization':
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTYwOTUzM2EwOWRjYWMwZTdmNzAwYyIsImVtYWlsIjoib21yYW5AZ21haWwuY29tIiwiaWF0IjoxNzM4OTM0NzQzfQ.ntqGzjo1aN4x9B2nGU5cV73cNYgqSHPjKFGBtblLdPo'
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YWUzYTcwYzY0ZjMzOWJlYjA5MWM2ZCIsImVtYWlsIjoiYW1ydGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3Mzk0NzE0OTR9.oi4gjd7nAK3JxEs46KYfzAhqec8359jfTW8E2mr5lfI",
         },
-        body: {
+        body: jsonEncode({
           "name": name,
           "phone": phone,
-          "avatarId": avatarId,
-        },
+          "avaterId": avatarId,
+        }),
       );
 
       if (response.statusCode != 200) {
@@ -66,4 +66,5 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       rethrow;
     }
   }
+
 }

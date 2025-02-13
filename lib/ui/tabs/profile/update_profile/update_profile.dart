@@ -45,178 +45,177 @@ class _UpdateProfileState extends State<UpdateProfile> {
     return BlocProvider(
       create: (context) => cubit,
       child: BlocConsumer<UserCubit, UserStates>(
-        listener: (context, state) {
-          if (state is GetUserDataSuccessState) {
-            cubit.nameController.text = state.user.name!;
-            cubit.phoneController.text = state.user.phone!;
-          }
-        },
-        builder: (context, state) {
-          if (state is GetUserDataLoadingState) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: AppColors.yellowColor,
+          listener: (context, state) {
+            if (state is GetUserDataSuccessState) {
+              cubit.nameController.text = state.user.name!;
+              cubit.phoneController.text = state.user.phone!;
+            } else if (state is UpdateUserDataSuccessState) {
+              print('data updated successfully');
+              cubit.getUserData();
+            } else if (state is UpdateUserDataErrorState) {
+              print('failed to update data');
+            }
+          },
+          builder: (context, state) {
+        if (state is GetUserDataSuccessState) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text("Pick Avatar"),
+              centerTitle: true,
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: AppColors.yellowColor,
+                ),
+                onPressed: () {},
               ),
-            );
-          } else if (state is GetUserDataSuccessState) {
-            return Scaffold(
-              appBar: AppBar(
-                title: const Text("Pick Avatar"),
-                centerTitle: true,
-                leading: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: AppColors.yellowColor,
-                  ),
-                  onPressed: () {},
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    GestureDetector(
+                      onTap: () =>
+                          showAvatarBottomSheet(context, (selectedAvatarId) {
+                            setState(() {
+                              cubit.selectedAvatarId =
+                                  selectedAvatarId; // Store new avatar selection
+                            });
+                            cubit.updateAvatar(selectedAvatarId); // Persist change
+                          }),
+                      child: Container(
+                        width: width * 0.5,
+                        height: width * 0.5,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: AssetImage(
+                                avatarList[cubit.selectedAvatarId ?? 0]),
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: height * 0.02),
+                    TextFormField(
+                      controller: cubit.nameController,
+                      style: const TextStyle(color: AppColors.whiteColor),
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.person,
+                            color: AppColors.whiteColor),
+                        hintText: "Name",
+                        hintStyle: const TextStyle(color: Colors.white),
+                        fillColor: const Color(0xff282A28),
+                        filled: true,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                          const BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                          const BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: height * 0.01),
+                    TextFormField(
+                      controller: cubit.phoneController,
+                      style: const TextStyle(color: AppColors.whiteColor),
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.phone,
+                            color: AppColors.whiteColor),
+                        hintText: "Phone",
+                        hintStyle: const TextStyle(color: AppColors.whiteColor),
+                        fillColor: const Color(0xff282A28),
+                        filled: true,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: height * 0.015),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TextButton(
+                          onPressed: () {},
+                          child: const Text(
+                            "Reset Password",
+                            style: TextStyle(color: AppColors.lightGreyColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: height * 0.15),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.redColor,
+                        padding: EdgeInsets.symmetric(vertical: height * 0.02),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                      ),
+                      onPressed: () {
+                        CashHelper.removeData(key: "token");
+                        CashHelper.removeData(key: "isLoggedIn");
+                        Navigator.pushReplacementNamed(
+                            context, LoginScreen.routeName);
+                      },
+                      child: const Text(
+                        "Delete Account",
+                        style: TextStyle(color: AppColors.whiteColor),
+                      ),
+                    ),
+                    SizedBox(height: height * 0.02),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.yellowColor,
+                        padding: EdgeInsets.symmetric(vertical: height * 0.02),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                      ),
+                      onPressed: () {
+                        cubit.updateUserData(
+                          name: cubit.nameController.text,
+                          phone: cubit.phoneController.text,
+                          avatarId: cubit.selectedAvatarId.toString(),
+                        );
+                      },
+                      child: const Text(
+                        "Update Data",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              body: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: SingleChildScrollView(
-                  // Wrap the Column
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      GestureDetector(
-                        onTap: () =>
-                            showAvatarBottomSheet(context, (selectedAvatarId) {
-                          setState(() {
-                            cubit.selectedAvatarId =
-                                selectedAvatarId; // Store new avatar selection
-                          });
-                          cubit
-                              .updateAvatar(selectedAvatarId); // Persist change
-                        }),
-                        child: Container(
-                          width: width * 0.5,
-                          height: width * 0.5,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: AssetImage(
-                                  avatarList[cubit.selectedAvatarId ?? 0]),
-                              // Display selected avatar
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: height * 0.02),
-                      TextFormField(
-                        controller: cubit.nameController,
-                        style: const TextStyle(color: AppColors.whiteColor),
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.person,
-                              color: AppColors.whiteColor),
-                          hintText: "Name",
-                          hintStyle: const TextStyle(color: Colors.white),
-                          fillColor: const Color(0xff282A28),
-                          filled: true,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: height * 0.01),
-                      TextFormField(
-                        controller: cubit.phoneController,
-                        style: const TextStyle(color: AppColors.whiteColor),
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.phone,
-                              color: AppColors.whiteColor),
-                          hintText: "phone",
-                          hintStyle:
-                              const TextStyle(color: AppColors.whiteColor),
-                          fillColor: const Color(0xff282A28),
-                          filled: true,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: height * 0.015),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              "Reset Password",
-                              style: TextStyle(color: AppColors.lightGreyColor),
-                            ),
-                          ),
-                        ],
-                      ),
-                      // SizedBox(height: height*0.17),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.redColor,
-                          padding:
-                              EdgeInsets.symmetric(vertical: height * 0.02),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                        ),
-                        onPressed: () {
-                          CashHelper.removeData(key: "token");
-                          CashHelper.removeData(key: "isLoggedIn");
-                          Navigator.pushReplacementNamed(
-                              context, LoginScreen.routeName);
-                        },
-                        child: const Text(
-                          "Delete Account",
-                          style: TextStyle(color: AppColors.whiteColor),
-                        ),
-                      ),
-                      SizedBox(height: height * 0.02),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.yellowColor,
-                          padding:
-                              EdgeInsets.symmetric(vertical: height * 0.02),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                        ),
-                        onPressed: () {
-                          cubit.updateUserData(
-                              name: cubit.nameController.text,
-                              phone: cubit.phoneController.text,
-                              avatarId: cubit.selectedAvatarId.toString());
-                        },
-                        child: const Text(
-                          "Update Data",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          } else if (state is GetUserDataErrorState) {
-            return Text(
-              state.errorMsg,
-              style: AppStyles.bold20White,
-            );
-          }
-          return Container();
-        },
-      ),
+            ),
+          );
+        } else if (state is GetUserDataErrorState) {
+          return Text(
+            state.errorMsg,
+            style: AppStyles.bold20White,
+          );
+        }
+        else{
+          return Center(
+            child: CircularProgressIndicator(
+              color: AppColors.yellowColor,
+            ),
+          );
+        }
+      }),
     );
   }
 }

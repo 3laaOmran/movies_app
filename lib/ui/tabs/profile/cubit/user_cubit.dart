@@ -47,11 +47,11 @@ class UserCubit extends Cubit<UserStates> {
       if (response!.statusCode != 200) {
         emit(UpdateUserDataErrorState(errorMsg: "Failed to update user data"));
         print('Error ya 7amo');
-
         return;
       }
 
       emit(UpdateUserDataSuccessState(updateProfileModel: response));
+      getUserData();
     } catch (e) {
       emit(UpdateUserDataErrorState(errorMsg: e.toString()));
       print('Error ya alaa w karim');
