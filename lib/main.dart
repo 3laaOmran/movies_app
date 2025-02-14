@@ -29,7 +29,7 @@ class MoviesApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.dark,
-      initialRoute: HomeScreen.routeName,
+      initialRoute: getInitialRoute(),
       routes: {
         DetailsScreen.routeName: (context) => DetailsScreen(),
         Onboarding.routeName:(context)=> Onboarding(),
