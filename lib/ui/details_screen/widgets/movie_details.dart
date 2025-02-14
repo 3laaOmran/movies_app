@@ -14,7 +14,7 @@ class MovieDetails extends StatelessWidget {
   var rating;
   var runTime;
   var likeCount;
-  int year;
+  num year;
   var url;
   MovieDetails({
     required this.url,
@@ -25,10 +25,11 @@ class MovieDetails extends StatelessWidget {
     required this.runTime,
     required this.year
 });
+
   @override
   Widget build(BuildContext context) {
-    var height=MediaQuery.of(context).size.height;
-    var width=MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: Column(children: [
         Stack(
@@ -105,23 +106,37 @@ class MovieDetails extends StatelessWidget {
             onPressed: (){
               Navigator.push( context, MaterialPageRoute( builder: (context) =>
                   WebViewScreen(newsUrl: url)));
+
               },
-            bgColor: AppColors.redColor,
+              bgColor: AppColors.redColor,
+            ),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: width*0.04,vertical: height*0.01),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-          Expanded(child: CustomContainerWidget(imagePath:AssetsManager.favoriteIcon , number: likeCount)),
-          SizedBox(width: width*0.02,),
-            Expanded(child: CustomContainerWidget(imagePath:AssetsManager.clockIcon , number: runTime)),
-            SizedBox(width: width*0.02,),
-            Expanded(child: CustomContainerWidget(imagePath:AssetsManager.ratingIcon , number: rating )),
-          ],),
-        )
-      ],
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: width * 0.04, vertical: height * 0.01),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                    child: CustomContainerWidget(
+                        imagePath: AssetsManager.favoriteIcon,
+                        number: likeCount)),
+                SizedBox(
+                  width: width * 0.02,
+                ),
+                Expanded(
+                    child: CustomContainerWidget(
+                        imagePath: AssetsManager.clockIcon, number: runTime)),
+                SizedBox(
+                  width: width * 0.02,
+                ),
+                Expanded(
+                    child: CustomContainerWidget(
+                        imagePath: AssetsManager.ratingIcon, number: rating)),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
