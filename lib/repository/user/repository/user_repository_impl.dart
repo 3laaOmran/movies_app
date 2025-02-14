@@ -19,7 +19,7 @@ class UserRepositoryImpl implements UserRepository {
   Future<UpdateProfileModel?> updateUserData({
     required String name,
     required String phone,
-    required String avatarId,
+    required int avatarId,
   }) {
     return remoteDataSource.updateUserData(
         name: name, phone: phone, avatarId: avatarId);

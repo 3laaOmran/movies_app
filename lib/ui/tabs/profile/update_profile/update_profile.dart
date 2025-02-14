@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/repository/user/repository/user_repository.dart';
 import 'package:movies_app/ui/auth/login_screen/login_screen.dart';
 import 'package:movies_app/ui/tabs/profile/update_profile/show_bottom_sheet.dart';
+import 'package:movies_app/ui/widgets/custom_dialog.dart';
+import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
+import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/asset_manager.dart';
@@ -19,18 +22,19 @@ class UpdateProfile extends StatefulWidget {
 }
 
 class _UpdateProfileState extends State<UpdateProfile> {
-  var cubit = UserCubit(userRepository: getIt<UserRepository>());
+  UserCubit cubit =UserCubit(userRepository: getIt<UserRepository>());
 
   @override
   void initState() {
-    cubit.getUserData();
     super.initState();
+    cubit.getUserData();
   }
 
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+
     List<String> avatarList = [
       AssetsManager.avatar1,
       AssetsManager.avatar2,
@@ -42,49 +46,61 @@ class _UpdateProfileState extends State<UpdateProfile> {
       AssetsManager.avatar8,
       AssetsManager.avatar9,
     ];
-    return BlocProvider(
-      create: (context) => cubit,
-      child: BlocConsumer<UserCubit, UserStates>(
-          listener: (context, state) {
-            if (state is GetUserDataSuccessState) {
-              cubit.nameController.text = state.user.name!;
-              cubit.phoneController.text = state.user.phone!;
-            } else if (state is UpdateUserDataSuccessState) {
-              print('data updated successfully');
-              cubit.getUserData();
-            } else if (state is UpdateUserDataErrorState) {
-              print('failed to update data');
-            }
-          },
-          builder: (context, state) {
+
+    return BlocConsumer<UserCubit, UserStates>(
+      bloc: cubit,
+      listener: (context, state) {
         if (state is GetUserDataSuccessState) {
+          cubit.nameController.text = state.user.name ?? "";
+          cubit.phoneController.text = state.user.phone ?? "";
+          cubit.selectedAvatarId = state.user.avaterId ?? 0;
+        }
+        if (state is UpdateUserDataSuccessState) {
+          CustomDialog.hideLoading(context);
+          CustomDialog.showAlert(context: context, message:state.updateProfileModel.message ??'',posActionName: 'Ok',posAction: (){
+            cubit.getUserData();
+          });
+        } else if (state is UpdateUserDataErrorState) {
+          CustomDialog.hideLoading(context);
+          CustomDialog.showAlert(context: context, message: state.errorMsg,posActionName: 'ok');
+        } else if (state is UpdateUserDataLoadingState) {
+          CustomDialog.showLoading(context: context, message: 'Updating...');
+        }
+      },
+      builder: (context,state){
+        if(state is GetUserDataLoadingState){
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(
+                color: AppColors.yellowColor,
+              ),
+            ),
+          );
+        }else if (state is GetUserDataErrorState){
+          return Scaffold(
+            body: Center(
+                child: Text(state.errorMsg,style: AppStyles.bold24White,)
+            ),
+          );
+        }else if(state is GetUserDataSuccessState){
           return Scaffold(
             appBar: AppBar(
-              title: const Text("Pick Avatar"),
-              centerTitle: true,
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: AppColors.yellowColor,
-                ),
-                onPressed: () {},
-              ),
+              title: const Text("Update Profile"),
             ),
             body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    // Avatar Selection
                     GestureDetector(
                       onTap: () =>
                           showAvatarBottomSheet(context, (selectedAvatarId) {
                             setState(() {
-                              cubit.selectedAvatarId =
-                                  selectedAvatarId; // Store new avatar selection
+                              cubit.selectedAvatarId = selectedAvatarId;
                             });
-                            cubit.updateAvatar(selectedAvatarId); // Persist change
+                            cubit.updateAvatar(selectedAvatarId);
                           }),
                       child: Container(
                         width: width * 0.5,
@@ -92,58 +108,26 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage(
-                                avatarList[cubit.selectedAvatarId ?? 0]),
+                            image: AssetImage(avatarList[cubit.selectedAvatarId]),
                             fit: BoxFit.fitHeight,
                           ),
                         ),
                       ),
                     ),
                     SizedBox(height: height * 0.02),
-                    TextFormField(
+                    CustomTextFormField(
+                      hintText: 'Name',
+                      prefixIcon: AssetsManager.profileIcon,
                       controller: cubit.nameController,
-                      style: const TextStyle(color: AppColors.whiteColor),
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.person,
-                            color: AppColors.whiteColor),
-                        hintText: "Name",
-                        hintStyle: const TextStyle(color: Colors.white),
-                        fillColor: const Color(0xff282A28),
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                          const BorderSide(color: Colors.transparent),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                          const BorderSide(color: Colors.transparent),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
                     ),
                     SizedBox(height: height * 0.01),
-                    TextFormField(
+                    CustomTextFormField(
+                      hintText: 'Phone',
+                      prefixIcon: AssetsManager.phoneIcon,
                       controller: cubit.phoneController,
-                      style: const TextStyle(color: AppColors.whiteColor),
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.phone,
-                            color: AppColors.whiteColor),
-                        hintText: "Phone",
-                        hintStyle: const TextStyle(color: AppColors.whiteColor),
-                        fillColor: const Color(0xff282A28),
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
                     ),
                     SizedBox(height: height * 0.015),
+                    // Reset Password Button
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -157,65 +141,49 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       ],
                     ),
                     SizedBox(height: height * 0.15),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.redColor,
-                        padding: EdgeInsets.symmetric(vertical: height * 0.02),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                      ),
+
+                    //TODO: Delete Account Button
+                    CustomElevatedButton(
+                      buttonText: 'Delete Account',
                       onPressed: () {
                         CashHelper.removeData(key: "token");
                         CashHelper.removeData(key: "isLoggedIn");
-                        Navigator.pushReplacementNamed(
-                            context, LoginScreen.routeName);
+                        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
                       },
-                      child: const Text(
-                        "Delete Account",
-                        style: TextStyle(color: AppColors.whiteColor),
-                      ),
+                      bgColor: AppColors.redColor,
+                      border: BorderSide.none,
+                      buttonTextStyle: AppStyles.regular20White,
                     ),
                     SizedBox(height: height * 0.02),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.yellowColor,
-                        padding: EdgeInsets.symmetric(vertical: height * 0.02),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                      ),
+
+                    // Update Data Button
+                    CustomElevatedButton(
+                      buttonText: 'Update Data',
                       onPressed: () {
+                        if (cubit.nameController.text.trim().isEmpty ||
+                            cubit.phoneController.text.trim().isEmpty) {
+                          CustomDialog.showAlert(
+                              context: context, message: 'Fields cannot be empty',posActionName: 'Ok');
+                          return;
+                        }
+
                         cubit.updateUserData(
-                          name: cubit.nameController.text,
-                          phone: cubit.phoneController.text,
-                          avatarId: cubit.selectedAvatarId.toString(),
+                          name: cubit.nameController.text.trim(),
+                          phone: cubit.phoneController.text.trim(),
+                          avatarId: cubit.selectedAvatarId,
                         );
                       },
-                      child: const Text(
-                        "Update Data",
-                        style: TextStyle(color: Colors.black),
-                      ),
                     ),
                   ],
                 ),
               ),
             ),
-          );
-        } else if (state is GetUserDataErrorState) {
-          return Text(
-            state.errorMsg,
-            style: AppStyles.bold20White,
+
           );
         }
-        else{
-          return Center(
-            child: CircularProgressIndicator(
-              color: AppColors.yellowColor,
-            ),
-          );
-        }
-      }),
+        return Container();
+      },
     );
   }
 }
+

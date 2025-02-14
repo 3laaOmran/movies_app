@@ -7,6 +7,6 @@ abstract class UserRemoteDataSource {
   Future<UpdateProfileModel?> updateUserData({
     required String name,
     required String phone,
-    required String avatarId,
+    required int avatarId,
   });
 }

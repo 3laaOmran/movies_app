@@ -21,9 +21,6 @@ final class GetUserDataErrorState extends UserStates {
 
 final class UpdateUserDataLoadingState extends UserStates {}
 
-// final class ChangeAvatarStates extends UserStates {
-//
-// }
 
 final class UpdateUserDataSuccessState extends UserStates {
   UpdateProfileModel updateProfileModel;

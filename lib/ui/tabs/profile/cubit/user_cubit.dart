@@ -33,28 +33,26 @@ class UserCubit extends Cubit<UserStates> {
 
   void updateAvatar(int avatarId) {
     selectedAvatarId = avatarId;
-    // emit(ChangeAvatarStates());
   }
 
   void updateUserData(
       {required String name,
-      required String phone,
-      required String avatarId}) async {
+        required String phone,
+        required int avatarId}) async {
     emit(UpdateUserDataLoadingState());
     try {
       var response = await userRepository.updateUserData(
           name: name, phone: phone, avatarId: avatarId);
-      if (response!.statusCode != 200) {
+      if (response!.message!.isNotEmpty) {
+        emit(UpdateUserDataSuccessState(updateProfileModel: response));
+      }else{
         emit(UpdateUserDataErrorState(errorMsg: "Failed to update user data"));
-        print('Error ya 7amo');
-        return;
+        print('Error y');
       }
 
-      emit(UpdateUserDataSuccessState(updateProfileModel: response));
-      getUserData();
     } catch (e) {
       emit(UpdateUserDataErrorState(errorMsg: e.toString()));
-      print('Error ya alaa w karim');
+      print('Error y');
     }
   }
 }

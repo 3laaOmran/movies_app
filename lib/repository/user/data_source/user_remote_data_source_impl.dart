@@ -19,7 +19,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     try {
       var response = await http.get(url, headers: {
         "Authorization":
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YWUzYTcwYzY0ZjMzOWJlYjA5MWM2ZCIsImVtYWlsIjoiYW1ydGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3Mzk0NzE0OTR9.oi4gjd7nAK3JxEs46KYfzAhqec8359jfTW8E2mr5lfI"
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YWUzYTcwYzY0ZjMzOWJlYjA5MWM2ZCIsImVtYWlsIjoiYW1ydGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3Mzk0NzE0OTR9.oi4gjd7nAK3JxEs46KYfzAhqec8359jfTW8E2mr5lfI"
       });
 
       if (response.statusCode != 200) {
@@ -38,27 +38,26 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   Future<UpdateProfileModel?> updateUserData({
     required String name,
     required String phone,
-    required String avatarId
+    required int avatarId
   }) async {
-    Uri url = Uri.parse("https://route-movie-apis.vercel.app/profile");
+    Uri url = Uri.https(ApiConstants.authBaseUrl, EndPoints.getUserData);
 
     try {
       var response = await http.patch(
-        url,
-        headers: {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YWUzYTcwYzY0ZjMzOWJlYjA5MWM2ZCIsImVtYWlsIjoiYW1ydGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3Mzk0NzE0OTR9.oi4gjd7nAK3JxEs46KYfzAhqec8359jfTW8E2mr5lfI",
-        },
-        body: jsonEncode({
-          "name": name,
-          "phone": phone,
-          "avaterId": avatarId,
-        }),
+          url,
+          headers: {
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YWUzYTcwYzY0ZjMzOWJlYjA5MWM2ZCIsImVtYWlsIjoiYW1ydGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3Mzk0NzE0OTR9.oi4gjd7nAK3JxEs46KYfzAhqec8359jfTW8E2mr5lfI",
+          },
+          body: {
+            "name": name,
+            "phone": phone,
+            "avaterId": avatarId.toString(),
+          }
       );
 
       if (response.statusCode != 200) {
         throw Exception("Failed to update user data: ${response.statusCode}");
       }
-
       var jsonResponse = jsonDecode(response.body);
       return UpdateProfileModel.fromJson(jsonResponse);
     } catch (e) {

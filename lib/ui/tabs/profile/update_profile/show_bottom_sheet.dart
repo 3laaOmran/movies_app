@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/asset_manager.dart';
 
 void showAvatarBottomSheet(
@@ -15,15 +16,18 @@ void showAvatarBottomSheet(
     AssetsManager.avatar9,
   ];
   showModalBottomSheet(
+    backgroundColor: AppColors.darkGreyColor,
     context: context,
+    constraints: BoxConstraints(
+      maxWidth: MediaQuery.of(context).size.width - 25,
+    ),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
     ),
     builder: (BuildContext context) {
       var width = MediaQuery.of(context).size.width;
-
       return Container(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(15.0),
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
@@ -40,7 +44,7 @@ void showAvatarBottomSheet(
               },
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.yellow, width: 2),
+                  border: Border.all(color: AppColors.yellowColor, width: 2),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ClipRRect(
