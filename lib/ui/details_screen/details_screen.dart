@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/ui/details_screen/widgets/movie_details.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_styles.dart';
+import 'package:movies_app/utils/asset_manager.dart';
 
 import '../../di/di.dart';
 import 'cubit/details_screen_cubit.dart';
@@ -15,6 +19,8 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var args = ModalRoute.of(context)!.settings.arguments as int;
+    var height=MediaQuery.of(context).size.height;
+    var width=MediaQuery.of(context).size.width;
     return Scaffold(
         backgroundColor: Colors.black,
         body: BlocBuilder<DetailsScreenCubit, DetailsScreenStates>(
@@ -25,11 +31,14 @@ class DetailsScreen extends StatelessWidget {
                 child: CircularProgressIndicator(color: Colors.blue),
               );
             } else if (state is DetailsScreenLoadedState) {
-              return Center(
-                  child: Text(
-                state.movieDetailsModel.data!.movie!.title!,
-                style: TextStyle(color: Colors.green),
-              ));
+              return MovieDetails(
+                  url: state.movieDetailsModel.data!.movie!.url!,
+                  imagePath: state.movieDetailsModel.data!.movie!.largeCoverImage!,
+                  likeCount: state.movieDetailsModel.data!.movie!.likeCount!,
+                  movieName:  state.movieDetailsModel.data!.movie!.title!,
+                  rating:  state.movieDetailsModel.data!.movie!.rating!,
+                  runTime:  state.movieDetailsModel.data!.movie!.runtime!,
+                  year:  state.movieDetailsModel.data!.movie!.year!);
             } else if (state is DetailsScreenErrorState) {
               return Center(
                 child: Text(

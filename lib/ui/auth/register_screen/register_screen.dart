@@ -8,14 +8,13 @@ import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
 import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
 import 'package:movies_app/ui/widgets/switch_language_button.dart';
 import 'package:movies_app/utils/asset_manager.dart';
-
 import '../../widgets/custom_dialog.dart';
 import 'cubit/register_cubit.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = 'register_screen';
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<RegisterScreen> createState()=> _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
