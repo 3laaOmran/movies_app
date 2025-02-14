@@ -83,12 +83,23 @@ class _UpdateProfileState extends State<UpdateProfile> {
               posActionName: 'ok');
         } else if (state is UpdateUserDataLoadingState) {
           CustomDialog.showLoading(context: context, message: 'Updating...');
-        } else if (state is DeleteAccountSuccessState) {
+        }
+        if (state is DeleteAccountSuccessState) {
           CustomDialog.hideLoading(context);
-          CustomDialog.showAlert(context: context, message: 'Account deleted successfully.', posActionName: 'Ok', posAction: () {
-            CashHelper.removeData(key: "token");
-            CashHelper.removeData(key: "isLoggedIn");
-            Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+          CustomDialog.showAlert(
+              context: context,
+              message: 'Account deleted successfully.',
+              posActionName: 'Ok',
+              posAction: () async {
+                if (CashHelper.getData(key: 'googleUsername') == null) {
+                  CashHelper.removeData(key: "token");
+                  CashHelper.removeData(key: "isLoggedIn");
+                } else {
+                  await GoogleSignInApi.logout();
+                  CashHelper.removeData(key: "googleUsername");
+                  CashHelper.removeData(key: "googleUserImage");
+                }
+                Navigator.pushReplacementNamed(context, LoginScreen.routeName);
           });
         } else if (state is DeleteAccountErrorState) {
           CustomDialog.hideLoading(context);
@@ -184,23 +195,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     CustomElevatedButton(
                       buttonText: 'Delete Account',
                       onPressed: () async {
-                        if (CashHelper.getData(key: 'googleUsername') == null) {
-                          CashHelper.removeData(key: "token");
-                          CashHelper.removeData(key: "isLoggedIn");
-                        } else {
-                          await GoogleSignInApi.logout();
-                          CashHelper.removeData(key: "googleUsername");
-                          CashHelper.removeData(key: "googleUserImage");
-                        }
-                        Navigator.pushReplacementNamed(
-                            context, LoginScreen.routeName);
-                      onPressed: () {
                         CustomDialog.showAlert(
                           context: context,
                           message: 'Are you sure you want to delete your account?',
                           title: 'Delete Account',
                           negActionName: 'Delete',
-                          negAction: () {
+                          negAction: () async {
                             cubit.deleteAccount();
                           },
                           posActionName: 'Cancel',

@@ -16,17 +16,16 @@ void showAvatarBottomSheet(
     AssetsManager.avatar9,
   ];
   showModalBottomSheet(
-    backgroundColor: AppColors.darkGreyColor,
+    backgroundColor: Colors.transparent,
     context: context,
-    constraints: BoxConstraints(
-      maxWidth: MediaQuery.of(context).size.width - 25,
-    ),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
-    ),
     builder: (BuildContext context) {
       var width = MediaQuery.of(context).size.width;
       return Container(
+        margin: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          color: AppColors.darkGreyColor,
+          borderRadius: BorderRadius.circular(20),
+        ),
         padding: const EdgeInsets.all(15.0),
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

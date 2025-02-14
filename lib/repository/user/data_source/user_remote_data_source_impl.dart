@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:movies_app/models/update_or_delete_profile_model.dart';
@@ -67,14 +68,13 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
   @override
   Future<void> deleteAccount() async{
+    String? token = await CashHelper.getData(key: "token");
     Uri url = Uri.https(ApiConstants.authBaseUrl, EndPoints.deleteAccount);
 
     try {
       var response = await http.delete(
         url,
-        headers: {
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YWVhNzA4MTI2NTNiMTE1YmFjODczNSIsImVtYWlsIjoiYW1ydGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3Mzk0OTkyNzh9.d1msSBVL_8V34WOt_tBLwfOa7sTzEtZAhyhuHJ1nv1o",
-        },
+        headers: {"Authorization": "Bearer $token"},
       );
 
       if (response.statusCode != 200) {
