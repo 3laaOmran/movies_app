@@ -1,8 +1,7 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
-import 'package:movies_app/models/update_profile_model.dart';
+import 'package:movies_app/models/update_or_delete_profile_model.dart';
 import 'package:movies_app/models/user_model.dart';
 import 'package:movies_app/repository/user/data_source/user_remote_data_source.dart';
 
@@ -34,7 +33,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<UpdateProfileModel?> updateUserData({
+  Future<UpdateOrDeleteProfileModel?> updateUserData({
     required String name,
     required String phone,
     required int avatarId
@@ -59,9 +58,30 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         throw Exception("Failed to update user data: ${response.statusCode}");
       }
       var jsonResponse = jsonDecode(response.body);
-      return UpdateProfileModel.fromJson(jsonResponse);
+      return UpdateOrDeleteProfileModel.fromJson(jsonResponse);
     } catch (e) {
       print("Error updating user data: $e");
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteAccount() async{
+    Uri url = Uri.https(ApiConstants.authBaseUrl, EndPoints.deleteAccount);
+
+    try {
+      var response = await http.delete(
+        url,
+        headers: {
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YWVhNzA4MTI2NTNiMTE1YmFjODczNSIsImVtYWlsIjoiYW1ydGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3Mzk0OTkyNzh9.d1msSBVL_8V34WOt_tBLwfOa7sTzEtZAhyhuHJ1nv1o",
+        },
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception("Failed to delete account: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error deleting account: $e");
       rethrow;
     }
   }

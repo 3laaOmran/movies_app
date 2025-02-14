@@ -59,4 +59,15 @@ class UserCubit extends Cubit<UserStates> {
       print('Error y');
     }
   }
+
+
+  void deleteAccount() async {
+    emit(DeleteAccountLoadingState());
+    try {
+      await userRepository.deleteAccount();
+      emit(DeleteAccountSuccessState());
+    } catch (e) {
+      emit(DeleteAccountErrorState(errorMsg: e.toString()));
+    }
+  }
 }

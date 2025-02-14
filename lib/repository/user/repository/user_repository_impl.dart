@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:movies_app/models/update_profile_model.dart';
+import 'package:movies_app/models/update_or_delete_profile_model.dart';
 import 'package:movies_app/models/user_model.dart';
 import 'package:movies_app/repository/user/data_source/user_remote_data_source.dart';
 import 'package:movies_app/repository/user/repository/user_repository.dart';
@@ -16,7 +16,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<UpdateProfileModel?> updateUserData({
+  Future<UpdateOrDeleteProfileModel?> updateUserData({
     required String name,
     required String phone,
     required int avatarId,
@@ -24,4 +24,11 @@ class UserRepositoryImpl implements UserRepository {
     return remoteDataSource.updateUserData(
         name: name, phone: phone, avatarId: avatarId);
   }
+
+  @override
+  Future<void> deleteAccount() {
+    return remoteDataSource.deleteAccount();
+  }
+
+
 }
