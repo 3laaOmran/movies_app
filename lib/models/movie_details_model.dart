@@ -3,17 +3,19 @@ class MovieDetailsModel {
     this.status,
     this.statusMessage,
     this.data,
+    this.meta,
   });
 
   MovieDetailsModel.fromJson(dynamic json) {
     status = json['status'];
     statusMessage = json['status_message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    meta = json['@meta'] != null ? Meta.fromJson(json['@meta']) : null;
   }
-
   String? status;
   String? statusMessage;
   Data? data;
+  Meta? meta;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -22,28 +24,31 @@ class MovieDetailsModel {
     if (data != null) {
       map['data'] = data?.toJson();
     }
+    if (meta != null) {
+      map['@meta'] = meta?.toJson();
+    }
     return map;
   }
 }
 
-class meta {
-  meta({
+class Meta {
+  Meta({
     this.serverTime,
     this.serverTimezone,
     this.apiVersion,
     this.executionTime,
   });
 
-  meta.fromJson(dynamic json) {
+  Meta.fromJson(dynamic json) {
     serverTime = json['server_time'];
     serverTimezone = json['server_timezone'];
     apiVersion = json['api_version'];
     executionTime = json['execution_time'];
   }
 
-  int? serverTime;
+  num? serverTime;
   String? serverTimezone;
-  int? apiVersion;
+  num? apiVersion;
   String? executionTime;
 
   Map<String, dynamic> toJson() {
@@ -64,7 +69,6 @@ class Data {
   Data.fromJson(dynamic json) {
     movie = json['movie'] != null ? Movie.fromJson(json['movie']) : null;
   }
-
   Movie? movie;
 
   Map<String, dynamic> toJson() {
@@ -100,6 +104,12 @@ class Movie {
     this.smallCoverImage,
     this.mediumCoverImage,
     this.largeCoverImage,
+    this.mediumScreenshotImage1,
+    this.mediumScreenshotImage2,
+    this.mediumScreenshotImage3,
+    this.largeScreenshotImage1,
+    this.largeScreenshotImage2,
+    this.largeScreenshotImage3,
     this.cast,
     this.torrents,
     this.dateUploaded,
@@ -129,6 +139,12 @@ class Movie {
     smallCoverImage = json['small_cover_image'];
     mediumCoverImage = json['medium_cover_image'];
     largeCoverImage = json['large_cover_image'];
+    mediumScreenshotImage1 = json['medium_screenshot_image1'];
+    mediumScreenshotImage2 = json['medium_screenshot_image2'];
+    mediumScreenshotImage3 = json['medium_screenshot_image3'];
+    largeScreenshotImage1 = json['large_screenshot_image1'];
+    largeScreenshotImage2 = json['large_screenshot_image2'];
+    largeScreenshotImage3 = json['large_screenshot_image3'];
     if (json['cast'] != null) {
       cast = [];
       json['cast'].forEach((v) {
@@ -145,18 +161,18 @@ class Movie {
     dateUploadedUnix = json['date_uploaded_unix'];
   }
 
-  int? id;
+  num? id;
   String? url;
   String? imdbCode;
   String? title;
   String? titleEnglish;
   String? titleLong;
   String? slug;
-  int? year;
-  double? rating;
-  int? runtime;
+  num? year;
+  num? rating;
+  num? runtime;
   List<String>? genres;
-  int? likeCount;
+  num? likeCount;
   String? descriptionIntro;
   String? descriptionFull;
   String? ytTrailerCode;
@@ -167,10 +183,16 @@ class Movie {
   String? smallCoverImage;
   String? mediumCoverImage;
   String? largeCoverImage;
+  String? mediumScreenshotImage1;
+  String? mediumScreenshotImage2;
+  String? mediumScreenshotImage3;
+  String? largeScreenshotImage1;
+  String? largeScreenshotImage2;
+  String? largeScreenshotImage3;
   List<Cast>? cast;
   List<Torrents>? torrents;
   String? dateUploaded;
-  int? dateUploadedUnix;
+  num? dateUploadedUnix;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -196,6 +218,12 @@ class Movie {
     map['small_cover_image'] = smallCoverImage;
     map['medium_cover_image'] = mediumCoverImage;
     map['large_cover_image'] = largeCoverImage;
+    map['medium_screenshot_image1'] = mediumScreenshotImage1;
+    map['medium_screenshot_image2'] = mediumScreenshotImage2;
+    map['medium_screenshot_image3'] = mediumScreenshotImage3;
+    map['large_screenshot_image1'] = largeScreenshotImage1;
+    map['large_screenshot_image2'] = largeScreenshotImage2;
+    map['large_screenshot_image3'] = largeScreenshotImage3;
     if (cast != null) {
       map['cast'] = cast?.map((v) => v.toJson()).toList();
     }
@@ -242,7 +270,6 @@ class Torrents {
     dateUploaded = json['date_uploaded'];
     dateUploadedUnix = json['date_uploaded_unix'];
   }
-
   String? url;
   String? hash;
   String? quality;
@@ -251,12 +278,12 @@ class Torrents {
   String? videoCodec;
   String? bitDepth;
   String? audioChannels;
-  int? seeds;
-  int? peers;
+  num? seeds;
+  num? peers;
   String? size;
-  int? sizeBytes;
+  num? sizeBytes;
   String? dateUploaded;
-  int? dateUploadedUnix;
+  num? dateUploadedUnix;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -292,7 +319,6 @@ class Cast {
     urlSmallImage = json['url_small_image'];
     imdbCode = json['imdb_code'];
   }
-
   String? name;
   String? characterName;
   String? urlSmallImage;
