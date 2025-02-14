@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movies_app/repository/movie_suggestion/repo/movie_suggestion_repository.dart';
 import 'package:movies_app/ui/details_screen/cubit/details_screen_states.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../models/movie_details_model.dart';
 import '../../../models/movie_suggestion_model.dart';
@@ -49,4 +50,6 @@ class DetailsScreenCubit extends Cubit<DetailsScreenStates> {
       emit(DetailsScreenErrorState(message: "No Internet Connection"));
     }
   }
+
+
 }

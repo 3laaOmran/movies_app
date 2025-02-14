@@ -1,8 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/ui/details_screen/widgets/movie_details.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_styles.dart';
+import 'package:movies_app/utils/asset_manager.dart';
 import 'package:movies_app/ui/widgets/movie_poster.dart';
 import 'package:movies_app/utils/app_styles.dart';
+
 
 import '../../di/di.dart';
 import '../../utils/app_colors.dart';
@@ -19,6 +24,7 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var args = ModalRoute.of(context)!.settings.arguments as int;
+
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
@@ -36,7 +42,14 @@ class DetailsScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
+                  children: [ MovieDetails(
+                  url: state.movieDetailsModel.data!.movie!.url!,
+                  imagePath: state.movieDetailsModel.data!.movie!.largeCoverImage!,
+                  likeCount: state.movieDetailsModel.data!.movie!.likeCount!,
+                  movieName:  state.movieDetailsModel.data!.movie!.title!,
+                  rating:  state.movieDetailsModel.data!.movie!.rating!,
+                  runTime:  state.movieDetailsModel.data!.movie!.runtime!,
+                  year:  state.movieDetailsModel.data!.movie!.year!),
                     SizedBox(height: height * 0.09),
                     Text('Screen Shots', style: AppStyles.bold24White),
                     SizedBox(height: height * 0.02),
