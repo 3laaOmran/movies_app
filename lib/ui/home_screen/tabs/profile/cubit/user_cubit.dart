@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import 'package:movies_app/models/user_model.dart';
 import 'package:movies_app/repository/user/repository/user_repository.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/cubit/user_state.dart';
 
 @injectable
 class UserCubit extends Cubit<UserStates> {
-  UserRepository userRepository;
+  final UserRepository userRepository;
+  int selectedAvatarId = 0;
 
   UserCubit({required this.userRepository}) : super(UserInitialState());
+
   var nameController = TextEditingController();
   var phoneController = TextEditingController();
   var googleUserImage;
@@ -30,5 +33,30 @@ class UserCubit extends Cubit<UserStates> {
 
   void getGoogleUserDetails() {
     emit(GetGoogleUserDataLoadingState());
+  }
+
+  void updateAvatar(int avatarId) {
+    selectedAvatarId = avatarId;
+  }
+
+  void updateUserData(
+      {required String name,
+        required String phone,
+        required int avatarId}) async {
+    emit(UpdateUserDataLoadingState());
+    try {
+      var response = await userRepository.updateUserData(
+          name: name, phone: phone, avatarId: avatarId);
+      if (response!.message!.isNotEmpty) {
+        emit(UpdateUserDataSuccessState(updateProfileModel: response));
+      }else{
+        emit(UpdateUserDataErrorState(errorMsg: "Failed to update user data"));
+        print('Error y');
+      }
+
+    } catch (e) {
+      emit(UpdateUserDataErrorState(errorMsg: e.toString()));
+      print('Error y');
+    }
   }
 }

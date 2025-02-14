@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/asset_manager.dart';
 
-void showAvatarBottomSheet(BuildContext context) {
+void showAvatarBottomSheet(
+    BuildContext context, Function(int) onAvatarSelected) {
   List<String> avatarList = [
     AssetsManager.avatar1,
     AssetsManager.avatar2,
@@ -14,16 +16,18 @@ void showAvatarBottomSheet(BuildContext context) {
     AssetsManager.avatar9,
   ];
   showModalBottomSheet(
+    backgroundColor: AppColors.darkGreyColor,
     context: context,
+    constraints: BoxConstraints(
+      maxWidth: MediaQuery.of(context).size.width - 25,
+    ),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
     ),
     builder: (BuildContext context) {
-      var height = MediaQuery.of(context).size.height;
       var width = MediaQuery.of(context).size.width;
-
       return Container(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(15.0),
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
@@ -35,11 +39,12 @@ void showAvatarBottomSheet(BuildContext context) {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
+                onAvatarSelected(index);
                 Navigator.pop(context);
               },
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.yellow, width: 2),
+                  border: Border.all(color: AppColors.yellowColor, width: 2),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ClipRRect(
@@ -57,3 +62,4 @@ void showAvatarBottomSheet(BuildContext context) {
     },
   );
 }
+
