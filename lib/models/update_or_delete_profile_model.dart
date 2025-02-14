@@ -2,14 +2,14 @@
 /// error : "Unauthorized"
 /// statusCode : 401
 
-class UpdateProfileModel {
-  UpdateProfileModel({
+class UpdateOrDeleteProfileModel {
+  UpdateOrDeleteProfileModel({
     this.message,
     this.error,
     this.statusCode,
   });
 
-  UpdateProfileModel.fromJson(dynamic json) {
+  UpdateOrDeleteProfileModel.fromJson(dynamic json) {
     message = json['message'];
     error = json['error'];
     statusCode = json['statusCode'];

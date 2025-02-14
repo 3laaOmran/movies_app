@@ -22,7 +22,7 @@ class UpdateProfile extends StatefulWidget {
 }
 
 class _UpdateProfileState extends State<UpdateProfile> {
-  UserCubit cubit =UserCubit(userRepository: getIt<UserRepository>());
+  UserCubit cubit = UserCubit(userRepository: getIt<UserRepository>());
 
   @override
   void initState() {
@@ -53,22 +53,34 @@ class _UpdateProfileState extends State<UpdateProfile> {
         if (state is GetUserDataSuccessState) {
           cubit.nameController.text = state.user.name ?? "";
           cubit.phoneController.text = state.user.phone ?? "";
-          cubit.selectedAvatarId = state.user.avaterId ?? 0;
+          cubit.selectedAvatarId = (state.user.avaterId ?? 0).clamp(0, avatarList.length - 1);
         }
         if (state is UpdateUserDataSuccessState) {
           CustomDialog.hideLoading(context);
-          CustomDialog.showAlert(context: context, message:state.updateProfileModel.message ??'',posActionName: 'Ok',posAction: (){
+          CustomDialog.showAlert(context: context, message: state.updateProfileModel.message ?? '', posActionName: 'Ok', posAction: () {
             cubit.getUserData();
           });
         } else if (state is UpdateUserDataErrorState) {
           CustomDialog.hideLoading(context);
-          CustomDialog.showAlert(context: context, message: state.errorMsg,posActionName: 'ok');
+          CustomDialog.showAlert(context: context, message: state.errorMsg, posActionName: 'ok');
         } else if (state is UpdateUserDataLoadingState) {
           CustomDialog.showLoading(context: context, message: 'Updating...');
+        } else if (state is DeleteAccountSuccessState) {
+          CustomDialog.hideLoading(context);
+          CustomDialog.showAlert(context: context, message: 'Account deleted successfully.', posActionName: 'Ok', posAction: () {
+            CashHelper.removeData(key: "token");
+            CashHelper.removeData(key: "isLoggedIn");
+            Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+          });
+        } else if (state is DeleteAccountErrorState) {
+          CustomDialog.hideLoading(context);
+          CustomDialog.showAlert(context: context, message: state.errorMsg, posActionName: 'Ok');
+        } else if (state is DeleteAccountLoadingState) {
+          CustomDialog.showLoading(context: context, message: 'Deleting account...');
         }
       },
-      builder: (context,state){
-        if(state is GetUserDataLoadingState){
+      builder: (context, state) {
+        if (state is GetUserDataLoadingState) {
           return Scaffold(
             body: Center(
               child: CircularProgressIndicator(
@@ -76,13 +88,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
               ),
             ),
           );
-        }else if (state is GetUserDataErrorState){
+        } else if (state is GetUserDataErrorState) {
           return Scaffold(
             body: Center(
-                child: Text(state.errorMsg,style: AppStyles.bold24White,)
+                child: Text(state.errorMsg, style: AppStyles.bold24White,)
             ),
           );
-        }else if(state is GetUserDataSuccessState){
+        } else if (state is GetUserDataSuccessState) {
           return Scaffold(
             appBar: AppBar(
               title: const Text("Update Profile"),
@@ -95,13 +107,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   children: [
                     // Avatar Selection
                     GestureDetector(
-                      onTap: () =>
-                          showAvatarBottomSheet(context, (selectedAvatarId) {
-                            setState(() {
-                              cubit.selectedAvatarId = selectedAvatarId;
-                            });
-                            cubit.updateAvatar(selectedAvatarId);
-                          }),
+                      onTap: () => showAvatarBottomSheet(context, (selectedAvatarId) {
+                        setState(() {
+                          cubit.selectedAvatarId = selectedAvatarId;
+                        });
+                        cubit.updateAvatar(selectedAvatarId);
+                      }),
                       child: Container(
                         width: width * 0.5,
                         height: width * 0.5,
@@ -141,21 +152,26 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       ],
                     ),
                     SizedBox(height: height * 0.15),
-
-                    //TODO: Delete Account Button
+                    // Delete Account Button
                     CustomElevatedButton(
                       buttonText: 'Delete Account',
                       onPressed: () {
-                        CashHelper.removeData(key: "token");
-                        CashHelper.removeData(key: "isLoggedIn");
-                        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+                        CustomDialog.showAlert(
+                          context: context,
+                          message: 'Are you sure you want to delete your account?',
+                          title: 'Delete Account',
+                          negActionName: 'Delete',
+                          negAction: () {
+                            cubit.deleteAccount();
+                          },
+                          posActionName: 'Cancel',
+                        );
                       },
                       bgColor: AppColors.redColor,
                       border: BorderSide.none,
                       buttonTextStyle: AppStyles.regular20White,
                     ),
                     SizedBox(height: height * 0.02),
-
                     // Update Data Button
                     CustomElevatedButton(
                       buttonText: 'Update Data',
@@ -163,7 +179,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         if (cubit.nameController.text.trim().isEmpty ||
                             cubit.phoneController.text.trim().isEmpty) {
                           CustomDialog.showAlert(
-                              context: context, message: 'Fields cannot be empty',posActionName: 'Ok');
+                              context: context, message: 'Fields cannot be empty', posActionName: 'Ok');
                           return;
                         }
 
@@ -178,7 +194,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 ),
               ),
             ),
-
           );
         }
         return Container();
@@ -186,4 +201,3 @@ class _UpdateProfileState extends State<UpdateProfile> {
     );
   }
 }
-
