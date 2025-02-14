@@ -1,11 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movies_app/ui/details_screen/widgets/custom_container_widget.dart';
+import 'package:movies_app/ui/details_screen/widgets/web_view.dart';
 import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/asset_manager.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class MovieDetails extends StatelessWidget {
   String imagePath;
@@ -24,7 +25,6 @@ class MovieDetails extends StatelessWidget {
     required this.runTime,
     required this.year
 });
-
   @override
   Widget build(BuildContext context) {
     var height=MediaQuery.of(context).size.height;
@@ -35,18 +35,55 @@ class MovieDetails extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           // alignment:Alignment.center,
           children: [
-            Opacity(
-              opacity: 0.5,
-              child: CachedNetworkImage(
-                imageUrl:  imagePath,
-              )
+            CachedNetworkImage(
+              height: height*0.7,
+              imageUrl:  imagePath,
+              placeholder: (context, url) => Center(
+                child: CircularProgressIndicator(color: AppColors.yellowColor),
+              ),
+              errorWidget: (context, url, error) => Center(
+                child: Icon(Icons.error, color: Colors.red, size: 35),
+              ),
+            ),
+            Container(
+              width: double.infinity,
+              height: height * 0.7,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color.fromARGB(230, 0, 0, 0),
+                    Color.fromARGB(150, 0, 0, 0),
+                    Color.fromARGB(100, 0, 0, 0),
+                    Color.fromARGB(230, 12, 13, 12),
+                  ],
+                  stops: [0.0, 0.3, 0.6, 1.0],
+                ),
+              ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Center(child: InkWell(
+                Padding(
+                  padding:  EdgeInsets.only(left: width*0.02,right: width*0.05),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                   IconButton(onPressed: (){
+                     Navigator.pop(context);
+                   }, icon: Icon( Icons.arrow_back_ios,color: AppColors.whiteColor,)),
+                    InkWell(
+                        child: Image.asset(
+                          AssetsManager.bookmarkIcon,color: AppColors.whiteColor,))
+                  ],),
+                ),
+                SizedBox(height: height*0.19,),
+                Center(
+                    child: InkWell(
                     onTap: (){
-                      launch(url);
+                      Navigator.push( context, MaterialPageRoute( builder: (context) =>
+                          WebViewScreen(newsUrl: url)));
                     },
                     child: Image.asset(AssetsManager.playIcon))),
                SizedBox(height: height*0.17,),
@@ -66,7 +103,8 @@ class MovieDetails extends StatelessWidget {
             buttonText: 'Watch',
             buttonTextStyle: AppStyles.bold20White,
             onPressed: (){
-                launch(url);
+              Navigator.push( context, MaterialPageRoute( builder: (context) =>
+                  WebViewScreen(newsUrl: url)));
               },
             bgColor: AppColors.redColor,
           ),

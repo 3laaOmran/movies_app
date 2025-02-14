@@ -2,8 +2,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movies_app/ui/details_screen/cubit/details_screen_states.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../../repository/movie_details/repo/movie_details_repo.dart';
 
 @injectable
