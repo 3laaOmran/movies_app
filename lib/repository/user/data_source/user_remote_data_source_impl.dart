@@ -14,17 +14,15 @@ import '../../../utils/helpers/cash_helper.dart';
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   @override
   Future<UserModel?> getUserData() async {
-    //String? token = await CashHelper.getData(key: "token");
+    String? token = await CashHelper.getData(key: "token");
     Uri url = Uri.https(ApiConstants.authBaseUrl, EndPoints.getUserData);
 
     try {
       var response = await http.get(url, headers: {
-        "Authorization":
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YWUzYTcwYzY0ZjMzOWJlYjA5MWM2ZCIsImVtYWlsIjoiYW1ydGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3Mzk0NzE0OTR9.oi4gjd7nAK3JxEs46KYfzAhqec8359jfTW8E2mr5lfI"
-      });
+        "Authorization": "Bearer $token"});
 
       if (response.statusCode != 200) {
-        throw Exception("Failed to load movies: ${response.statusCode}");
+        throw Exception("Failed to load User: ${response.statusCode}");
       }
 
       var jsonResponse = jsonDecode(response.body);
@@ -41,14 +39,15 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     required String phone,
     required int avatarId
   }) async {
+    String? token = await CashHelper.getData(key: "token");
     Uri url = Uri.https(ApiConstants.authBaseUrl, EndPoints.getUserData);
 
     try {
       var response = await http.patch(
           url,
           headers: {
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YWUzYTcwYzY0ZjMzOWJlYjA5MWM2ZCIsImVtYWlsIjoiYW1ydGVzdEBnbWFpbC5jb20iLCJpYXQiOjE3Mzk0NzE0OTR9.oi4gjd7nAK3JxEs46KYfzAhqec8359jfTW8E2mr5lfI",
-          },
+        "Authorization": "Bearer $token"
+      },
           body: {
             "name": name,
             "phone": phone,

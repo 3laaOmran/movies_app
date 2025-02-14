@@ -2,19 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/repository/user/repository/user_repository.dart';
 import 'package:movies_app/ui/auth/login_screen/login_screen.dart';
-import 'package:movies_app/ui/tabs/profile/update_profile/show_bottom_sheet.dart';
+import 'package:movies_app/ui/home_screen/tabs/profile/update_profile/show_bottom_sheet.dart';
 import 'package:movies_app/ui/widgets/custom_dialog.dart';
 import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
 import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
-import 'package:movies_app/ui/auth/login_screen/login_screen.dart';
-import 'package:movies_app/ui/home_screen/tabs/profile/update_profile/show_bottom_sheet.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/asset_manager.dart';
 import 'package:movies_app/utils/helpers/cash_helper.dart';
-import '../../../../../di/di.dart';
-import 'package:movies_app/utils/helpers/cash_helper.dart';
 
+import '../../../../../api/google_signin_api.dart';
 import '../../../../../di/di.dart';
 import '../cubit/user_cubit.dart';
 import '../cubit/user_state.dart';
@@ -40,7 +37,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
       cubit.googleUserImage = CashHelper.getData(key: 'googleUserImage');
     }
     super.initState();
-    cubit.getUserData();
   }
 
   @override
@@ -70,12 +66,21 @@ class _UpdateProfileState extends State<UpdateProfile> {
         }
         if (state is UpdateUserDataSuccessState) {
           CustomDialog.hideLoading(context);
-          CustomDialog.showAlert(context: context, message:state.updateProfileModel.message ??'',posActionName: 'Ok',posAction: (){
-            cubit.getUserData();
+          CustomDialog.showAlert(
+              context: context,
+              title: 'Success',
+              message: state.updateProfileModel.message ?? '',
+              posActionName: 'Ok',
+              posAction: () {
+                cubit.getUserData();
           });
         } else if (state is UpdateUserDataErrorState) {
           CustomDialog.hideLoading(context);
-          CustomDialog.showAlert(context: context, message: state.errorMsg,posActionName: 'ok');
+          CustomDialog.showAlert(
+              context: context,
+              title: 'Error',
+              message: state.errorMsg,
+              posActionName: 'ok');
         } else if (state is UpdateUserDataLoadingState) {
           CustomDialog.showLoading(context: context, message: 'Updating...');
         }
@@ -87,177 +92,15 @@ class _UpdateProfileState extends State<UpdateProfile> {
               child: CircularProgressIndicator(
                 color: AppColors.yellowColor,
               ),
-            );
-          } else if (state is GetUserDataSuccessState ||
-              state is GetGoogleUserDataLoadingState) {
-            return Scaffold(
-              appBar: AppBar(
-                title: const Text("Pick Avatar"),
-                centerTitle: true,
-                leading: IconButton(
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: AppColors.yellowColor,
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-              body: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: SingleChildScrollView(
-                  // Wrap the Column
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      GestureDetector(
-                        onTap: () => showAvatarBottomSheet(context),
-                        child: Container(
-                          width: width * 0.5,
-                          height: width * 0.5,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: state is! GetGoogleUserDataLoadingState
-                                  ? AssetImage(avatarList[
-                                      state is GetUserDataSuccessState
-                                          ? state.user.avaterId!
-                                          : 0])
-                                  : NetworkImage(cubit.googleUserImage ??
-                                      'https://img.freepik.com/premium-vector/vector-flat-illustration-grayscale-avatar-user-profile-person-icon-profile-picture-business-profile-woman-suitable-social-media-profiles-icons-screensavers-as-templatex9_719432-1351.jpg?ga=GA1.1.1564111303.1739032657&semt=ais_hybrid'),
-                              fit: BoxFit.fitHeight,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: height * 0.02),
-                      TextFormField(
-                        controller: cubit.nameController,
-                        style: const TextStyle(color: AppColors.whiteColor),
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.person,
-                              color: AppColors.whiteColor),
-                          hintText: "Name",
-                          hintStyle: const TextStyle(color: Colors.white),
-                          fillColor: const Color(0xff282A28),
-                          filled: true,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: height * 0.01),
-                      TextFormField(
-                        controller: cubit.phoneController,
-                        style: const TextStyle(color: AppColors.whiteColor),
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.phone,
-                              color: AppColors.whiteColor),
-                          hintText: "phone",
-                          hintStyle:
-                              const TextStyle(color: AppColors.whiteColor),
-                          fillColor: const Color(0xff282A28),
-                          filled: true,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: height * 0.015),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, ResetPasswordScreen.routeName);
-                            },
-                            child: const Text(
-                              "Reset Password",
-                              style: TextStyle(color: AppColors.lightGreyColor),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: height * 0.13),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.redColor,
-                          padding:
-                              EdgeInsets.symmetric(vertical: height * 0.02),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                        ),
-                        onPressed: () async {
-                          if (CashHelper.getData(key: 'googleUsername') ==
-                              null) {
-                            CashHelper.removeData(key: "token");
-                            CashHelper.removeData(key: "isLoggedIn");
-                          } else {
-                            await GoogleSignInApi.logout();
-                            CashHelper.removeData(key: "googleUsername");
-                            CashHelper.removeData(key: "googleUserImage");
-                          }
-                          Navigator.pushReplacementNamed(
-                              context, LoginScreen.routeName);
-                        },
-                        child: const Text(
-                          "Delete Account",
-                          style: TextStyle(color: AppColors.whiteColor),
-                        ),
-                      ),
-                      SizedBox(height: height * 0.02),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.yellowColor,
-                          padding:
-                              EdgeInsets.symmetric(vertical: height * 0.02),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: const Text(
-                          "Update Data",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          } else if (state is GetUserDataErrorState) {
-            return Text(
-              state.errorMsg,
-              style: AppStyles.bold20White,
-            );
-          }
-          return Container();
-        },
-      ),
-            ),
-          );
-        }else if (state is GetUserDataErrorState){
+          ));
+        } else if (state is GetUserDataErrorState) {
           return Scaffold(
             body: Center(
                 child: Text(state.errorMsg,style: AppStyles.bold24White,)
             ),
           );
-        }else if(state is GetUserDataSuccessState){
+        } else if (state is GetUserDataSuccessState ||
+            state is GetGoogleUserDataLoadingState) {
           return Scaffold(
             appBar: AppBar(
               title: const Text("Update Profile"),
@@ -283,7 +126,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                            image: AssetImage(avatarList[cubit.selectedAvatarId]),
+                            image: state is! GetGoogleUserDataLoadingState
+                                ? AssetImage(avatarList[
+                                    state is GetUserDataSuccessState
+                                        ? state.user.avaterId!
+                                        : 0])
+                                : NetworkImage(cubit.googleUserImage ??
+                                    'https://img.freepik.com/premium-vector/vector-flat-illustration-grayscale-avatar-user-profile-person-icon-profile-picture-business-profile-woman-suitable-social-media-profiles-icons-screensavers-as-templatex9_719432-1351.jpg?ga=GA1.1.1564111303.1739032657&semt=ais_hybrid'),
                             fit: BoxFit.fitHeight,
                           ),
                         ),
@@ -307,7 +156,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context, ResetPasswordScreen.routeName);
+                          },
                           child: const Text(
                             "Reset Password",
                             style: TextStyle(color: AppColors.lightGreyColor),
@@ -316,29 +168,35 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       ],
                     ),
                     SizedBox(height: height * 0.15),
-
-                    //TODO: Delete Account Button
                     CustomElevatedButton(
                       buttonText: 'Delete Account',
-                      onPressed: () {
-                        CashHelper.removeData(key: "token");
-                        CashHelper.removeData(key: "isLoggedIn");
-                        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+                      onPressed: () async {
+                        if (CashHelper.getData(key: 'googleUsername') == null) {
+                          CashHelper.removeData(key: "token");
+                          CashHelper.removeData(key: "isLoggedIn");
+                        } else {
+                          await GoogleSignInApi.logout();
+                          CashHelper.removeData(key: "googleUsername");
+                          CashHelper.removeData(key: "googleUserImage");
+                        }
+                        Navigator.pushReplacementNamed(
+                            context, LoginScreen.routeName);
                       },
                       bgColor: AppColors.redColor,
                       border: BorderSide.none,
                       buttonTextStyle: AppStyles.regular20White,
                     ),
                     SizedBox(height: height * 0.02),
-
-                    // Update Data Button
                     CustomElevatedButton(
                       buttonText: 'Update Data',
                       onPressed: () {
                         if (cubit.nameController.text.trim().isEmpty ||
                             cubit.phoneController.text.trim().isEmpty) {
                           CustomDialog.showAlert(
-                              context: context, message: 'Fields cannot be empty',posActionName: 'Ok');
+                              context: context,
+                              title: 'Error',
+                              message: 'Fields cannot be empty',
+                              posActionName: 'Ok');
                           return;
                         }
 
