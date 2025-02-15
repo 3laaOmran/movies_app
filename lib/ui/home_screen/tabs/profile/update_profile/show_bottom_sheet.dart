@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/asset_manager.dart';
 
-void showAvatarBottomSheet(
-    BuildContext context, Function(int) onAvatarSelected) {
+void showAvatarBottomSheet(BuildContext context, Function(int) onAvatarSelected,
+    int selectedAvatarId) {
   List<String> avatarList = [
     AssetsManager.avatar1,
     AssetsManager.avatar2,
@@ -36,13 +36,17 @@ void showAvatarBottomSheet(
           itemCount: avatarList.length,
           shrinkWrap: true,
           itemBuilder: (context, index) {
+            bool isSelected = index == selectedAvatarId;
             return GestureDetector(
               onTap: () {
                 onAvatarSelected(index);
                 Navigator.pop(context);
               },
               child: Container(
+                padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
+                  color:
+                      isSelected ? AppColors.yellowColor.withAlpha(130) : null,
                   border: Border.all(color: AppColors.yellowColor, width: 2),
                   borderRadius: BorderRadius.circular(10),
                 ),

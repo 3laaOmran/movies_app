@@ -72,50 +72,56 @@ class DetailsScreen extends StatelessWidget {
                         SizedBox(height: height * 0.02),
                         Text('Similar', style: AppStyles.bold24White),
                         SizedBox(height: height * 0.02),
-                        SizedBox(
-                          height: height * 0.73,
-                          child: GridView.builder(
-                            padding: EdgeInsets.zero,
-                            physics: NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: width * 0.03,
-                              mainAxisSpacing: height * 0.025,
-                              childAspectRatio: 1 / 1.6,
-                            ),
-                            itemCount:
-                                state.movieSuggestionModel.data!.movies!.length,
-                            itemBuilder: (context, index) {
-                              return MoviePoster(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    DetailsScreen.routeName,
-                                    arguments: state.movieSuggestionModel.data!
-                                        .movies![index].id,
+                        state.movieSuggestionModel.data!.movies!.isNotEmpty
+                            ? GridView.builder(
+                                padding: EdgeInsets.zero,
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: width * 0.03,
+                                  mainAxisSpacing: height * 0.025,
+                                  childAspectRatio: 1 / 1.6,
+                                ),
+                                itemCount: state
+                                    .movieSuggestionModel.data!.movies!.length,
+                                itemBuilder: (context, index) {
+                                  return MoviePoster(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        DetailsScreen.routeName,
+                                        arguments: state.movieSuggestionModel
+                                            .data!.movies![index].id,
+                                      );
+                                      print(
+                                          'Movie Id : ${state.movieSuggestionModel.data!.movies![index].id}');
+                                    },
+                                    networkImage: state
+                                            .movieSuggestionModel
+                                            .data!
+                                            .movies![index]
+                                            .largeCoverImage ??
+                                        state.movieSuggestionModel.data!
+                                            .movies![index].mediumCoverImage ??
+                                        state.movieSuggestionModel.data!
+                                            .movies![index].smallCoverImage ??
+                                        "",
+                                    rating: state.movieSuggestionModel.data!
+                                        .movies![index].rating
+                                        .toString(),
+                                    imageWidth: double.infinity,
+                                    imageHeight: double.infinity,
+                                    imageFit: BoxFit.cover,
                                   );
-                                  print(
-                                      'Movie Id : ${state.movieSuggestionModel.data!.movies![index].id}');
                                 },
-                                networkImage: state.movieSuggestionModel.data!
-                                        .movies![index].largeCoverImage ??
-                                    state.movieSuggestionModel.data!
-                                        .movies![index].mediumCoverImage ??
-                                    state.movieSuggestionModel.data!
-                                        .movies![index].smallCoverImage ??
-                                    "",
-                                rating: state.movieSuggestionModel.data!
-                                    .movies![index].rating
-                                    .toString(),
-                                imageWidth: double.infinity,
-                                imageHeight: double.infinity,
-                                imageFit: BoxFit.cover,
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(height: height * 0.01),
+                              )
+                            : Text(
+                                'No Similar Movies Available...',
+                                style: AppStyles.regular16White,
+                              ),
+                        SizedBox(height: height * 0.02),
                         Text('Description', style: AppStyles.bold24White),
                         SizedBox(height: height * 0.02),
                         ReadMoreText(

@@ -140,14 +140,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Avatar Selection
                     GestureDetector(
                       onTap: () => showAvatarBottomSheet(context, (selectedAvatarId) {
                         setState(() {
                           cubit.selectedAvatarId = selectedAvatarId;
                         });
                         cubit.updateAvatar(selectedAvatarId);
-                      }),
+                      }, cubit.selectedAvatarId),
                       child: Container(
                         width: width * 0.5,
                         height: width * 0.5,
