@@ -9,7 +9,9 @@ import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/asset_manager.dart';
 import 'package:movies_app/utils/helpers/cash_helper.dart';
+
 import '../../../../../di/di.dart';
+import '../../../../auth/login_screen/login_screen.dart';
 import '../cubit/user_cubit.dart';
 import '../cubit/user_state.dart';
 import '../reset_password_screen/reset_password_screen.dart';
@@ -86,6 +88,29 @@ class _UpdateProfileState extends State<UpdateProfile> {
           );
         } else if (state is UpdateUserDataLoadingState) {
           CustomDialog.showLoading(context: context, message: 'Updating...');
+        }
+        if (state is DeleteAccountSuccessState) {
+          CustomDialog.hideLoading(context);
+          CustomDialog.showAlert(
+              context: context,
+              title: 'Deleted',
+              message: 'Account deleted successfully.',
+              posActionName: 'Ok',
+              posAction: () {
+                CashHelper.removeData(key: "token");
+                CashHelper.removeData(key: "isLoggedIn");
+                Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+              });
+        } else if (state is DeleteAccountErrorState) {
+          CustomDialog.hideLoading(context);
+          CustomDialog.showAlert(
+              context: context,
+              title: 'Error',
+              message: state.errorMsg,
+              posActionName: 'Ok');
+        } else if (state is DeleteAccountLoadingState) {
+          CustomDialog.showLoading(
+              context: context, message: 'Deleting account...');
         }
       },
       builder: (context, state) {

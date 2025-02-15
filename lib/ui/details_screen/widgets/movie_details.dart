@@ -79,7 +79,7 @@ class MovieDetails extends StatelessWidget {
                   ],),
                 ),
                   SizedBox(
-                    height: height * 0.23,
+                    height: height * 0.21,
                   ),
                   Center(
                     child: InkWell(
