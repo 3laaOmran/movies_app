@@ -6,7 +6,6 @@ import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/asset_manager.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class MovieDetails extends StatelessWidget {
   String imagePath;
@@ -79,8 +78,10 @@ class MovieDetails extends StatelessWidget {
                           AssetsManager.bookmarkIcon,color: AppColors.whiteColor,))
                   ],),
                 ),
-                SizedBox(height: height*0.19,),
-                Center(
+                  SizedBox(
+                    height: height * 0.23,
+                  ),
+                  Center(
                     child: InkWell(
                     onTap: (){
                       Navigator.push( context, MaterialPageRoute( builder: (context) =>

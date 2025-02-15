@@ -119,9 +119,106 @@ class DetailsScreen extends StatelessWidget {
                         SizedBox(height: height * 0.02),
                         Text(
                             state.movieDetailsModel.data!.movie!
-                                    .descriptionFull ??
-                                'No Description.......',
+                                    .descriptionFull!.isEmpty
+                                ? 'No Description Available...'
+                                : state.movieDetailsModel.data!.movie!
+                                        .descriptionFull ??
+                                    '',
                             style: AppStyles.regular16White),
+                        SizedBox(height: height * 0.02),
+                        Text('Cast', style: AppStyles.bold24White),
+                        state.movieDetailsModel.data!.movie!.cast != null
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: state.movieDetailsModel.data!.movie!
+                                    .cast!.length,
+                                itemBuilder: (context, index) {
+                                  var castMember = state.movieDetailsModel.data!
+                                      .movie!.cast![index];
+                                  return Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: height * 0.006),
+                                    padding: EdgeInsets.all(11),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16),
+                                      color: AppColors.darkGreyColor,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: CachedNetworkImage(
+                                            imageUrl:
+                                                castMember.urlSmallImage ?? '',
+                                            width: width * 0.15,
+                                            height: height * 0.07,
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) =>
+                                                CircularProgressIndicator(
+                                              color: AppColors.yellowColor,
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) => Icon(
+                                                    Icons.person,
+                                                    color: Colors.white,
+                                                    size: 38),
+                                          ),
+                                        ),
+                                        SizedBox(width: width * 0.02),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text('Name: ${castMember.name}',
+                                                  style:
+                                                      AppStyles.regular20White),
+                                              Text(
+                                                  'Character: ${castMember.characterName}',
+                                                  style:
+                                                      AppStyles.regular20White),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              )
+                            : Text(
+                                'No Cast Information Available...',
+                                style: AppStyles.regular16White,
+                              ),
+                        SizedBox(height: height * 0.02),
+                        Text('Genres', style: AppStyles.bold24White),
+                        SizedBox(height: height * 0.02),
+                        Wrap(
+                          spacing: width * 0.03,
+                          runSpacing: height * 0.015,
+                          children: List.generate(
+                            state.movieDetailsModel.data!.movie!.genres!.length,
+                            (index) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: width * 0.08,
+                                    vertical: height * 0.01),
+                                decoration: BoxDecoration(
+                                  color: AppColors.darkGreyColor,
+                                  // Background color
+                                  borderRadius: BorderRadius.circular(
+                                      12), // Rounded edges
+                                ),
+                                child: Text(
+                                  state.movieDetailsModel.data!.movie!
+                                      .genres![index],
+                                  style: AppStyles.regular16White, // Text style
+                                ),
+                              );
+                            },
+                          ),
+                        ),
                         SizedBox(height: height * 0.02),
                       ],
                     ),
