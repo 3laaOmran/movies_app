@@ -5,6 +5,7 @@ import 'package:movies_app/ui/details_screen/widgets/movie_details.dart';
 import 'package:movies_app/ui/widgets/movie_poster.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
+import 'package:readmore/readmore.dart';
 
 import '../../di/di.dart';
 import 'cubit/details_screen_cubit.dart';
@@ -117,14 +118,21 @@ class DetailsScreen extends StatelessWidget {
                         SizedBox(height: height * 0.01),
                         Text('Description', style: AppStyles.bold24White),
                         SizedBox(height: height * 0.02),
-                        Text(
-                            state.movieDetailsModel.data!.movie!
-                                    .descriptionFull!.isEmpty
-                                ? 'No Description Available...'
-                                : state.movieDetailsModel.data!.movie!
-                                        .descriptionFull ??
-                                    '',
-                            style: AppStyles.regular16White),
+                        ReadMoreText(
+                          style: AppStyles.regular16White,
+                          state.movieDetailsModel.data!.movie!.descriptionFull!
+                                  .isEmpty
+                              ? 'No Description Available...'
+                              : state.movieDetailsModel.data!.movie!
+                                      .descriptionFull ??
+                                  '',
+                          trimMode: TrimMode.Line,
+                          trimLines: 5,
+                          colorClickableText: AppColors.yellowColor,
+                          trimCollapsedText: 'See More',
+                          trimExpandedText: ' See Less',
+                          moreStyle: AppStyles.regular16Yellow,
+                        ),
                         SizedBox(height: height * 0.02),
                         Text('Cast', style: AppStyles.bold24White),
                         state.movieDetailsModel.data!.movie!.cast != null
