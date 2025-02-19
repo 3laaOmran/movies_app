@@ -6,7 +6,6 @@ import 'package:movies_app/ui/widgets/movie_poster.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:readmore/readmore.dart';
-
 import '../../di/di.dart';
 import 'cubit/details_screen_cubit.dart';
 import 'cubit/details_screen_states.dart';
@@ -40,9 +39,9 @@ class DetailsScreen extends StatelessWidget {
                   MovieDetails(
                       url: state.movieDetailsModel.data!.movie!.url!,
                       imagePath:
-                          state.movieDetailsModel.data!.movie!.largeCoverImage!,
+                      state.movieDetailsModel.data!.movie!.largeCoverImage!,
                       likeCount:
-                          state.movieDetailsModel.data!.movie!.likeCount!,
+                      state.movieDetailsModel.data!.movie!.likeCount!,
                       movieName: state.movieDetailsModel.data!.movie!.title!,
                       rating: state.movieDetailsModel.data!.movie!.rating!,
                       runTime: state.movieDetailsModel.data!.movie!.runtime!,
@@ -57,81 +56,81 @@ class DetailsScreen extends StatelessWidget {
                         SizedBox(height: height * 0.02),
                         ScreenShotImage(
                             imageUrl: state.movieDetailsModel.data!.movie!
-                                    .largeScreenshotImage1 ??
+                                .largeScreenshotImage1 ??
                                 ''),
                         SizedBox(height: height * 0.015),
                         ScreenShotImage(
                             imageUrl: state.movieDetailsModel.data!.movie!
-                                    .largeScreenshotImage2 ??
+                                .largeScreenshotImage2 ??
                                 ''),
                         SizedBox(height: height * 0.015),
                         ScreenShotImage(
                             imageUrl: state.movieDetailsModel.data!.movie!
-                                    .largeScreenshotImage3 ??
+                                .largeScreenshotImage3 ??
                                 ''),
                         SizedBox(height: height * 0.02),
                         Text('Similar', style: AppStyles.bold24White),
                         SizedBox(height: height * 0.02),
                         state.movieSuggestionModel.data!.movies!.isNotEmpty
                             ? GridView.builder(
-                                padding: EdgeInsets.zero,
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: width * 0.03,
-                                  mainAxisSpacing: height * 0.025,
-                                  childAspectRatio: 1 / 1.6,
-                                ),
-                                itemCount: state
-                                    .movieSuggestionModel.data!.movies!.length,
-                                itemBuilder: (context, index) {
-                                  return MoviePoster(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        DetailsScreen.routeName,
-                                        arguments: state.movieSuggestionModel
-                                            .data!.movies![index].id,
-                                      );
-                                      print(
-                                          'Movie Id : ${state.movieSuggestionModel.data!.movies![index].id}');
-                                    },
-                                    networkImage: state
-                                            .movieSuggestionModel
-                                            .data!
-                                            .movies![index]
-                                            .largeCoverImage ??
-                                        state.movieSuggestionModel.data!
-                                            .movies![index].mediumCoverImage ??
-                                        state.movieSuggestionModel.data!
-                                            .movies![index].smallCoverImage ??
-                                        "",
-                                    rating: state.movieSuggestionModel.data!
-                                        .movies![index].rating
-                                        .toString(),
-                                    imageWidth: double.infinity,
-                                    imageHeight: double.infinity,
-                                    imageFit: BoxFit.cover,
-                                  );
-                                },
-                              )
+                          padding: EdgeInsets.zero,
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate:
+                          SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: width * 0.03,
+                            mainAxisSpacing: height * 0.025,
+                            childAspectRatio: 1 / 1.6,
+                          ),
+                          itemCount: state
+                              .movieSuggestionModel.data!.movies!.length,
+                          itemBuilder: (context, index) {
+                            return MoviePoster(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  DetailsScreen.routeName,
+                                  arguments: state.movieSuggestionModel
+                                      .data!.movies![index].id,
+                                );
+                                print(
+                                    'Movie Id : ${state.movieSuggestionModel.data!.movies![index].id}');
+                              },
+                              networkImage: state
+                                  .movieSuggestionModel
+                                  .data!
+                                  .movies![index]
+                                  .largeCoverImage ??
+                                  state.movieSuggestionModel.data!
+                                      .movies![index].mediumCoverImage ??
+                                  state.movieSuggestionModel.data!
+                                      .movies![index].smallCoverImage ??
+                                  "",
+                              rating: state.movieSuggestionModel.data!
+                                  .movies![index].rating
+                                  .toString(),
+                              imageWidth: double.infinity,
+                              imageHeight: double.infinity,
+                              imageFit: BoxFit.cover,
+                            );
+                          },
+                        )
                             : Text(
-                                'No Similar Movies Available...',
-                                style: AppStyles.regular16White,
-                              ),
+                          'No Similar Movies Available...',
+                          style: AppStyles.regular16White,
+                        ),
                         SizedBox(height: height * 0.02),
                         Text('Description', style: AppStyles.bold24White),
                         SizedBox(height: height * 0.02),
                         ReadMoreText(
                           style: AppStyles.regular16White,
                           state.movieDetailsModel.data!.movie!.descriptionFull!
-                                  .isEmpty
+                              .isEmpty
                               ? 'No Description Available...'
                               : state.movieDetailsModel.data!.movie!
-                                      .descriptionFull ??
-                                  '',
+                              .descriptionFull ??
+                              '',
                           trimMode: TrimMode.Line,
                           trimLines: 5,
                           colorClickableText: AppColors.yellowColor,
@@ -143,68 +142,68 @@ class DetailsScreen extends StatelessWidget {
                         Text('Cast', style: AppStyles.bold24White),
                         state.movieDetailsModel.data!.movie!.cast != null
                             ? ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: state.movieDetailsModel.data!.movie!
-                                    .cast!.length,
-                                itemBuilder: (context, index) {
-                                  var castMember = state.movieDetailsModel.data!
-                                      .movie!.cast![index];
-                                  return Container(
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: height * 0.006),
-                                    padding: EdgeInsets.all(11),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16),
-                                      color: AppColors.darkGreyColor,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: state.movieDetailsModel.data!.movie!
+                              .cast!.length,
+                          itemBuilder: (context, index) {
+                            var castMember = state.movieDetailsModel.data!
+                                .movie!.cast![index];
+                            return Container(
+                              margin: EdgeInsets.symmetric(
+                                  vertical: height * 0.006),
+                              padding: EdgeInsets.all(11),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16),
+                                color: AppColors.darkGreyColor,
+                              ),
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius:
+                                    BorderRadius.circular(8),
+                                    child: CachedNetworkImage(
+                                      imageUrl:
+                                      castMember.urlSmallImage ?? '',
+                                      width: width * 0.15,
+                                      height: height * 0.07,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) =>
+                                          CircularProgressIndicator(
+                                            color: AppColors.yellowColor,
+                                          ),
+                                      errorWidget:
+                                          (context, url, error) => Icon(
+                                          Icons.person,
+                                          color: Colors.white,
+                                          size: 38),
                                     ),
-                                    child: Row(
+                                  ),
+                                  SizedBox(width: width * 0.02),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
                                       children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          child: CachedNetworkImage(
-                                            imageUrl:
-                                                castMember.urlSmallImage ?? '',
-                                            width: width * 0.15,
-                                            height: height * 0.07,
-                                            fit: BoxFit.cover,
-                                            placeholder: (context, url) =>
-                                                CircularProgressIndicator(
-                                              color: AppColors.yellowColor,
-                                            ),
-                                            errorWidget:
-                                                (context, url, error) => Icon(
-                                                    Icons.person,
-                                                    color: Colors.white,
-                                                    size: 38),
-                                          ),
-                                        ),
-                                        SizedBox(width: width * 0.02),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text('Name: ${castMember.name}',
-                                                  style:
-                                                      AppStyles.regular20White),
-                                              Text(
-                                                  'Character: ${castMember.characterName}',
-                                                  style:
-                                                      AppStyles.regular20White),
-                                            ],
-                                          ),
-                                        ),
+                                        Text('Name: ${castMember.name}',
+                                            style:
+                                            AppStyles.regular20White),
+                                        Text(
+                                            'Character: ${castMember.characterName}',
+                                            style:
+                                            AppStyles.regular20White),
                                       ],
                                     ),
-                                  );
-                                },
-                              )
-                            : Text(
-                                'No Cast Information Available...',
-                                style: AppStyles.regular16White,
+                                  ),
+                                ],
                               ),
+                            );
+                          },
+                        )
+                            : Text(
+                          'No Cast Information Available...',
+                          style: AppStyles.regular16White,
+                        ),
                         SizedBox(height: height * 0.02),
                         Text('Genres', style: AppStyles.bold24White),
                         SizedBox(height: height * 0.02),
@@ -213,7 +212,7 @@ class DetailsScreen extends StatelessWidget {
                           runSpacing: height * 0.015,
                           children: List.generate(
                             state.movieDetailsModel.data!.movie!.genres!.length,
-                            (index) {
+                                (index) {
                               return Container(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: width * 0.08,
