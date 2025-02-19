@@ -102,7 +102,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
             Movie movie = state.moviesList[index];
             return MoviePoster(
               onTap: () {
-                Navigator.of(context).pushNamed(DetailsScreen.routeName);
+                Navigator.of(context).pushNamed(DetailsScreen.routeName, arguments: movie.id);
               },
               networkImage: movie.largeCoverImage ?? '',
               rating: movie.rating?.toString() ?? 'N/A',
