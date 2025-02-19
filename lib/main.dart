@@ -4,6 +4,7 @@ import 'package:movies_app/ui/auth/login_screen/login_screen.dart';
 import 'package:movies_app/ui/auth/register_screen/register_screen.dart';
 import 'package:movies_app/ui/details_screen/details_screen.dart';
 import 'package:movies_app/ui/home_screen/home_screen.dart';
+import 'package:movies_app/ui/home_screen/tabs/browse_tab/cubit/browse_tab_view_model.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/reset_password_screen/reset_password_screen.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/update_profile/update_profile.dart';
 import 'package:movies_app/ui/onboarding/onboarding.dart';
@@ -18,7 +19,11 @@ void main() async {
   await CashHelper.init();
   Bloc.observer = MyBlocObserver();
   configureDependencies();
-  runApp(const MoviesApp());
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider(create: (context) => getIt<BrowseTabViewModel>()),
+    ],
+      child: MoviesApp()));
 }
 
 class MoviesApp extends StatelessWidget {

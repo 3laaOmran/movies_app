@@ -49,12 +49,15 @@ import '../repository/reset_pass/sources/reset_pass_data_source.dart' as _i294;
 import '../repository/reset_pass/sources/reset_pass_data_source_impl.dart'
     as _i384;
 import '../repository/user/data_source/user_remote_data_source.dart' as _i728;
-import '../repository/user/data_source/user_remote_data_source_impl.dart';
+import '../repository/user/data_source/user_remote_data_source_impl.dart'
+    as _i175;
 import '../repository/user/repository/user_repository.dart' as _i123;
 import '../repository/user/repository/user_repository_impl.dart' as _i871;
 import '../ui/auth/login_screen/cubit/login_cubit.dart' as _i311;
 import '../ui/auth/register_screen/cubit/register_cubit.dart' as _i599;
 import '../ui/details_screen/cubit/details_screen_cubit.dart' as _i459;
+import '../ui/home_screen/tabs/browse_tab/cubit/browse_tab_view_model.dart'
+    as _i52;
 import '../ui/home_screen/tabs/home_tab/cubit/home_tab_cubit.dart' as _i165;
 import '../ui/home_screen/tabs/profile/cubit/user_cubit.dart' as _i232;
 import '../ui/home_screen/tabs/profile/reset_password_screen/cubit/reset_pass_cubit.dart'
@@ -73,6 +76,8 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i311.LoginCubit>(() => _i311.LoginCubit());
     gh.factory<_i599.RegisterCubit>(() => _i599.RegisterCubit());
+    gh.factory<_i728.UserRemoteDataSource>(
+        () => _i175.UserRemoteDataSourceImpl());
     gh.factory<_i330.MoviesRemoteDataSource>(
         () => _i845.MoviesRemoteDataSourceImpl());
     gh.factory<_i263.RegisterDataSource>(() => _i182.RegisterDataSourceImpl());
@@ -80,7 +85,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i657.MovieSuggestionRemoteDataSourceImpl());
     gh.factory<_i401.RegisterRepository>(() => _i351.RegisterRepositoryImpl(
         registerDataSource: gh<_i263.RegisterDataSource>()));
-    gh.factory<_i728.UserRemoteDataSource>(() => UserRemoteDataSourceImpl());
     gh.factory<_i294.ResetPassDataSource>(
         () => _i384.ResetPassDataSourceImpl());
     gh.factory<_i211.ResetPassRepo>(() =>
@@ -101,6 +105,8 @@ extension GetItInjectableX on _i174.GetIt {
         loginRemoteDataSource: gh<_i912.LoginRemoteDataSource>()));
     gh.factory<_i232.UserCubit>(
         () => _i232.UserCubit(userRepository: gh<_i123.UserRepository>()));
+    gh.factory<_i52.BrowseTabViewModel>(() =>
+        _i52.BrowseTabViewModel(moviesRepository: gh<_i49.MoviesRepository>()));
     gh.factory<_i165.HomeTabCubit>(() =>
         _i165.HomeTabCubit(moviesRepository: gh<_i49.MoviesRepository>()));
     gh.factory<_i154.ResetPassCubit>(
