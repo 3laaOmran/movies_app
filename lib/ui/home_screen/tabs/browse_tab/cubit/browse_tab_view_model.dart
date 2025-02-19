@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -33,7 +32,7 @@ class BrowseTabViewModel extends Cubit<BrowseTabStates> {
         return;
       }
       moviesList = response.data!.movies!;
-      filteredMovies = moviesList;
+      filterMovies();
       emit(BrowseTabSuccessState(moviesList: filteredMovies));
     } catch (e) {
       emit(BrowseTabErrorState(errorMsg: e.toString()));

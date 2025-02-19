@@ -63,31 +63,32 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 }),
               ),
             ),
-            body: buildBody(state,height,width),
+            body: buildBody(state, height, width),
           ),
         );
       },
     );
   }
 
-  Widget buildBody(BrowseTabStates state,var height,var width) {
+  Widget buildBody(BrowseTabStates state, var height, var width) {
     if (state is BrowseTabLoadingState) {
       return Center(child: CircularProgressIndicator(color: AppColors.yellowColor));
     } else if (state is BrowseTabErrorState) {
       return Column(
         children: [
           Center(child: Text(state.errorMsg)),
-          ElevatedButton(onPressed: (){
-            BrowseTabViewModel.get(context)..getMovies();
-            setState(() {
-
-            });
-          }, child: Text('Try Again'))
+          ElevatedButton(
+            onPressed: () {
+              BrowseTabViewModel.get(context)..getMovies();
+              setState(() {});
+            },
+            child: Text('Try Again'),
+          ),
         ],
       );
     } else if (state is BrowseTabSuccessState) {
       return Padding(
-        padding: EdgeInsets.symmetric(horizontal: width*0.05, vertical: height*0.03),
+        padding: EdgeInsets.symmetric(horizontal: width * 0.05, vertical: height * 0.03),
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
@@ -99,10 +100,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
             Movie movie = state.moviesList[index];
             return MoviePoster(
               onTap: () {},
-              networkImage: movie.largeCoverImage ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKjPBkeoNEasSdvcXXsYYpaHv51T0edLvg_g&s',
+              networkImage: movie.largeCoverImage ?? '',
               rating: movie.rating?.toString() ?? 'N/A',
               imageWidth: double.infinity,
-              imageHeight: height*0.3,
+              imageHeight: height * 0.3,
               imageFit: BoxFit.cover,
             );
           },
