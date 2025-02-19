@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/ui/details_screen/details_screen.dart';
+import 'package:movies_app/ui/details_screen/widgets/movie_details.dart';
 import 'package:movies_app/ui/home_screen/tabs/browse_tab/cubit/browse_tab_view_model.dart';
 import 'package:movies_app/ui/widgets/movie_poster.dart';
 import 'package:movies_app/utils/app_colors.dart';
@@ -99,7 +101,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
           itemBuilder: (context, index) {
             Movie movie = state.moviesList[index];
             return MoviePoster(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(DetailsScreen.routeName);
+              },
               networkImage: movie.largeCoverImage ?? '',
               rating: movie.rating?.toString() ?? 'N/A',
               imageWidth: double.infinity,
