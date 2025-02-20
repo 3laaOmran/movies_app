@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/models/movie_model.dart';
 import 'package:movies_app/ui/details_screen/details_screen.dart';
-import 'package:movies_app/ui/details_screen/widgets/movie_details.dart';
+import 'package:movies_app/ui/home_screen/tabs/browse_tab/cubit/browse_tab_states.dart';
 import 'package:movies_app/ui/home_screen/tabs/browse_tab/cubit/browse_tab_view_model.dart';
 import 'package:movies_app/ui/widgets/movie_poster.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
-import 'package:movies_app/ui/home_screen/tabs/browse_tab/cubit/browse_tab_states.dart';
-import 'package:movies_app/models/movie_model.dart';
 
 class BrowseScreen extends StatefulWidget {
   @override
@@ -103,6 +102,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
             return MoviePoster(
               onTap: () {
                 Navigator.of(context).pushNamed(DetailsScreen.routeName, arguments: movie.id);
+                BrowseTabViewModel.get(context).addToHistory(movie);
               },
               networkImage: movie.largeCoverImage ?? '',
               rating: movie.rating?.toString() ?? 'N/A',

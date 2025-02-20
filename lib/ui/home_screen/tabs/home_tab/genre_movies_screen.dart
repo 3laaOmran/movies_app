@@ -5,6 +5,8 @@ import 'package:movies_app/ui/details_screen/details_screen.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 
+import '../browse_tab/cubit/browse_tab_view_model.dart';
+
 class GenreMoviesScreen extends StatelessWidget {
   final String genre;
   final List<Movie> allMovies;
@@ -32,6 +34,7 @@ class GenreMoviesScreen extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(context, DetailsScreen.routeName,
                   arguments: movie.id);
+              BrowseTabViewModel.get(context).addToHistory(movie);
             },
             child: Card(
               color: AppColors.darkGreyColor,
