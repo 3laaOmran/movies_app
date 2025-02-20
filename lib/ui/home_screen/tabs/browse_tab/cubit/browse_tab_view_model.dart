@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:movies_app/models/movie_model.dart';
 import 'package:movies_app/repository/movies/repository/movies_repository.dart';
@@ -8,8 +9,10 @@ import 'package:movies_app/ui/home_screen/tabs/browse_tab/cubit/browse_tab_state
 @injectable
 class BrowseTabViewModel extends Cubit<BrowseTabStates> {
   final MoviesRepository moviesRepository;
+  late Box<Movie> historyBox;
 
-  BrowseTabViewModel({required this.moviesRepository}) : super(BrowseTabLoadingState());
+  BrowseTabViewModel({required this.moviesRepository})
+      : super(BrowseTabLoadingState());
 
   List<Movie> moviesList = [];
   List<Movie> filteredMovies = [];
@@ -18,6 +21,24 @@ class BrowseTabViewModel extends Cubit<BrowseTabStates> {
   static BrowseTabViewModel get(context) =>
       BlocProvider.of<BrowseTabViewModel>(
           context);
+
+  List<Movie> historyList = [];
+
+  // void addToHistory(Movie movie) {
+  //   historyList.removeWhere((element) => element.id == movie.id);
+  //   historyList.insert(0, movie);
+  // }
+  void initHive() async {
+    historyBox = await Hive.openBox<Movie>('historyBox');
+    historyList = historyBox.values.toList();
+    emit(BrowseTabSuccessState(moviesList: filteredMovies));
+  }
+
+  void addToHistory(Movie movie) {
+    historyList.removeWhere((element) => element.id == movie.id);
+    historyList.insert(0, movie);
+    historyBox.put(movie.id, movie);
+  }
 
   void getMovies() async {
     try {

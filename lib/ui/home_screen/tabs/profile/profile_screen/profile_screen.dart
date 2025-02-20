@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/di/di.dart';
 import 'package:movies_app/repository/user/repository/user_repository.dart';
+import 'package:movies_app/ui/auth/login_screen/login_screen.dart';
+import 'package:movies_app/ui/home_screen/tabs/browse_tab/cubit/browse_tab_view_model.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/cubit/user_cubit.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/update_profile/update_profile.dart';
 import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
@@ -11,6 +13,7 @@ import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/asset_manager.dart';
 import 'package:movies_app/utils/helpers/cash_helper.dart';
 
+import '../../../../widgets/custom_dialog.dart';
 import '../cubit/user_state.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -121,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   children: [
                                     Image.asset(
                                         avatarList[state.user.avaterId ?? 0],
-                                        width: 150),
+                                        width: 110),
                                     SizedBox(height: height * 0.02),
                                     Text(state.user.name ?? '',
                                         style: AppStyles.bold20White),
@@ -129,16 +132,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 Column(
                                   children: [
-                                    Text('15', style: AppStyles.bold36White),
-                                    Text('Wish List',
-                                        style: AppStyles.bold24White),
+                                    Text('15', style: AppStyles.bold24White),
+                                    Text('Watch List',
+                                        style: AppStyles.bold20White),
                                   ],
                                 ),
                                 Column(
                                   children: [
-                                    Text('20', style: AppStyles.bold36White),
-                                    Text('History',
+                                    Text(
+                                        BrowseTabViewModel.get(context)
+                                            .historyList
+                                            .length
+                                            .toString(),
                                         style: AppStyles.bold24White),
+                                    Text('History',
+                                        style: AppStyles.bold20White),
                                   ],
                                 ),
                               ],
@@ -174,7 +182,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ],
                                     ),
                                     buttonText: '',
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      CustomDialog.showAlert(
+                                          context: context,
+                                          title: 'Exit Account',
+                                          message:
+                                              'Are you sure you want to exit?',
+                                          posActionName: 'Yes',
+                                          negActionName: 'No',
+                                          posAction: () {
+                                            CashHelper.removeData(key: "token");
+                                            CashHelper.removeData(
+                                                key: "isLoggedIn");
+                                            Navigator.pushReplacementNamed(
+                                                context, LoginScreen.routeName);
+                                          });
+                                    },
                                   ),
                                 ),
                               ],
@@ -212,9 +235,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         );
                       },
                     ),
-                    GridView.builder(
-                      padding: EdgeInsets.only(
-                          bottom: height * 0.1,
+                    BrowseTabViewModel.get(context).historyList.isNotEmpty
+                        ? GridView.builder(
+                            padding: EdgeInsets.only(
+                                bottom: height * 0.1,
                           top: height * 0.02,
                           left: width * 0.02,
                           right: width * 0.02),
@@ -224,19 +248,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisSpacing: height * 0.015,
                         childAspectRatio: 1 / 1.6,
                       ),
-                      itemCount: 40,
-                      itemBuilder: (context, index) {
-                        return MoviePoster(
+                            itemCount: BrowseTabViewModel.get(context)
+                                .historyList
+                                .length,
+                            itemBuilder: (context, index) {
+                              return MoviePoster(
                           onTap: () {},
-                          networkImage:
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiI76D9VIJtd-mUicPtv07vgr1ZcKobACqyg&s',
-                          rating: '7.5',
-                          imageWidth: double.infinity,
-                          imageHeight: double.infinity,
+                                networkImage: BrowseTabViewModel.get(context)
+                                        .historyList[index]
+                                        .largeCoverImage ??
+                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiI76D9VIJtd-mUicPtv07vgr1ZcKobACqyg&s',
+                                rating: BrowseTabViewModel.get(context)
+                                    .historyList[index]
+                                    .rating
+                                    .toString(),
+                                imageWidth: double.infinity,
+                                imageHeight: double.infinity,
                           imageFit: BoxFit.cover,
                         );
                       },
-                    ),
+                          )
+                        : Center(
+                            child: Image.asset(AssetsManager.popCornImage,
+                                width: width * 0.25),
+                          ),
                   ],
                 ),
               ),

@@ -6,7 +6,9 @@ import 'package:movies_app/ui/widgets/movie_poster.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:readmore/readmore.dart';
+
 import '../../di/di.dart';
+import '../home_screen/tabs/browse_tab/cubit/browse_tab_view_model.dart';
 import 'cubit/details_screen_cubit.dart';
 import 'cubit/details_screen_states.dart';
 
@@ -94,8 +96,13 @@ class DetailsScreen extends StatelessWidget {
                                   arguments: state.movieSuggestionModel
                                       .data!.movies![index].id,
                                 );
-                                print(
-                                    'Movie Id : ${state.movieSuggestionModel.data!.movies![index].id}');
+                                      BrowseTabViewModel.get(context)
+                                          .addToHistory(state
+                                              .movieSuggestionModel
+                                              .data!
+                                              .movies![index]);
+                                      print(
+                                          'Movie Id : ${state.movieSuggestionModel.data!.movies![index].id}');
                               },
                               networkImage: state
                                   .movieSuggestionModel
