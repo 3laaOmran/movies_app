@@ -71,8 +71,8 @@ class SearchScreen extends StatelessWidget {
                           networkImage: state.movieList[index].largeCoverImage ??
                               state.movieList[index].mediumCoverImage ??
                               state.movieList[index].smallCoverImage ??
-                              "",
-                          rating: state.movieList[index].rating.toString(),
+                                            "https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg",
+                                        rating: state.movieList[index].rating.toString(),
                           imageWidth: double.infinity,
                           imageHeight: double.infinity,
                           imageFit: BoxFit.cover,

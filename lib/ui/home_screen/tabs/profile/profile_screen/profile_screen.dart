@@ -310,7 +310,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 networkImage: BrowseTabViewModel.get(context)
                                         .historyList[index]
                                         .largeCoverImage ??
-                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiI76D9VIJtd-mUicPtv07vgr1ZcKobACqyg&s',
+                                    BrowseTabViewModel.get(context)
+                                        .historyList[index]
+                                        .mediumCoverImage ??
+                                    BrowseTabViewModel.get(context)
+                                        .historyList[index]
+                                        .smallCoverImage ??
+                                    'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
                                 rating: BrowseTabViewModel.get(context)
                                     .historyList[index]
                                     .rating
