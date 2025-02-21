@@ -4,6 +4,7 @@ import 'package:movies_app/di/di.dart';
 import 'package:movies_app/ui/home_screen/tabs/search_tab/cubit/search_screen_cubit.dart';
 import 'package:movies_app/ui/home_screen/tabs/search_tab/cubit/search_screen_states.dart';
 import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
+import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/asset_manager.dart';
 
 import '../../../details_screen/details_screen.dart';
@@ -38,9 +39,10 @@ class SearchScreen extends StatelessWidget {
                       // }
                     },
                   ),
+                  SizedBox(height: height*0.025),
                   Expanded(
                     child: state is SearchLoadingState
-                        ? Center(child: CircularProgressIndicator())
+                        ? Center(child: CircularProgressIndicator(color: AppColors.yellowColor))
                         : state is SearchErrorState
                         ? Center(child: Text('Error: ${state.error}'))
                         : state is SearchSuccessState && state.movieList.isNotEmpty
