@@ -73,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return DefaultTabController(
             length: 2,
             child: Scaffold(
-              backgroundColor: AppColors.darkGreyColor,
+              backgroundColor: AppColors.blackColor,
               body: NestedScrollView(
                 headerSliverBuilder: (context, innerBoxIsScrolled) => [
                   SliverAppBar(
@@ -147,7 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       },
                                     ),
                                     Text('Wish List',
-                                        style: AppStyles.bold24White),
+                                        style: AppStyles.bold20White),
                                   ],
                                 ),
                                 Column(
@@ -157,7 +157,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             .historyList
                                             .length
                                             .toString(),
-                                        style: AppStyles.bold24White),
+                                        style: AppStyles.bold36White),
                                     Text('History',
                                         style: AppStyles.bold20White),
                                   ],
