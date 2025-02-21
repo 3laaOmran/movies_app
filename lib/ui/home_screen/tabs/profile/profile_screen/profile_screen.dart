@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/di/di.dart';
-import 'package:movies_app/repository/user/repository/user_repository.dart';
 import 'package:movies_app/ui/auth/login_screen/login_screen.dart';
 import 'package:movies_app/ui/home_screen/tabs/browse_tab/cubit/browse_tab_view_model.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/cubit/user_cubit.dart';
@@ -15,7 +14,6 @@ import 'package:movies_app/utils/helpers/cash_helper.dart';
 
 import '../../../../details_screen/details_screen.dart';
 import '../../../../widgets/custom_dialog.dart';
-import '../../../../details_screen/details_screen.dart';
 import '../cubit/user_state.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -232,10 +230,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           print(getIt<UserCubit>().favoriteMovieList);
                           return state.movies.data!.isEmpty
                               ? Center(
-                                  child: Text(
-                                  "No Movies Add To Wish List",
-                                  style: TextStyle(color: Colors.white),
-                                ))
+                                  child: Image.asset(AssetsManager.popCornImage,
+                                      width: width * 0.25),
+                                )
                               : GridView.builder(
                                   padding: EdgeInsets.only(
                                       bottom: height * 0.1,
