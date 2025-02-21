@@ -113,7 +113,7 @@ class _HomeTabState extends State<HomeTab> {
                                   Navigator.pushNamed(
                                       context, DetailsScreen.routeName,
                                       arguments:
-                                          state.moviesList[itemIndex].id);
+                                          state.moviesList[itemIndex].id.toString());
                                   BrowseTabViewModel.get(context).addToHistory(
                                       state.moviesList[itemIndex]);
                                 },
@@ -187,7 +187,7 @@ class _HomeTabState extends State<HomeTab> {
               return MoviePoster(
             onTap: () {
               Navigator.pushNamed(context, DetailsScreen.routeName,
-                  arguments: movie.id);
+                  arguments: movie.id.toString());
               BrowseTabViewModel.get(context).addToHistory(movie);
             },
             imageFit: BoxFit.fill,

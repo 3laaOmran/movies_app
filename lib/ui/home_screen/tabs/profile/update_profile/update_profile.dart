@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/repository/user/repository/user_repository.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/update_profile/show_bottom_sheet.dart';
 import 'package:movies_app/ui/widgets/custom_dialog.dart';
 import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
@@ -24,7 +23,7 @@ class UpdateProfile extends StatefulWidget {
 }
 
 class _UpdateProfileState extends State<UpdateProfile> {
-  UserCubit cubit = UserCubit(userRepository: getIt<UserRepository>());
+  UserCubit cubit = getIt<UserCubit>();
 
   @override
   void initState() {
@@ -132,6 +131,14 @@ class _UpdateProfileState extends State<UpdateProfile> {
             state is GetGoogleUserDataLoadingState) {
           return Scaffold(
             appBar: AppBar(
+              automaticallyImplyLeading: false,
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: () {
+                  UserCubit.get(context).getFavouriteMovies();
+                  Navigator.pop(context);
+                },
+              ),
               title: const Text("Update Profile"),
             ),
             body: Padding(
