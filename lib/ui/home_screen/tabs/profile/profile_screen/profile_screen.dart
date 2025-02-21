@@ -13,6 +13,7 @@ import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/asset_manager.dart';
 import 'package:movies_app/utils/helpers/cash_helper.dart';
 
+import '../../../../details_screen/details_screen.dart';
 import '../../../../widgets/custom_dialog.dart';
 import '../cubit/user_state.dart';
 
@@ -253,7 +254,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 .length,
                             itemBuilder: (context, index) {
                               return MoviePoster(
-                          onTap: () {},
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, DetailsScreen.routeName,
+                                      arguments: BrowseTabViewModel.get(context)
+                                          .historyList[index]
+                                          .id);
+                                },
                                 networkImage: BrowseTabViewModel.get(context)
                                         .historyList[index]
                                         .largeCoverImage ??

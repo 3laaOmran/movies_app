@@ -93,7 +93,8 @@ class _BrowseScreenState extends State<BrowseScreen> {
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            crossAxisSpacing: 16,
+            crossAxisSpacing: width * 0.03,
+            mainAxisSpacing: height * 0.025,
             childAspectRatio: 0.73,
           ),
           itemCount: state.moviesList.length,

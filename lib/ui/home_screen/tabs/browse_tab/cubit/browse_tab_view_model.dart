@@ -24,14 +24,9 @@ class BrowseTabViewModel extends Cubit<BrowseTabStates> {
 
   List<Movie> historyList = [];
 
-  // void addToHistory(Movie movie) {
-  //   historyList.removeWhere((element) => element.id == movie.id);
-  //   historyList.insert(0, movie);
-  // }
   void initHive() async {
     historyBox = await Hive.openBox<Movie>('historyBox');
     historyList = historyBox.values.toList();
-    emit(BrowseTabSuccessState(moviesList: filteredMovies));
   }
 
   void addToHistory(Movie movie) {

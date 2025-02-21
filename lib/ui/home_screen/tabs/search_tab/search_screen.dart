@@ -5,12 +5,13 @@ import 'package:movies_app/ui/home_screen/tabs/search_tab/cubit/search_screen_cu
 import 'package:movies_app/ui/home_screen/tabs/search_tab/cubit/search_screen_states.dart';
 import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
 import 'package:movies_app/utils/asset_manager.dart';
+
 import '../../../details_screen/details_screen.dart';
 import '../../../widgets/movie_poster.dart';
-
+import '../browse_tab/cubit/browse_tab_view_model.dart';
 
 class SearchScreen extends StatelessWidget {
-  SearchScreenCubit searchCubit = getIt<SearchScreenCubit>();
+  final SearchScreenCubit searchCubit = getIt<SearchScreenCubit>();
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,10 @@ class SearchScreen extends StatelessWidget {
                               DetailsScreen.routeName,
                               arguments: state.movieList[index].id,
                             );
-                          },
+                                          BrowseTabViewModel.get(context)
+                                              .addToHistory(
+                                                  state.movieList[index]);
+                                        },
                           networkImage: state.movieList[index].largeCoverImage ??
                               state.movieList[index].mediumCoverImage ??
                               state.movieList[index].smallCoverImage ??
