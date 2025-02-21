@@ -41,7 +41,6 @@ class MoviesApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
       initialRoute: getInitialRoute(),
       routes: {
-        ProfileScreen.routeName: (context) => ProfileScreen(),
         DetailsScreen.routeName: (context) => DetailsScreen(),
         Onboarding.routeName:(context)=> Onboarding(),
         HomeScreen.routeName: (context) => HomeScreen(),
