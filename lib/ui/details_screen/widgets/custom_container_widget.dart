@@ -12,17 +12,17 @@ CustomContainerWidget({required this.imagePath,required this.number});
     var width=MediaQuery.of(context).size.width;
     return Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12),
         color: AppColors.darkGreyColor,
       ),
-      padding: EdgeInsets.symmetric(horizontal: width*0.02,),
+      padding: EdgeInsets.symmetric(horizontal: width*0.01,),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-        Image.asset(imagePath),
-        SizedBox(width: width*0.04,),
-        Text('$number',style: AppStyles.bold24White,),
-      ],),
+          Image.asset(imagePath),
+          SizedBox(width: width*0.01,),
+          Text('$number',style: AppStyles.bold24White,),
+        ],),
     );
   }
 }

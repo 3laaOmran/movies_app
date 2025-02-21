@@ -94,20 +94,17 @@ class _MovieDetailsState extends State<MovieDetails> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
-                        left: width * 0.02, right: width * 0.05),
+                        left: width * 0.04, right: width * 0.04,top: height*0.05),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        IconButton(
-                            onPressed: () {
-                              UserCubit.get(context).getFavouriteMovies();
-                              Navigator.pop(context);
-                              // UserCubit.get(context).getFavouriteMovies();
+                        InkWell(
+                            onTap: (){
+                                UserCubit.get(context).getFavouriteMovies();
+                                Navigator.pop(context);
+                                // UserCubit.get(context).getFavouriteMovies();
                             },
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              color: AppColors.whiteColor,
-                            )),
+                            child: Image.asset(AssetsManager.backIcon)),
                         BlocConsumer<DetailsScreenCubit, DetailsScreenStates>(
                             buildWhen: (previous, current) =>
                                 current is IsFavouriteSuccessState,

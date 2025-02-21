@@ -70,7 +70,7 @@ class LoginScreen extends StatelessWidget {
                             height: height * 0.35,
                           ),
                           CustomTextFormField(
-                            keyboardType: TextInputType.name,
+                            keyboardType: TextInputType.emailAddress,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
                                 return 'Please Enter Your Email Address';
