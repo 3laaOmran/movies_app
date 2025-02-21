@@ -5,6 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/models/movie_model.dart';
+import 'package:movies_app/ui/home_screen/tabs/browse_tab/cubit/browse_tab_view_model.dart';
 import 'package:movies_app/ui/widgets/category_header.dart';
 import 'package:movies_app/ui/widgets/movie_poster.dart';
 import 'package:movies_app/utils/app_colors.dart';
@@ -113,6 +114,8 @@ class _HomeTabState extends State<HomeTab> {
                                       context, DetailsScreen.routeName,
                                       arguments:
                                           state.moviesList[itemIndex].id);
+                                  BrowseTabViewModel.get(context).addToHistory(
+                                      state.moviesList[itemIndex]);
                                 },
                                 imageFit: BoxFit.fill,
                                 imageWidth: double.infinity,
@@ -185,6 +188,7 @@ class _HomeTabState extends State<HomeTab> {
             onTap: () {
               Navigator.pushNamed(context, DetailsScreen.routeName,
                   arguments: movie.id);
+              BrowseTabViewModel.get(context).addToHistory(movie);
             },
             imageFit: BoxFit.fill,
             imageWidth: width * 0.35,

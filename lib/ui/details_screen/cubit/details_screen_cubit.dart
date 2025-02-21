@@ -19,7 +19,7 @@ class DetailsScreenCubit extends Cubit<DetailsScreenStates> {
 
   void getMovieDetailsAndSuggestions(String movieId) async {
     final List<ConnectivityResult> connectivityList =
-        await Connectivity().checkConnectivity();
+    await Connectivity().checkConnectivity();
 
     if (connectivityList.contains(ConnectivityResult.wifi) ||
         connectivityList.contains(ConnectivityResult.mobile)) {
@@ -33,7 +33,7 @@ class DetailsScreenCubit extends Cubit<DetailsScreenStates> {
 
         final movieDetails = MovieDetailsAndSuggestion[0] as MovieDetailsModel;
         final movieSuggestions =
-            MovieDetailsAndSuggestion[1] as MovieSuggestionModel;
+        MovieDetailsAndSuggestion[1] as MovieSuggestionModel;
 
         if (movieDetails.status == "ok" && movieSuggestions.status == "ok") {
           emit(DetailsAndSuggestionsSuccessState(

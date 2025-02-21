@@ -1,4 +1,3 @@
-// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
@@ -60,6 +59,8 @@ import '../repository/user/repository/user_repository_impl.dart' as _i871;
 import '../ui/auth/login_screen/cubit/login_cubit.dart' as _i311;
 import '../ui/auth/register_screen/cubit/register_cubit.dart' as _i599;
 import '../ui/details_screen/cubit/details_screen_cubit.dart' as _i459;
+import '../ui/home_screen/tabs/browse_tab/cubit/browse_tab_view_model.dart'
+    as _i52;
 import '../ui/home_screen/tabs/home_tab/cubit/home_tab_cubit.dart' as _i165;
 import '../ui/home_screen/tabs/profile/cubit/user_cubit.dart' as _i232;
 import '../ui/home_screen/tabs/profile/reset_password_screen/cubit/reset_pass_cubit.dart'
@@ -112,6 +113,8 @@ extension GetItInjectableX on _i174.GetIt {
         searchDataSource: gh<_i781.SearchDataSource>()));
     gh.factory<_i232.UserCubit>(
         () => _i232.UserCubit(userRepository: gh<_i123.UserRepository>()));
+    gh.factory<_i52.BrowseTabViewModel>(() =>
+        _i52.BrowseTabViewModel(moviesRepository: gh<_i49.MoviesRepository>()));
     gh.factory<_i165.HomeTabCubit>(() =>
         _i165.HomeTabCubit(moviesRepository: gh<_i49.MoviesRepository>()));
     gh.factory<_i154.ResetPassCubit>(
