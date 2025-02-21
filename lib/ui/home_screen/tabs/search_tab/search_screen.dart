@@ -19,8 +19,8 @@ class SearchScreen extends StatelessWidget {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
 
-    return BlocProvider(
-      create: (context) => searchCubit,
+    return BlocProvider.value(
+      value: searchCubit,
       child: BlocBuilder<SearchScreenCubit, SearchStates>(
         builder: (context, state) {
           return Scaffold(
