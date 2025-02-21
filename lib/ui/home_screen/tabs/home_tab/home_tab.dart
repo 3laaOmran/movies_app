@@ -120,7 +120,13 @@ class _HomeTabState extends State<HomeTab> {
                                 imageFit: BoxFit.fill,
                                 imageWidth: double.infinity,
                                 imageHeight: height * 0.8,
-                                networkImage: state.moviesList[itemIndex].largeCoverImage!,
+                                networkImage: state.moviesList[itemIndex]
+                                        .largeCoverImage ??
+                                    state.moviesList[itemIndex]
+                                        .mediumCoverImage ??
+                                    state.moviesList[itemIndex]
+                                        .smallCoverImage ??
+                                    'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
                                 rating: state.moviesList[itemIndex].rating?.toString() ?? 'N/A',
                               ),
                             ),
@@ -194,8 +200,11 @@ class _HomeTabState extends State<HomeTab> {
             imageWidth: width * 0.35,
                 imageHeight: height * 0.3,
             // imageFit: BoxFit.cover,
-            networkImage: movie.largeCoverImage ?? '',
-                rating: movie.rating?.toString() ?? 'N/A',
+            networkImage: movie.largeCoverImage ??
+                movie.mediumCoverImage ??
+                movie.smallCoverImage ??
+                'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
+            rating: movie.rating?.toString() ?? 'N/A',
               );
             },
             ),

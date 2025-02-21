@@ -105,7 +105,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 Navigator.of(context).pushNamed(DetailsScreen.routeName, arguments: movie.id);
                 BrowseTabViewModel.get(context).addToHistory(movie);
               },
-              networkImage: movie.largeCoverImage ?? '',
+              networkImage: movie.largeCoverImage ??
+                  movie.mediumCoverImage ??
+                  movie.smallCoverImage ??
+                  'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
               rating: movie.rating?.toString() ?? 'N/A',
               imageWidth: double.infinity,
               imageHeight: height * 0.3,

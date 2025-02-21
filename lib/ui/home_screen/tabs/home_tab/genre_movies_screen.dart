@@ -42,7 +42,10 @@ class GenreMoviesScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CachedNetworkImage(
-                    imageUrl: movie.largeCoverImage ?? '',
+                    imageUrl: movie.largeCoverImage ??
+                        movie.mediumCoverImage ??
+                        movie.smallCoverImage ??
+                        'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg',
                     height: height * 0.25,
                     width: double.infinity,
                     fit: BoxFit.cover,
