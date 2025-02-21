@@ -127,6 +127,7 @@ class DetailsScreen extends StatelessWidget {
                           'No Similar Movies Available...',
                           style: AppStyles.regular16White,
                         ),
+
                         SizedBox(height: height * 0.02),
                         Text('Description', style: AppStyles.bold24White),
                         SizedBox(height: height * 0.02),

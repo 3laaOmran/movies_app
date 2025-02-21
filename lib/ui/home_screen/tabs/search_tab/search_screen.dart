@@ -1,14 +1,89 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/di/di.dart';
+import 'package:movies_app/ui/home_screen/tabs/search_tab/cubit/search_screen_cubit.dart';
+import 'package:movies_app/ui/home_screen/tabs/search_tab/cubit/search_screen_states.dart';
+import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
+import 'package:movies_app/utils/asset_manager.dart';
+import '../../../details_screen/details_screen.dart';
+import '../../../widgets/movie_poster.dart';
 
-import '../../../../utils/app_colors.dart';
 
 class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
+  SearchScreenCubit searchCubit = getIt<SearchScreenCubit>();
 
   @override
   Widget build(BuildContext context) {
-    return Placeholder(
-      color: AppColors.yellowColor,
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+
+    return BlocProvider(
+      create: (context) => searchCubit,
+      child: BlocBuilder<SearchScreenCubit, SearchStates>(
+        builder: (context, state) {
+          return Scaffold(
+            body: Padding(
+              padding: EdgeInsets.symmetric(horizontal: width * 0.03, vertical: height * 0.05),
+              child: Column(
+                children: [
+                  CustomTextFormField(
+                    hintText: 'Search',
+                    controller: searchCubit.controller,
+                    prefixIcon: AssetsManager.searchIcon,
+                    onChanged: (query) {
+                      searchCubit.getSearchedMovie(query.toLowerCase());
+                      // if(query.isEmpty||query==null){
+                      //   searchCubit.searchedMovieList.clear();
+                      // }
+                    },
+                  ),
+                  Expanded(
+                    child: state is SearchLoadingState
+                        ? Center(child: CircularProgressIndicator())
+                        : state is SearchErrorState
+                        ? Center(child: Text('Error: ${state.error}'))
+                        : state is SearchSuccessState && state.movieList.isNotEmpty
+                        ? GridView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: width * 0.03,
+                        mainAxisSpacing: height * 0.025,
+                        childAspectRatio: 1 / 1.6,
+                      ),
+                      itemCount: state.movieList.length,
+                      itemBuilder: (context, index) {
+                        return MoviePoster(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              DetailsScreen.routeName,
+                              arguments: state.movieList[index].id,
+                            );
+                          },
+                          networkImage: state.movieList[index].largeCoverImage ??
+                              state.movieList[index].mediumCoverImage ??
+                              state.movieList[index].smallCoverImage ??
+                              "",
+                          rating: state.movieList[index].rating.toString(),
+                          imageWidth: double.infinity,
+                          imageHeight: double.infinity,
+                          imageFit: BoxFit.cover,
+                        );
+                      },
+                    )
+                        : Center(child: Image.asset(AssetsManager.popCornImage)),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
+
+
+
