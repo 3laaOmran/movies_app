@@ -6,6 +6,7 @@ import 'package:movies_app/ui/widgets/movie_poster.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:readmore/readmore.dart';
+
 import '../../di/di.dart';
 import 'cubit/details_screen_cubit.dart';
 import 'cubit/details_screen_states.dart';
@@ -19,7 +20,7 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var args = ModalRoute.of(context)!.settings.arguments as int;
+    var args = ModalRoute.of(context)!.settings.arguments;
 
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
@@ -37,15 +38,18 @@ class DetailsScreen extends StatelessWidget {
               child: Column(
                 children: [
                   MovieDetails(
-                      url: state.movieDetailsModel.data!.movie!.url!,
-                      imagePath:
-                      state.movieDetailsModel.data!.movie!.largeCoverImage!,
-                      likeCount:
-                      state.movieDetailsModel.data!.movie!.likeCount!,
-                      movieName: state.movieDetailsModel.data!.movie!.title!,
-                      rating: state.movieDetailsModel.data!.movie!.rating!,
-                      runTime: state.movieDetailsModel.data!.movie!.runtime!,
-                      year: state.movieDetailsModel.data!.movie!.year!),
+                    movieDetails: state.movieDetailsModel.data!.movie!,
+                    // movieId: state.movieDetailsModel.data!.movie!.id!.toInt(),
+                    //   url: state.movieDetailsModel.data!.movie!.url!,
+                    //   imagePath:
+                    //   state.movieDetailsModel.data!.movie!.largeCoverImage!,
+                    //   likeCount:
+                    //   state.movieDetailsModel.data!.movie!.likeCount!,
+                    //   movieName: state.movieDetailsModel.data!.movie!.title!,
+                    //   rating: state.movieDetailsModel.data!.movie!.rating!,
+                    //   runTime: state.movieDetailsModel.data!.movie!.runtime!,
+                    //   year: state.movieDetailsModel.data!.movie!.year!
+                  ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: width * 0.03),
                     child: Column(
@@ -92,8 +96,9 @@ class DetailsScreen extends StatelessWidget {
                                   context,
                                   DetailsScreen.routeName,
                                   arguments: state.movieSuggestionModel
-                                      .data!.movies![index].id,
-                                );
+                                            .data!.movies![index].id
+                                            .toString(),
+                                      );
                                 print(
                                     'Movie Id : ${state.movieSuggestionModel.data!.movies![index].id}');
                               },

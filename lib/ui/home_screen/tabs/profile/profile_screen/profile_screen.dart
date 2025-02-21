@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/di/di.dart';
-import 'package:movies_app/repository/user/repository/user_repository.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/cubit/user_cubit.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/update_profile/update_profile.dart';
 import 'package:movies_app/ui/widgets/custom_elevated_button.dart';
@@ -11,17 +10,20 @@ import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/asset_manager.dart';
 import 'package:movies_app/utils/helpers/cash_helper.dart';
 
+import '../../../../details_screen/details_screen.dart';
 import '../cubit/user_state.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  static String routeName = "profile screen";
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  UserCubit cubit = UserCubit(userRepository: getIt<UserRepository>());
+  UserCubit cubit = getIt<UserCubit>();
 
   @override
   void initState() {
@@ -33,6 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       cubit.nameController.text = CashHelper.getData(key: 'googleUsername');
       cubit.googleUserImage = CashHelper.getData(key: 'googleUserImage');
     }
+    UserCubit.get(context).getFavouriteMovies();
   }
 
   @override
@@ -73,6 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               body: NestedScrollView(
                 headerSliverBuilder: (context, innerBoxIsScrolled) => [
                   SliverAppBar(
+                    // automaticallyImplyLeading: false,
                     backgroundColor: AppColors.darkGreyColor,
                     expandedHeight: height * 0.46,
                     pinned: true,
@@ -129,7 +133,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 Column(
                                   children: [
-                                    Text('15', style: AppStyles.bold36White),
+                                    BlocBuilder<UserCubit, UserStates>(
+                                      builder: (context, state) {
+                                        if (state is getFavouriteSuccessState) {
+                                          return Text(
+                                              state.movies.data!.length
+                                                  .toString(),
+                                              style: AppStyles.bold36White);
+                                        } else {
+                                          return Text("0",
+                                              style: AppStyles.bold36White);
+                                        }
+                                      },
+                                    ),
                                     Text('Wish List',
                                         style: AppStyles.bold24White),
                                   ],
@@ -187,29 +203,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
                 body: TabBarView(
                   children: [
-                    GridView.builder(
-                      padding: EdgeInsets.only(
-                          bottom: height * 0.1,
-                          top: height * 0.02,
-                          left: width * 0.02,
-                          right: width * 0.02),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: width * 0.03,
-                        mainAxisSpacing: height * 0.015,
-                        childAspectRatio: 1 / 1.6,
-                      ),
-                      itemCount: 40,
-                      itemBuilder: (context, index) {
-                        return MoviePoster(
-                          onTap: () {},
-                          networkImage:
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiI76D9VIJtd-mUicPtv07vgr1ZcKobACqyg&s',
-                          rating: '7.5',
-                          imageWidth: double.infinity,
-                          imageHeight: double.infinity,
-                          imageFit: BoxFit.cover,
-                        );
+                    BlocBuilder<UserCubit, UserStates>(
+                      // bloc: cubit,
+                      builder: (context, state) {
+                        if (state is getFavouriteSuccessState) {
+                          print(getIt<UserCubit>().favoriteMovieList);
+                          return state.movies.data!.isEmpty
+                              ? Center(
+                                  child: Text(
+                                  "No Movies Add To Wish List",
+                                  style: TextStyle(color: Colors.white),
+                                ))
+                              : GridView.builder(
+                                  padding: EdgeInsets.only(
+                                      bottom: height * 0.1,
+                                      top: height * 0.02,
+                                      left: width * 0.02,
+                                      right: width * 0.02),
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: width * 0.03,
+                                    mainAxisSpacing: height * 0.015,
+                                    childAspectRatio: 1 / 1.6,
+                                  ),
+                                  itemCount: state.movies.data!.length,
+                                  itemBuilder: (context, index) {
+                                    return MoviePoster(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          DetailsScreen.routeName,
+                                          arguments:
+                                              state.movies.data![index].movieId,
+                                        );
+                                      },
+                                      networkImage:
+                                          state.movies.data![index].imageURL ??
+                                              "",
+                                      rating: state.movies.data![index].rating
+                                          .toString(),
+                                      imageWidth: double.infinity,
+                                      imageHeight: double.infinity,
+                                      imageFit: BoxFit.cover,
+                                    );
+                                  },
+                                );
+                        } else if (state is getFavouriteLoadingState) {
+                          return Center(
+                              child: CircularProgressIndicator(
+                            color: AppColors.yellowColor,
+                          ));
+                        } else if (state is getFavouriteErrorState) {
+                          return Center(
+                            child: Text(state.errorMsg),
+                          );
+                        } else {
+                          return Container();
+                        }
                       },
                     ),
                     GridView.builder(

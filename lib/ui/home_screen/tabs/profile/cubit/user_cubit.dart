@@ -1,20 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import 'package:movies_app/models/user_model.dart';
+import 'package:movies_app/repository/favourite/repo/favourite_repo.dart';
 import 'package:movies_app/repository/user/repository/user_repository.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/cubit/user_state.dart';
+
+import '../../../../../models/GetAllFavouriteModel.dart';
 
 @injectable
 class UserCubit extends Cubit<UserStates> {
   final UserRepository userRepository;
+  FavouriteRepo favouriteRepo;
   int selectedAvatarId = 0;
 
-  UserCubit({required this.userRepository}) : super(UserInitialState());
+  List<GetAllFavouriteData>? favoriteMovieList = [];
+
+  UserCubit({required this.userRepository, required this.favouriteRepo})
+      : super(UserInitialState());
 
   var nameController = TextEditingController();
   var phoneController = TextEditingController();
   var googleUserImage;
+
+  static UserCubit get(context) => BlocProvider.of(context);
+
   void getUserData() async {
     emit(GetUserDataLoadingState());
     try {
@@ -51,12 +60,12 @@ class UserCubit extends Cubit<UserStates> {
         emit(UpdateUserDataSuccessState(updateProfileModel: response));
       }else{
         emit(UpdateUserDataErrorState(errorMsg: "Failed to update user data"));
-        print('Error y');
+        // print('Error y');
       }
 
     } catch (e) {
       emit(UpdateUserDataErrorState(errorMsg: e.toString()));
-      print('Error y');
+      // print('Error y');
     }
   }
 
@@ -68,6 +77,21 @@ class UserCubit extends Cubit<UserStates> {
       emit(DeleteAccountSuccessState());
     } catch (e) {
       emit(DeleteAccountErrorState(errorMsg: e.toString()));
+    }
+  }
+
+  void getFavouriteMovies() async {
+    try {
+      emit(getFavouriteLoadingState());
+      var response = await favouriteRepo.getAllFavourite();
+      if (response!.statusCode == null) {
+        favoriteMovieList = response.data;
+        emit(getFavouriteSuccessState(movies: response));
+      } else {
+        emit(getFavouriteErrorState(errorMsg: response.message!));
+      }
+    } catch (e) {
+      emit(getFavouriteErrorState(errorMsg: e.toString()));
     }
   }
 }

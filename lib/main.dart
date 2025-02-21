@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/ui/auth/login_screen/login_screen.dart';
 import 'package:movies_app/ui/auth/register_screen/register_screen.dart';
+import 'package:movies_app/ui/details_screen/cubit/details_screen_cubit.dart';
 import 'package:movies_app/ui/details_screen/details_screen.dart';
 import 'package:movies_app/ui/home_screen/home_screen.dart';
 import 'package:movies_app/ui/home_screen/tabs/browse_tab/cubit/browse_tab_view_model.dart';
+import 'package:movies_app/ui/home_screen/tabs/profile/cubit/user_cubit.dart';
+import 'package:movies_app/ui/home_screen/tabs/profile/profile_screen/profile_screen.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/reset_password_screen/reset_password_screen.dart';
 import 'package:movies_app/ui/home_screen/tabs/profile/update_profile/update_profile.dart';
 import 'package:movies_app/ui/onboarding/onboarding.dart';
@@ -22,7 +25,9 @@ void main() async {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(create: (context) => getIt<BrowseTabViewModel>()),
-    ],
+    BlocProvider(create: (context) => getIt<DetailsScreenCubit>()),
+    BlocProvider(create: (context) => getIt<UserCubit>()),
+  ],
       child: MoviesApp()));
 }
 
@@ -36,6 +41,7 @@ class MoviesApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
       initialRoute: getInitialRoute(),
       routes: {
+        ProfileScreen.routeName: (context) => ProfileScreen(),
         DetailsScreen.routeName: (context) => DetailsScreen(),
         Onboarding.routeName:(context)=> Onboarding(),
         HomeScreen.routeName: (context) => HomeScreen(),

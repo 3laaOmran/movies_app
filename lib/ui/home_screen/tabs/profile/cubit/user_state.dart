@@ -1,3 +1,4 @@
+import 'package:movies_app/models/GetAllFavouriteModel.dart';
 import 'package:movies_app/models/update_or_delete_profile_model.dart';
 import 'package:movies_app/models/user_model.dart';
 
@@ -44,4 +45,18 @@ final class DeleteAccountErrorState extends UserStates {
   final String errorMsg;
 
   DeleteAccountErrorState({required this.errorMsg});
+}
+
+final class getFavouriteLoadingState extends UserStates {}
+
+final class getFavouriteSuccessState extends UserStates {
+  GetAllFavouriteModel movies;
+
+  getFavouriteSuccessState({required this.movies});
+}
+
+final class getFavouriteErrorState extends UserStates {
+  final String errorMsg;
+
+  getFavouriteErrorState({required this.errorMsg});
 }
