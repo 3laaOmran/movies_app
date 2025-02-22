@@ -136,7 +136,10 @@ class DetailsScreen extends StatelessWidget {
                         SizedBox(height: height * 0.02),
                         ReadMoreText(
                           style: AppStyles.regular16White,
-                          state.movieDetailsModel.data!.movie!.descriptionFull!
+                          state.movieDetailsModel.data!.movie!
+                                          .descriptionFull ==
+                                      null ||
+                                  state.movieDetailsModel.data!.movie!.descriptionFull!
                               .isEmpty
                               ? 'No Description Available...'
                               : state.movieDetailsModel.data!.movie!

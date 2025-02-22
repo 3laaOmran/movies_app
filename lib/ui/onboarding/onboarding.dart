@@ -156,9 +156,9 @@ class _OnboardingState extends State<Onboarding> {
               },
               button2Text: "Back",
               button2BgColor: Colors.transparent,
-              description: "Save movies to your watchlist to keep track of what you want to watch next."
-                  " Enjoy films in various qualities and genres.",
-              title: "Create Watchlists",
+              description:
+                  "Share your thoughts on the movies you've watched. Dive deep into film details and help others discover great movies with your reviews.",
+              title: "Rate, Review, and Learn",
               button1Text: "Next",
               image: AssetsManager.onBoarding5),
           //6
